@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5439:5432'
+    networks:
+      - backend
+
+
+  adminer:
+    image: adminer
+    ports:
+      - '8089:8080'
+    networks:
+      - backend
+
+  backend: 
+    build: backend
+    ports: 
+      - '8132:8000'
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+    networks:
+      - backend
+    env_file:
+      - ./backend/.env
+  
+  nginx:
+    build: nginx
+    ports:
+      - '8001:80'
+    volumes:
+      - ./backend:/app
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - backend
+    networks:
+      - backend
+      - frontend
+
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge

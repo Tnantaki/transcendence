@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["narin <narin.w@lexnetix.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^5.0.4"
+psycopg2-binary = "^2.9.9"
+django-ninja = "^1.1.0"
+django-cors-headers = "^4.3.1"
+
+[tool.poetry.group.dev.dependencies]
+pydantic = "^2.7.1"
+django-ninja = "^1.1.0"
+rich = "^13.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
