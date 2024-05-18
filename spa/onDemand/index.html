@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Page</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav>
+    <a class="btn_menu" screen_name="home" href="/home">Home</a>
+    <a class="btn_menu" screen_name="about" href="/about">About</a>
+    <a class="btn_menu" screen_name="contact" href="/contact">Contact</a>
+  </nav>
+
+  <div class="screen_data">
+    <!-- Page content -->
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function($) {
+      let e0 = $(document).find(".screen_data");
+      e0.load("html/home.html");
+      $(document).on("click", ".btn_menu", function(event) {
+        event.preventDefault();
+        let screen_name = $(this).attr("screen_name");
+        history.pushState({}, "", screen_name); // update fake url
+        if (screen_name == "home")
+          e0.load("html/home.html");
+        else if (screen_name == "about")
+          e0.load("html/about.html");
+        else if (screen_name == "contact")
+          e0.load("html/contact.html");
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Page</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav>
+    <a class="btn_menu" screen_name="home" href="/home">Home</a>
+    <a class="btn_menu" screen_name="about" href="/about">About</a>
+    <a class="btn_menu" screen_name="contact" href="/contact">Contact</a>
+  </nav>
+
+  <div class="screen_data">
+    <!-- Page content -->
+  </div>
+
+  <div style="display: none;">
+    <div class="screen_home">
+      <h1>Home</h1>
+      <img src="https://images.unsplash.com/photo-1494256997604-768d1f608cac?q=80&w=3929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="cat" height="400">
+    </div>
+
+    <div class="screen_about">
+      <h1>About</h1>
+      <p>What my name</p>
+      <p>my Info</p>
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint rerum nobis omnis officiis possimus libero cumque culpa suscipit impedit exercitationem!</p>
+    </div>
+
+    <div class="screen_contact">
+      <h1>Contact</h1>
+      <p>My phone number</p>
+      <p>My office address</p>
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint rerum nobis omnis officiis possimus libero cumque culpa suscipit impedit exercitationem!</p>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function($) {
+      let e0 = $(document).find(".screen_data");
+      let home = $(document).find(".screen_home").html()
+      e0.html(home)
+      $(document).on("click", ".btn_menu", function(event) {
+        event.preventDefault();
+        let screen_name = $(this).attr("screen_name");
+        history.pushState({}, "", screen_name); // update fake url
+        if (screen_name == "home")
+          e0.html($(document).find(".screen_home").html())
+        else if (screen_name == "about")
+          e0.html($(document).find(".screen_about").html())
+        else if (screen_name == "contact")
+          e0.html($(document).find(".screen_contact").html())
+      });
+    });
+  </script>
+
+</body>
+</html>
