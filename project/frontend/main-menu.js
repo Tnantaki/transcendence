@@ -1,6 +1,14 @@
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
 
+// menu properties
+const menuPos = 100;
+const btnWidth = 200;
+const btnHeight = 50;
+const btnSpace = 20;
+const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
+
+
 function drawCanvas()
 {
 
@@ -15,43 +23,7 @@ function drawCanvas()
 	ctx.textBaseline = "top";
 	ctx.fillStyle = "white";
 	ctx.fillText("Pong", (canvas.width / 2), titlePos);
-
-	// // create menu
-	// const menuPos = 100;
-	// const btnWidth = 200;
-	// const btnHeight = 50;
-	// const btnSpace = 20;
-	// const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
 }
-
-
-// create menu
-const menuPos = 100;
-const btnWidth = 200;
-const btnHeight = 50;
-const btnSpace = 20;
-const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
-// const canvas = document.getElementById("gameArea");
-// const ctx = canvas.getContext("2d");
-
-// // draw game's screen
-// ctx.fillStyle = "black";
-// ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-// // write title
-// const titlePos = 50
-// ctx.font = "128px Irish Grover";
-// ctx.textAlign = "center";
-// ctx.textBaseline = "top";
-// ctx.fillStyle = "white";
-// ctx.fillText("Pong", (canvas.width / 2), titlePos);
-
-// // create menu
-// const menuPos = 100;
-// const btnWidth = 200;
-// const btnHeight = 50;
-// const btnSpace = 20;
-// const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
 
 function drawBtn()
 {
