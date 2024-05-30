@@ -11,6 +11,8 @@ const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
 
 function drawCanvas()
 {
+	// clear canvas
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	// draw game's screen
 	ctx.fillStyle = "black";
@@ -74,7 +76,7 @@ canvas.addEventListener('click', function(event) {
 			else if (btn == "Online")
 				console.log("Online");
 			else if (btn == "Tournament")
-				console.log("Tournament");
+				drawCompCanvas();
 			else if (btn == "Setting")
 				console.log("Setting");
 			break;
