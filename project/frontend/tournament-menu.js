@@ -11,6 +11,7 @@ pongImg.onload = function() { // call the anonymous function when the image is l
 	drawCanvas();
 	drawStartBtn(imageX, imageY);
 	drawPlayerList(players);
+	drawAddBtn();
 };
 
 function drawCanvas()
@@ -90,13 +91,11 @@ function drawPlayerList(players)
 	ctx.font = "25px Irish Grover";
 	ctx.fillStyle = "white";
 	ctx.textBaseline = "top";
-
 	players.forEach((player, index) => {
 		const yPos = startY + padding + index * lineHeight;
 		ctx.fillText(player.name, startX + padding + 40, yPos + 20);
 	});
 }
-
 
 function drawNewCanvas()
 {
@@ -110,3 +109,56 @@ function addPlayer(name)
 	players.push({name: name});
 	drawNewCanvas(players);
 }
+
+function drawAddBtn()
+{
+	const btnX = canvas.width - 505;
+	const btnY = 200;
+	const btnRadius = 10;
+
+	ctx.beginPath();
+	ctx.arc(btnX, btnY, btnRadius, 0, 2 * Math.PI);
+	ctx.fillStyle = "rgb(52, 65, 172)";
+	ctx.fill();
+	// ctx.strokeStyle = "white";
+	// ctx.stroke();
+
+	// draw + on btn
+	ctx.lineWidth = 3;
+	ctx.beginPath();
+	ctx.strokeStyle = "white";
+	ctx.moveTo(btnX + 10, btnY);
+	ctx.lineTo(btnX - 10, btnY);
+	ctx.stroke();
+
+	ctx.beginPath();
+	ctx.linewidth = 2;
+	ctx.strokeStyle = "white";
+	ctx.moveTo(btnX, btnY - 10);
+	ctx.lineTo(btnX, 210);
+	ctx.stroke();
+}
+
+function isAddButton(circleX, circleY, radius, clickX, clickY)
+{
+	const dx = circleX - clickX;
+	const dy = circleY - clickY;
+	const dis = Math.sqrt(dx * dx + dy * dy);
+	return dis <= radius;
+}
+
+canvas.addEventListener("click", function(event) {
+	const rect = canvas.getBoundingClientRect();
+	const x = event.clientX - rect.left;
+	const y = event.clientY - rect.top;
+
+	const btnX = canvas.width - 505;
+	const btnY = 200;
+	const btnRadius = 10;
+
+	if (isAddButton(btnX, btnY, btnRadius, x, y)) {
+		const newName = prompt("Enter player name:");
+		if (newName)
+			addPlayer(newName);
+	}
+});
