@@ -3,7 +3,7 @@ const BUTTON_SPACE = 40;
 const BOARD_MARGIN = 505;
 
 // create dynamic list view
-var players = [{name: "Player 1"}];
+var players = [{name: "Join The Tournament !"}];
 function drawPlayerList(players)
 {
 	const startX = canvas.width - 950;
@@ -38,6 +38,10 @@ function drawPlayerList(players)
 
 function addPlayer(name)
 {
+	if (players.length >= 8)
+		return (alert("Only 8 players can join the tournament!"));
+	if (players.length == 1)
+		players.pop();
 	players.push({name: name});
 	drawNewCanvas(players);
 }

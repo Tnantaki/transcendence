@@ -1,6 +1,11 @@
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
 
+// start buttom position
+const XPOS = 70;
+const YPOS = 350;
+
+// image position
 let imageX = 0;
 let imageY = 0;
 
@@ -45,17 +50,17 @@ function initCanvas()
 
 function drawStartBtn()
 {
-	const x = imageX + 50;
-	const y = imageY + 350;
-	const btnWidth = 200;
+	const x = imageX + XPOS;
+	const y = imageY + YPOS;
+	const btnWidth = 150;
 	const btnHeight = 50;
 
 	// draw button background
-	ctx.fillStyle = "white";
-	ctx.fillRect(imageX + 50, imageY + 350, btnWidth, btnHeight);
+	ctx.fillStyle = "transparent";
+	ctx.fillRect(x, y, btnWidth, btnHeight);
 
 	// draw text on button
-	ctx.fillStyle = "red";
+	ctx.fillStyle = "white";
 	ctx.font = "60px Irish Grover";
 	ctx.textAlign = "center";
 	ctx.textBaseline = "middle";
@@ -63,6 +68,19 @@ function drawStartBtn()
 }
 
 // listen to start button click
+canvas.addEventListener("click", function(event) {
+	const rect = canvas.getBoundingClientRect();
+	const x = event.clientX - rect.left;
+	const y = event.clientY - rect.top;
+
+	const btnX = imageX + XPOS;
+	const btnY = imageY + YPOS;
+	const btnWidth = 150;
+	const btnHeight = 50;
+	
+	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
+		console.log("Start");
+});
 
 function drawNewCanvas(players)
 {
