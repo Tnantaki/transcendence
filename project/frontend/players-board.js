@@ -95,11 +95,12 @@ canvas.addEventListener("click", function(event) {
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	const btnX = canvas.width - 505;
-	const btnY = 200;
-	const btnRadius = 10;
+	const btnX = canvas.width - BOARD_MARGIN;
+	let btnY = 200;
+	if (players.length > 1)
+		btnY += (players.length - 1) * BUTTON_SPACE;
 
-	if (isAddButton(btnX, btnY, btnRadius, x, y)) {
+	if (isAddButton(btnX, btnY, BUTTON_RADIUS, x, y)) {
 		const newName = prompt("Enter player name:");
 		if (newName)
 			addPlayer(newName);
