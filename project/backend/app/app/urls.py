@@ -18,12 +18,18 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 from appuac.url import UACRouter
+from api.views import api as apirounter
 
 api = NinjaAPI()
 
 api.add_router(
     prefix="/",
     router=UACRouter,
+)
+
+api.add_router(
+    prefix="/",
+    router=apirounter,
 )
 
 urlpatterns = [
