@@ -18,13 +18,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
+from django.conf.urls.static import static
+from app import settings
 from uac.route import router
+from uploadfile.models import router as upload_router
 
 api = NinjaAPI()
 
 api.add_router("/uac/", router=router)
+api.add_router("/upload-file/", router=upload_router)
+
 
 urlpatterns = [
     path("ipa/", api.urls),
     path("admin/", admin.site.urls),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
