@@ -1,29 +1,47 @@
 from ninja import Router, Schema
 from ..models import appUser, MatchHistories
 from typing import Optional
+from django.contrib.auth.hashers import make_password, check_password
+from django.db.models import Q
 
 router = Router()
 
 class Message(Schema):
   message: str
 
-class userIn(Schema):
+class registerIn(Schema):
   username: str
   password: str
   avatar_name: str
 
-class userOut(Schema):
+class registerOut(Schema):
   id: int
   username: str
+  avatar_name: str
 
-@router.post("/create", response=userOut)
-def register(request, data: userIn):
+@router.post("/register", response=registerOut)
+def register(request, data: registerIn):
   user = appUser.objects.create(
     username = data.username,
-    password = data.password,
+    password = make_password(data.password),
     avatar_name = data.avatar_name
   )
   return user
+
+# class logIn(Schema):
+#   username: str
+#   password: str
+
+# class logOut(Schema):
+#   pass
+
+# @router.post("/login", response=logOut)
+# def login(request, data: logIn):
+#   user = appUser.objects.get(username = data.username)
+#   if check_password(data.password, user.password):
+#     print("Login Success")
+#   else:
+#     print("wrong password")
 
 # @api.post("/profile/upload")
 # def uploadAvatarPic(request, file: UploadedFile):
