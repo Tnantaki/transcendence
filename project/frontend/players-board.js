@@ -22,7 +22,7 @@ function drawPlayerList(players)
 	ctx.font = "40px Irish Grover";
 	ctx.fillStyle = "white";
 	ctx.textBaseline = "top";
-	// ctx.textAlign = "start";
+	ctx.textAlign = "middle";
 	ctx.fillText("Players", startX + 50, startY - 23);
 
 	// write players' names
@@ -40,9 +40,10 @@ function addPlayer(name)
 {
 	if (players.length >= 8)
 		return (alert("Only 8 players can join the tournament!"));
-	if (players.length == 1)
-		players.pop();
-	players.push({name: name});
+	else if (players.length == 1 && players[0].name == "Join The Tournament !")
+		players[0].name = name;
+	else
+		players.push({name: name});
 	drawNewCanvas(players);
 }
 

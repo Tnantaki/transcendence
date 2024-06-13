@@ -55,8 +55,17 @@ function drawBtn()
 	}
 }
 
+// remove listeners
+function removeEvent()
+{
+	setTimeout(function() {
+		canvas.removeEventListener("click", handleMenu);
+		console.log("remove main menu button");
+	}, 2000);
+}
 
-canvas.addEventListener('click', function(event) {
+function handleMenu(event) 
+{
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
@@ -69,6 +78,7 @@ canvas.addEventListener('click', function(event) {
 	{
 		if (x >= startX && x <= startX + btnWidth && y >= btnY && y <= (btnY + btnHeight) - 20)
 		{
+			removeEvent();
 			if (btn == "Single Player")
 				console.log("Single Player");
 			else if (btn == "Versus")
@@ -76,17 +86,24 @@ canvas.addEventListener('click', function(event) {
 			else if (btn == "Online")
 				console.log("Online");
 			else if (btn == "Tournament")
-				drawCompCanvas();
+				createTournament(players);
 			else if (btn == "Setting")
 				console.log("Setting");
 			break;
 		}
 		btnY += btnHeight + btnSpace;
 	}
-});
+}
 
-drawCanvas();
-drawBtn();
+canvas.addEventListener("click", handleMenu);
+
+function createMenu()
+{
+	drawCanvas();
+	drawBtn();
+}
+
+createMenu();
 
 // debugger for btn
 			// console.log(btn);
