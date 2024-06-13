@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class appUser(models.Model):
   username = models.CharField(max_length=20, unique=True, null=False)
-  password = models.CharField(max_length=20, null=False)
+  password = models.CharField(max_length=256, null=False)
   avatar_name = models.CharField(max_length=20, unique=True)
 #  avatar_image = models.ImageField(upload_to='avatars', blank=True, null=True)
   bio = models.TextField(blank=True, null=True)

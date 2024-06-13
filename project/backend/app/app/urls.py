@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 from appuac.url import UACRouter
-from api.views import api as apirounter
+from api.routes.user import router as user_router
+from api.routes.match import router as match_router
+from api.routes.friend import router as friend_router
 
 api = NinjaAPI()
 
@@ -28,8 +30,18 @@ api.add_router(
 )
 
 api.add_router(
-    prefix="/",
-    router=apirounter,
+    prefix="/user",
+    router=user_router,
+)
+
+api.add_router(
+    prefix="/match",
+    router=match_router,
+)
+
+api.add_router(
+    prefix="/friend",
+    router=friend_router,
 )
 
 urlpatterns = [
