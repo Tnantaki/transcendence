@@ -55,15 +55,6 @@ function drawBtn()
 	}
 }
 
-// remove listeners
-function removeEvent()
-{
-	setTimeout(function() {
-		canvas.removeEventListener("click", handleMenu);
-		console.log("remove main menu button");
-	}, 2000);
-}
-
 function handleMenu(event) 
 {
 	const rect = canvas.getBoundingClientRect();
@@ -78,7 +69,7 @@ function handleMenu(event)
 	{
 		if (x >= startX && x <= startX + btnWidth && y >= btnY && y <= (btnY + btnHeight) - 20)
 		{
-			removeEvent();
+			manageEvt(1, handleMenu);
 			if (btn == "Single Player")
 				console.log("Single Player");
 			else if (btn == "Versus")
@@ -95,12 +86,12 @@ function handleMenu(event)
 	}
 }
 
-canvas.addEventListener("click", handleMenu);
 
 function createMenu()
 {
 	drawCanvas();
 	drawBtn();
+	manageEvt(0, handleMenu);
 }
 
 createMenu();

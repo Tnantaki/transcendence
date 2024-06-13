@@ -1,51 +1,68 @@
-// const canvas = document.getElementById("gameArea");
-// const ctx = canvas.getContext("2d");
 
-// start buttom position
-const xPos = 70;
-const yPos = 350;
+// #################### Setting ####################
 
 // image position
 let imageX = 0;
 let imageY = 0;
 
-// button setting
+// start buttom position (event)
+const xPos = 70;
+const yPos = 320;
+
+// start button setting (design)
+const strBtnWidth = 150;
+const strBtnHeight = 50;
 const btnObj = {
-	width: 150, height: 50, bg: "transparent",
+	width: strBtnWidth, height: strBtnHeight, bg: "transparent",
 	textColor: "white", font: "60px Irish Grover",
 	textAlign: "center", textBaseline: "middle",
 	text: "Start"
 };
 
+// back buttom position (event)
+const xBack = 90;
+const yBack = 380;
+
+// back button setting (design)
+const backBtnWidth = 90;
+const backBtnHeight = 35;
+const backBtnObj = {
+	width: backBtnWidth, height: backBtnHeight, bg: "transparent",
+	textColor: "white", font: "40px Irish Grover",
+	textAlign: "center", textBaseline: "middle",
+	text: "Back"
+};
+
+// ######################## Execution #####################
+
+function execTournament(players)
+{
+	initCanvas();
+	drawTextBtn(btnObj, xPos, yPos);
+	drawTextBtn(backBtnObj, xBack, yBack);
+	drawPlayerList(players);
+	initAddBtn();
+	manageEvt(0, handleStartBtn);
+	manageEvt(0, handleBackBtn);
+	manageEvt(0, handleAddPlayerBtn);
+}
+
 // pre-load the image
 let tmp = 0;
+var players = [{name: "Join The Tournament !"}];
 function createTournament(players)
 {
-	console.log("in create");
-	// console.log(players[0].name);
 	if (tmp == 0)
 	{
-		console.log("in if");
 		const pongImg = new Image();
 		pongImg.src = "images/table-tennis.png";
 		pongImg.onload = function() { // call the anonymous function when the image is loaded
-			initCanvas();
-			drawTextBtn(btnObj);
-			drawPlayerList(players);
-			initAddBtn();
+			execTournament(players);
 		};
 		tmp = pongImg;
 	}
 	else
-	{
-		console.log("in else");
-		// console.log(players);
-		// console.log(players[1].name);
-		initCanvas();
-		drawTextBtn(btnObj);
-		drawPlayerList(players);
-		initAddBtn();
-	}
+		execTournament(players);
 }
 
 function initCanvas()
@@ -76,66 +93,52 @@ function initCanvas()
 	// console.log("canvas: " + imageX + " " + imageY)
 }
 
-function drawTextBtn(btnObj)
+function handleStartBtn()
 {
-	const x = imageX + xPos;
-	const y = imageY + yPos;
-	const btnWidth = btnObj.width;
-	const btnHeight = btnObj.height;
-
-	// draw button background
-	ctx.fillStyle = btnObj.bg;
-	ctx.fillRect(x, y, btnWidth, btnHeight);
-
-	// draw text on button
-	ctx.fillStyle = btnObj.textColor;
-	ctx.font = btnObj.font;
-	ctx.textAlign = btnObj.textAlign;
-	ctx.textBaseline = btnObj.textBaseline;
-	ctx.fillText(btnObj.text, x + btnWidth / 2, y + btnHeight / 2);
-}
-
-// function drawTextBtn()
-// {
-// 	const x = imageX + XPOS;
-// 	const y = imageY + YPOS;
-// 	const btnWidth = 150;
-// 	const btnHeight = 50;
-
-// 	// draw button background
-// 	ctx.fillStyle = "transparent";
-// 	ctx.fillRect(x, y, btnWidth, btnHeight);
-
-// 	// draw text on button
-// 	ctx.fillStyle = "white";
-// 	ctx.font = "60px Irish Grover";
-// 	ctx.textAlign = "center";
-// 	ctx.textBaseline = "middle";
-// 	ctx.fillText("Start", x + btnWidth / 2, y + btnHeight / 2);
-// }
-
-// listen to start button click
-canvas.addEventListener("click", function(event) {
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
 	const btnX = imageX + xPos;
 	const btnY = imageY + yPos;
-	const btnWidth = 150;
-	const btnHeight = 50;
+	const btnWidth = strBtnWidth;
+	const btnHeight = strBtnHeight;
 	
+	//! put game here
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 		console.log("Start");
-});
+}
+
+function handleBackBtn()
+{
+	const rect = canvas.getBoundingClientRect();
+	const x = event.clientX - rect.left;
+	const y = event.clientY - rect.top;
+
+	const btnX = imageX + xBack;
+	const btnY = imageY + yBack;
+	const btnWidth = backBtnWidth;
+	const btnHeight = backBtnHeight;
+	
+	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
+	{
+		manageEvt(1, handleStartBtn);
+		manageEvt(1, handleBackBtn);
+		manageEvt(1, handleAddPlayerBtn);
+		createMenu();
+		// console.log("Back");
+	}
+}
 
 function drawNewCanvas(players)
 {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	console.log("in new canvas");
 	createTournament(players);
-	// initCanvas();
-	// drawPlayerList(players);
-	// drawStartBtn(imageX, imageY);
-	// initAddBtn();
 }
+
+	// console.log("x: " + x);
+	// console.log("btnX: " + btnX);
+	// console.log("btnX + wd: " + (btnX + btnWidth));
+	// console.log("y: " + y);
+	// console.log("btnY: " + btnY);
+	// console.log("btnY + wd: " + (btnY + btnHeight));

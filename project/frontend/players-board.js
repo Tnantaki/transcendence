@@ -3,7 +3,6 @@ const BUTTON_SPACE = 40;
 const BOARD_MARGIN = 505;
 
 // create dynamic list view
-var players = [{name: "Join The Tournament !"}];
 function drawPlayerList(players)
 {
 	const startX = canvas.width - 950;
@@ -54,7 +53,7 @@ function drawCircle(x, y, radius, fillStyle)
 	ctx.fillStyle = fillStyle;
 	ctx.fill();
 
-	// highlight the button
+	//! highlight the button
 	// ctx.strokeStyle = "white";
 	// ctx.stroke();
 }
@@ -95,7 +94,8 @@ function isAddButton(circleX, circleY, radius, clickX, clickY)
 	return dis <= radius;
 }
 
-canvas.addEventListener("click", function(event) {
+function handleAddPlayerBtn()
+{
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
@@ -110,4 +110,4 @@ canvas.addEventListener("click", function(event) {
 		if (newName)
 			addPlayer(newName);
 	}
-});
+}
