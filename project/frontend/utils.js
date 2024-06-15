@@ -9,18 +9,18 @@ function addEventToCanvas(evt) {
 
 function manageEvt(status, evt)
 {
-    // 0 --> add event
-    if (!status)
-        addEventToCanvas(evt);
-    else
-        removeEvent(evt);
+	// 0 --> add event
+	if (!status)
+		addEventToCanvas(evt);
+	else
+		removeEvent(evt);
 }
 
 // draw buttons that are text-based
-function drawTextBtn(btnObj, xPos, yPos)
+function drawTextBtn(btnObj)
 {
-	const x = imageX + xPos;
-	const y = imageY + yPos;
+	const x = imageX + btnObj.xPos;
+	const y = imageY + btnObj.yPos;
 	const btnWidth = btnObj.width;
 	const btnHeight = btnObj.height;
 

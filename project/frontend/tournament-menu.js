@@ -1,49 +1,45 @@
-
-// #################### Setting ####################
+// ########################################################
+// #                       SETTING 					      #
+// ########################################################
 
 // image position
 let imageX = 0;
 let imageY = 0;
 
-// start buttom position (event)
-const xPos = 70;
-const yPos = 320;
-
-// start button setting (design)
-const strBtnWidth = 150;
-const strBtnHeight = 50;
+// start button setting 
 const btnObj = {
-	width: strBtnWidth, height: strBtnHeight, bg: "transparent",
+	width: 150, height: 50, bg: "transparent",
 	textColor: "white", font: "60px Irish Grover",
 	textAlign: "center", textBaseline: "middle",
-	text: "Start"
+	text: "Start", xPos: 70, yPos: 320
 };
 
-// back buttom position (event)
-const xBack = 90;
-const yBack = 380;
-
-// back button setting (design)
-const backBtnWidth = 90;
-const backBtnHeight = 35;
+// back button setting 
 const backBtnObj = {
-	width: backBtnWidth, height: backBtnHeight, bg: "transparent",
+	width: 90, height: 35, bg: "transparent",
 	textColor: "white", font: "40px Irish Grover",
 	textAlign: "center", textBaseline: "middle",
-	text: "Back"
+	text: "Back", xPos: 90, yPos: 380
 };
 
-// ######################## Execution #####################
+// references for button events
+const startBtn = (event) => handleStartBtn(btnObj, event);
+const backBtn = (event) => handleBackBtn(backBtnObj, event);
+
+
+// ########################################################
+// #                       EXECUTION 					  #
+// ########################################################
 
 function execTournament(players)
 {
 	initCanvas();
-	drawTextBtn(btnObj, xPos, yPos);
-	drawTextBtn(backBtnObj, xBack, yBack);
+	drawTextBtn(btnObj);
+	drawTextBtn(backBtnObj);
 	drawPlayerList(players);
 	initAddBtn();
-	manageEvt(0, handleStartBtn);
-	manageEvt(0, handleBackBtn);
+	manageEvt(0, startBtn);
+	manageEvt(0, backBtn);
 	manageEvt(0, handleAddPlayerBtn);
 }
 
@@ -93,37 +89,37 @@ function initCanvas()
 	// console.log("canvas: " + imageX + " " + imageY)
 }
 
-function handleStartBtn()
+function handleStartBtn(btnObj, event)
 {
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	const btnX = imageX + xPos;
-	const btnY = imageY + yPos;
-	const btnWidth = strBtnWidth;
-	const btnHeight = strBtnHeight;
+	const btnX = imageX + btnObj.xPos;
+	const btnY = imageY + btnObj.yPos;
+	const btnWidth = btnObj.width;
+	const btnHeight = btnObj.height;
 	
 	//! put game here
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 		console.log("Start");
 }
 
-function handleBackBtn()
+function handleBackBtn(btnObj, event)
 {
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	const btnX = imageX + xBack;
-	const btnY = imageY + yBack;
-	const btnWidth = backBtnWidth;
-	const btnHeight = backBtnHeight;
+	const btnX = imageX + btnObj.xPos;
+	const btnY = imageY + btnObj.yPos;
+	const btnWidth = btnObj.width;
+	const btnHeight = btnObj.height;
 	
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
-		manageEvt(1, handleStartBtn);
-		manageEvt(1, handleBackBtn);
+		manageEvt(1, startBtn);
+		manageEvt(1, backBtn);
 		manageEvt(1, handleAddPlayerBtn);
 		createMenu();
 		// console.log("Back");
