@@ -75,7 +75,7 @@ function handleMenu(event)
 			else if (btn == "Versus")
 				console.log("Versus");
 			else if (btn == "Online")
-				console.log("Online");
+				createOnline();
 			else if (btn == "Tournament")
 				createTournament(players);
 			else if (btn == "Setting")

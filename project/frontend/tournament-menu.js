@@ -33,7 +33,7 @@ const backBtn = (event) => handleBackBtn(backBtnObj, event);
 
 function execTournament(players)
 {
-	initCanvas();
+	initCanvas("Tournament");
 	drawTextBtn(btnObj);
 	drawTextBtn(backBtnObj);
 	drawPlayerList(players);
@@ -59,34 +59,6 @@ function createTournament(players)
 	}
 	else
 		execTournament(players);
-}
-
-function initCanvas()
-{
-	// clear canvas
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-	// draw game's screen
-	ctx.fillStyle = "black";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	// write title
-	const textY = 50;
-	const textX = 768;
-	ctx.font = "50px Irish Grover";
-	ctx.textAlign = "center";
-	ctx.textBaseline = "top";
-	ctx.fillStyle = "white";
-	ctx.fillText("Tournament", textX, textY);
-
-	// get text height
-	const textHeight = ctx.measureText("m").width;
-
-	const imgRatio = 300;
-	imageX = textX - (imgRatio / 2);
-	imageY = textY + textHeight + (100 / 2);
-	ctx.drawImage(tmp, imageX, imageY, imgRatio, imgRatio);
-	// console.log("canvas: " + imageX + " " + imageY)
 }
 
 function handleStartBtn(btnObj, event)

@@ -1,94 +1,58 @@
-// const canvas = document.getElementById("gameArea");
-// const ctx = canvas.getContext("2d");
+// ########################################################
+// #                       SETTING 					      #
+// ########################################################
 
-// start buttom position
-const XPOS = 70;
-const YPOS = 320;
-
-// image position
-// let imageX = 0;
-// let imageY = 0;
 
 // button settings
-const createBtn = {
-	width: 150, height: 50, bg: "transparent",
-	textColor: "white", font: "60px Irish Grover",
+const createBtnObj = {
+	width: 300, height: 50, bg: "transparent",
+	textColor: "white", font: "50px Irish Grover",
 	textAlign: "center", textBaseline: "middle",
-	text: "Create Room"
+	text: "Create Room", xPos: 5, yPos: 320
 };
 
-// pre-load the image
-let pongImg = new Image();
-pongImg.src = "images/table-tennis.png";
-pongImg.onload = function() { // call the anonymous function when the image is loaded
-	initCanvas();
-    drawTextBtn(createBtn);
-	// drawCreateBtn(imageX, imageY);
-	// drawBackBtn(imageX, imageY);
-};
+const createBtn = (event) => handleCreateBtn(createBtnObj, event);
 
-function initCanvas()
+// ########################################################
+// #                       EXECUTION 					  #
+// ########################################################
+
+function execOnline()
 {
-	// clear canvas
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-	// draw game's screen
-	ctx.fillStyle = "black";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	// write title
-	const textY = 50;
-	const textX = 768;
-	ctx.font = "50px Irish Grover";
-	ctx.textAlign = "center";
-	ctx.textBaseline = "top";
-	ctx.fillStyle = "white";
-	ctx.fillText("Online Match", textX, textY);
-
-	// get text height
-	const textHeight = ctx.measureText("m").width;
-
-	const imgRatio = 300;
-	imageX = textX - (imgRatio / 2);
-	imageY = textY + textHeight + (100 / 2);
-	ctx.drawImage(pongImg, imageX, imageY, imgRatio, imgRatio);
-	// console.log("canvas: " + imageX + " " + imageY)
+	initCanvas("Online Match");
+	drawTextBtn(createBtnObj);
+	drawTextBtn(backBtnObj);
+	manageEvt(0, createBtn);
+	manageEvt(0, backBtn);
 }
 
-// function drawCreateBtn()
-// {
-// 	const x = imageX + XPOS;
-// 	const y = imageY + YPOS;
-// 	const btnWidth = 150;
-// 	const btnHeight = 50;
+// pre-load the image
+function createOnline()
+{
+	if (tmp == 0)
+	{
+		const pongImg = new Image();
+		pongImg.src = "images/table-tennis.png";
+		pongImg.onload = function() { // call the anonymous function when the image is loaded
+			execOnline();
+		};
+		tmp = pongImg;
+	}
+	else
+		execOnline();
+}
 
-// 	// draw button background
-// 	ctx.fillStyle = "transparent";
-// 	ctx.fillRect(x, y, btnWidth, btnHeight);
+function handleCreateBtn(btnObj, event)
+{
+	const rect = canvas.getBoundingClientRect();
+	const x = event.clientX - rect.left;
+	const y = event.clientY - rect.top;
 
-// 	// draw text on button
-// 	ctx.fillStyle = "white";
-// 	ctx.font = "40px Irish Grover";
-// 	ctx.textAlign = "center";
-// 	ctx.textBaseline = "middle";
-// 	ctx.fillText("Create Room", x + btnWidth / 2, y + btnHeight / 2);
-// }
-
-// function drawBackBtn()
-// {
-// 	const x = imageX + XPOS;
-// 	const y = imageY + YPOS + 50;
-// 	const btnWidth = 150;
-// 	const btnHeight = 50;
-
-// 	// draw button background
-// 	ctx.fillStyle = "transparent";
-// 	ctx.fillRect(x, y, btnWidth, btnHeight);
-
-// 	// draw text on button
-// 	ctx.fillStyle = "white";
-// 	ctx.font = "40px Irish Grover";
-// 	ctx.textAlign = "center";
-// 	ctx.textBaseline = "middle";
-// 	ctx.fillText("Back", x + btnWidth / 2, y + btnHeight / 2);
-// }
+	const btnX = imageX + btnObj.xPos;
+	const btnY = imageY + btnObj.yPos;
+	const btnWidth = btnObj.width;
+	const btnHeight = btnObj.height;
+	
+	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
+		console.log("Create");
+}

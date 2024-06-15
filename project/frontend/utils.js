@@ -16,6 +16,34 @@ function manageEvt(status, evt)
 		removeEvent(evt);
 }
 
+function initCanvas(title)
+{
+	// clear canvas
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	// draw game's screen
+	ctx.fillStyle = "black";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	// write title
+	const textY = 50;
+	const textX = 768;
+	ctx.font = "50px Irish Grover";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "top";
+	ctx.fillStyle = "white";
+	ctx.fillText(title, textX, textY);
+
+	// get text height
+	const textHeight = ctx.measureText("m").width;
+
+	const imgRatio = 300;
+	imageX = textX - (imgRatio / 2);
+	imageY = textY + textHeight + (100 / 2);
+	ctx.drawImage(tmp, imageX, imageY, imgRatio, imgRatio);
+	// console.log("canvas: " + imageX + " " + imageY)
+}
+
 // draw buttons that are text-based
 function drawTextBtn(btnObj)
 {
