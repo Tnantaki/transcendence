@@ -1,6 +1,6 @@
 from typing import List
 from ninja import Router, Schema
-from ..models import appUser, MatchHistories
+from ..models import UserProfiles, MatchHistories
 from django.db.models import Q
 
 import datetime
@@ -57,9 +57,9 @@ class matchOut(Schema):
 
 @router.post("/save", response=matchOut)
 def matchHistorySave(request, data: matchIn):
-  player1 = appUser.objects.get(id = data.player1_id)
-  player2 = appUser.objects.get(id = data.player2_id)
-  winplayer: appUser
+  player1 = UserProfiles.objects.get(id = data.player1_id)
+  player2 = UserProfiles.objects.get(id = data.player2_id)
+  winplayer: UserProfiles
   if data.score1 > data.score2:
     winplayer = player1
   else:

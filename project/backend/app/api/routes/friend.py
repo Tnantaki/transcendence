@@ -1,6 +1,6 @@
 from typing import List
 from ninja import Router, Schema
-from ..models import appUser, Friends
+from ..models import UserProfiles, Friends
 
 router = Router()
 
@@ -31,8 +31,8 @@ class friendOut(Schema):
 @router.post("/request", response={200: friendOut, 500: Message})
 def friendStatus(request, data: friendIn):
   try:
-    my_id = appUser.objects.get(id = data.player1_id)
-    friend_id = appUser.objects.get(id = data.player2_id)
+    my_id = UserProfiles.objects.get(id = data.player1_id)
+    friend_id = UserProfiles.objects.get(id = data.player2_id)
     try:
       friend = Friends.objects.create(
         my_id = friend_id,

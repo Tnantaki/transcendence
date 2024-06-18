@@ -1,5 +1,6 @@
 from ninja import Router, Schema
-from ..models import appUser, MatchHistories
+from ninja.files import UploadedFile
+from ..models import UserProfiles, MatchHistories, AvatarImages
 from typing import Optional
 from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Q
@@ -21,12 +22,13 @@ class registerOut(Schema):
 
 @router.post("/register", response=registerOut)
 def register(request, data: registerIn):
-  user = appUser.objects.create(
+  user = UserProfiles.objects.create(
     username = data.username,
     password = make_password(data.password),
     avatar_name = data.avatar_name
   )
   return user
+  # return {"message": "success"}
 
 # class logIn(Schema):
 #   username: str
@@ -37,7 +39,7 @@ def register(request, data: registerIn):
 
 # @router.post("/login", response=logOut)
 # def login(request, data: logIn):
-#   user = appUser.objects.get(username = data.username)
+#   user = AppUsers.objects.get(username = data.username)
 #   if check_password(data.password, user.password):
 #     print("Login Success")
 #   else:
@@ -47,15 +49,14 @@ def register(request, data: registerIn):
 # def uploadAvatarPic(request, file: UploadedFile):
 
 class profileForm(Schema):
-  user_id: int
-  avatar_image: str
-  bio: str
-  email: str
+  AvatarImages: str
+  bio: Optional[str] = None
+  email: Optional[str] = None
 
 # not test yet
-@router.patch("/edit")
-def editProfile(request, data: profileForm):
-  user = appUser.objects.get(id = data.user_id)
+@router.patch("/edit/{user_id}")
+def editProfile(request, user_id: int, data: profileForm):
+  user = UserProfiles.objects.get(id = user_id)
   if data.bio:
     user.bio = data.bio
   if data.email:
@@ -65,15 +66,15 @@ def editProfile(request, data: profileForm):
 
 class profileOut(Schema):
   avatar_name: str
-  bio: Optional[str] = None
-  email: Optional[str] = None
+  bio: str
+  email: str
   total_games_play: int
   wins: int
   losses: int
 
 @router.get("/id/{user_id}", response=profileOut)
 def viewProfile(request, user_id: int):
-  user = appUser.objects.get(id = user_id)
+  user = UserProfiles.objects.get(id = user_id)
   total_games_play = MatchHistories.objects.filter(Q(player1_id = user_id) | Q(player2_id = user_id)).count()
   wins = MatchHistories.objects.filter(Q(win_id = user_id)).count()
   losses = total_games_play - wins
@@ -85,3 +86,21 @@ def viewProfile(request, user_id: int):
     'wins': wins,
     'losses': losses
   }
+
+@router.post("/upload", response={200: dict})
+def uploadAvartarImage(request, user_id: int, file: UploadedFile):
+  user = UserProfiles.objects.get(id = user_id)
+  f = AvatarImages.objects.create(
+    user = user,
+    file_name = file.name,
+    file_db = file,
+  )
+  return 200, {"link": f.url}
+
+class listImageOut(Schema):
+  id: int
+  url: str
+
+@router.get("/list-file", response={200: list[listImageOut]})
+def listAvatarImage(request):
+  return AvatarImages.objects.all()
