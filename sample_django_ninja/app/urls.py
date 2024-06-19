@@ -16,21 +16,23 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from ninja import NinjaAPI
 from django.conf.urls.static import static
 from app import settings
-from uac.route import router
+from uac.route import router as uac_router
 from uploadfile.models import router as upload_router
+from chat import urls as chat_urls
 
 api = NinjaAPI()
 
-api.add_router("/uac/", router=router)
+api.add_router("/uac/", router=uac_router)
 api.add_router("/upload-file/", router=upload_router)
 
 
 urlpatterns = [
-    path("ipa/", api.urls),
+    path("api/", api.urls),
     path("admin/", admin.site.urls),
+    path("chat/", include(chat_urls))
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
