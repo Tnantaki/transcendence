@@ -31,12 +31,12 @@ const backBtn = (event) => handleBackBtn(backBtnObj, event);
 // #                       EXECUTION 					  #
 // ########################################################
 
-function execTournament(players)
+function execTournament()
 {
 	initCanvas("Tournament");
 	drawTextBtn(btnObj);
 	drawTextBtn(backBtnObj);
-	drawPlayerList(players);
+	drawPlayerList();
 	initAddBtn();
 	manageEvt(0, startBtn);
 	manageEvt(0, backBtn);
@@ -46,19 +46,19 @@ function execTournament(players)
 // pre-load the image
 let tmp = 0;
 var players = [{name: "Join The Tournament !"}];
-function createTournament(players)
+function createTournament()
 {
 	if (tmp == 0)
 	{
 		const pongImg = new Image();
 		pongImg.src = "images/table-tennis.png";
 		pongImg.onload = function() { // call the anonymous function when the image is loaded
-			execTournament(players);
+			execTournament();
 		};
 		tmp = pongImg;
 	}
 	else
-		execTournament(players);
+		execTournament();
 }
 
 function handleStartBtn(btnObj, event)
@@ -91,6 +91,7 @@ function handleBackBtn(btnObj, event)
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		manageEvt(1, startBtn);
+		manageEvt(1, createBtn);
 		manageEvt(1, backBtn);
 		manageEvt(1, handleAddPlayerBtn);
 		createMenu();
@@ -98,10 +99,10 @@ function handleBackBtn(btnObj, event)
 	}
 }
 
-function drawNewCanvas(players)
+function drawNewCanvas()
 {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	createTournament(players);
+	createTournament();
 }
 
 	// console.log("x: " + x);

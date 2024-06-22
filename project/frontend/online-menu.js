@@ -2,7 +2,6 @@
 // #                       SETTING 					      #
 // ########################################################
 
-
 // button settings
 const createBtnObj = {
 	width: 300, height: 50, bg: "transparent",
@@ -22,11 +21,13 @@ function execOnline()
 	initCanvas("Online Match");
 	drawTextBtn(createBtnObj);
 	drawTextBtn(backBtnObj);
+	drawRoomDisplay();
 	manageEvt(0, createBtn);
 	manageEvt(0, backBtn);
 }
 
 // pre-load the image
+var rooms = [{name: ""}];
 function createOnline()
 {
 	if (tmp == 0)
@@ -42,17 +43,8 @@ function createOnline()
 		execOnline();
 }
 
-function handleCreateBtn(btnObj, event)
+function updateOnlineCanvas()
 {
-	const rect = canvas.getBoundingClientRect();
-	const x = event.clientX - rect.left;
-	const y = event.clientY - rect.top;
-
-	const btnX = imageX + btnObj.xPos;
-	const btnY = imageY + btnObj.yPos;
-	const btnWidth = btnObj.width;
-	const btnHeight = btnObj.height;
-	
-	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
-		console.log("Create");
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	createOnline();
 }

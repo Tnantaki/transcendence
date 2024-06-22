@@ -23,6 +23,7 @@ function initCanvas(title)
 
 	// draw game's screen
 	ctx.fillStyle = "black";
+	ctx.beginPath();
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	// write title
@@ -41,6 +42,7 @@ function initCanvas(title)
 	imageX = textX - (imgRatio / 2);
 	imageY = textY + textHeight + (100 / 2);
 	ctx.drawImage(tmp, imageX, imageY, imgRatio, imgRatio);
+	ctx.closePath();	
 	// console.log("canvas: " + imageX + " " + imageY)
 }
 
@@ -53,8 +55,10 @@ function drawTextBtn(btnObj)
 	const btnHeight = btnObj.height;
 
 	// draw button background
+	ctx.beginPath();
 	ctx.fillStyle = btnObj.bg;
 	ctx.fillRect(x, y, btnWidth, btnHeight);
+	ctx.closePath();
 
 	// draw text on button
 	ctx.fillStyle = btnObj.textColor;

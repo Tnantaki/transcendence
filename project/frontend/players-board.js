@@ -1,11 +1,12 @@
 const BUTTON_RADIUS = 10;
 const BUTTON_SPACE = 40;
 const BOARD_MARGIN = 505;
+const BOARD_PADDING = canvas.width - 950;
 
 // create dynamic list view
-function drawPlayerList(players)
+function drawPlayerList()
 {
-	const startX = canvas.width - 950;
+	const startX = BOARD_PADDING;
 	const startY = 100;
 	const padding = 30;
 	const textPadding = 40;
@@ -14,6 +15,7 @@ function drawPlayerList(players)
 
 	// draw players board
 	const boardColor = "rgb(255, 255, 255, 0.2)";
+	ctx.beginPath();
 	ctx.fillStyle = boardColor;
 	ctx.roundRect(startX, startY, maxWidth, lineHeight * players.length + padding * 2, 10);
 	ctx.fill();
@@ -30,9 +32,11 @@ function drawPlayerList(players)
 	ctx.textBaseline = "top";
 	ctx.textAlign = "start";
 	players.forEach((player, index) => {
+		// const yPos = startY + padding + index * lineHeight;
 		const yPos = startY + padding + index * lineHeight;
 		ctx.fillText(player.name, startX + textPadding, yPos + 20);
 	});
+	ctx.closePath();
 }
 
 function addPlayer(name)
@@ -52,6 +56,7 @@ function drawCircle(x, y, radius, fillStyle)
 	ctx.arc(x, y, radius, 0, 2 * Math.PI);
 	ctx.fillStyle = fillStyle;
 	ctx.fill();
+	ctx.closePath();
 
 	//! highlight the button
 	// ctx.strokeStyle = "white";
@@ -76,6 +81,7 @@ function drawAddBtn(btnY)
 	ctx.moveTo(btnX, btnY - BUTTON_RADIUS);
 	ctx.lineTo(btnX, btnY + BUTTON_RADIUS);
 	ctx.stroke();
+	ctx.closePath();
 }
 
 function initAddBtn()
