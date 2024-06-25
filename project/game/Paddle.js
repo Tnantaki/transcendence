@@ -2,9 +2,8 @@ const UP_ARROW = 38;
 const DOWN_ARROW = 40;
 
 export class Paddle {
-
     constructor(x, canvas, ctx) {
-        this.canvas = canvas
+        this.canvas = canvas;
         this.ctx = ctx;
         this.x = x;
         this.y = this.canvas.height / 2;
@@ -15,7 +14,6 @@ export class Paddle {
 
         this.isUp = false;
         this.isDown = false;
-        
     }
 
     display() {
@@ -25,7 +23,7 @@ export class Paddle {
         this.ctx.fill();
         this.ctx.closePath();
     };
-    
+
     keyPressed(event) {
         event.preventDefault();
         if (event.keyCode == UP_ARROW) {
@@ -34,7 +32,7 @@ export class Paddle {
             this.isDown = true;
         }
     };
-    
+
     keyReleased(event) {
         console.log("keyReleased");
         if (event.keyCode == UP_ARROW) {
@@ -44,10 +42,10 @@ export class Paddle {
         }
     };
 
-    runAI() {
+    runAI(pos_ball) {
         let middlePaddle = this.y + this.height / 2;
 
-        if (middlePaddle > ball.y) {
+        if (middlePaddle > pos_ball) {
             this.isUp = true;
             this.isDown = false;
         } else {
@@ -61,7 +59,7 @@ export class Paddle {
 			this.y = this.y - this.speed;
 		}
 	};
-	
+
 	down() {
 		if (this.y < this.canvas.height - this.height) {
 			this.y = this.y + this.speed;
@@ -75,5 +73,4 @@ export class Paddle {
             this.down();
         }
     };
-    
 }

@@ -23,16 +23,21 @@ function drawGame() {
     
     aiplayer.display();
     aiplayer.update();
-    // aiplayer.runAI();
+    aiplayer.runAI(ball.y);
 
-    ball.display();
+    console.log("ai y in main: ", aiplayer.y);
     ball.update();
+    ball.display();
+
+    ball.hasHitPlayer(player);
+    ball.hasHitAi(aiplayer);
     requestAnimationFrame(drawGame);
 }
+
 
 function clearScreen() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-drawGame()
+drawGame();
