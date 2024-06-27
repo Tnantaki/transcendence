@@ -9,8 +9,8 @@ export class Paddle {
         this.y = this.canvas.height / 2;
         this.height = 80;
         this.width = 20;
-        this.speed = 5;
-        this.color = "green";
+        this.speed = 12;
+        this.color = "white";
 
         this.isUp = false;
         this.isDown = false;
