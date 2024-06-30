@@ -1,9 +1,9 @@
 export class Ball {
     constructor(canvas, ctx) {
-        this.r = 10;
+        this.radius = 12;
         this.canvas = canvas;
         this.ctx = ctx;
-        this.color = "white";
+        this.color = "green";
         this.reset();
     }
 
@@ -49,33 +49,26 @@ export class Ball {
     }
 
     hitLeftPaddle(player) {
-        console.log("leftpaddle: ", "(", player.x, ",", player.y, ")");
-        console.log("this: ", "(", this.x, ",", this.y, ")");
-        
-        // if (this.x == player.x)  {
-        //     console.log(`the ball hit at ${this.x}, where player: ${player.x}, rad: ${this.r}`);
-        //     this.xSpeed = -this.xSpeed;
-        //     debugger;
-        //     // console.log("hit===============================");
-        // }
-        if (this.x - this.radius <= player.x + player.width) {
+
+        if (this.x - this.radius <= player.x + player.width && this.x > player.x) {
             if (this.isSameHeight(player)) {
-                console.log("hitLeftPaddle");
+                if (Math.sign(this.xSpeed) == 1)
+                    this.xSpeed++;
+                else if (Math.sign(this.xSpeed) == -1)
+                    this.xSpeed--;
                 this.xSpeed = -this.xSpeed;
             }
         }
     }
         
     hitRightPaddle(ai) {
-        console.log("rightpaddle: ", "(", ai.x, ",", ai.y, ")");
-        console.log(this.xSpeed);
-        // if (this.x == ai.x)  {
-        //         this.xSpeed = -this.xSpeed;
-        //     console.log("hit===============================");
-        // }
+
         if (this.x + this.radius >= ai.x && this.x <= ai.x + ai.width) {
             if (this.isSameHeight(ai)) {
-                console.log("hitLeftPaddle");
+                if (Math.sign(this.xSpeed) == 1)
+                    this.xSpeed++;
+                else if (Math.sign(this.xSpeed) == -1)
+                    this.xSpeed--;
                 this.xSpeed = -this.xSpeed;
             }
         }

@@ -17,6 +17,7 @@ document.addEventListener("keyup", (event) => { leftPaddle.keyReleased(event)} )
 
 function drawGame() {
     clearScreen();
+
     leftPaddle.display();
     leftPaddle.update();
 
@@ -24,15 +25,13 @@ function drawGame() {
     rightPaddle.update();
     rightPaddle.runAI(ball.y);
 
-    console.log("ai y in main: ", rightPaddle.y);
     ball.update();
     ball.display();
-
     ball.hitLeftPaddle(leftPaddle);
     ball.hitRightPaddle(rightPaddle);
-    requestAnimationFrame(drawGame);
 
     drawCenLine();
+    requestAnimationFrame(drawGame);
 }
 
 function drawCenLine() {
