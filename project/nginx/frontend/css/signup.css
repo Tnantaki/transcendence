@@ -1,0 +1,22 @@
+.block-title {
+  height: 15vh;
+}
+
+.block-signup {
+  width: min(500px, 300px + 20vw);
+}
+
+.block-signup-input input {
+  font-size: var(--fs-xl);
+}
+
+.bottom-right {
+  font-size: var(--fs-lg);
+  position: absolute;
+  bottom: 5px;
+  right: 15px;
+}
+
+.bottom-right a {
+  color: var(--clr-red);
+}

@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="../css/signup.css">
+
+<div class="d-flex align-items-end justify-content-center m-5 block-title">
+  <h3 class="font-bs-bold">New user? Sign Up</h3>
+</div>
+<form action="#" method="post">
+  <div class="container d-flex flex-column align-items-center block-signup">
+    <div class="input-group input-group-custom rounded-pill p-1 block-signup-input d-flex align-items-center my-3">
+      <input type="text" class="form-control mx-2 font-bs" placeholder="User name">
+    </div>
+    <div class="input-group input-group-custom rounded-pill p-1 block-signup-input d-flex align-items-center my-3">
+      <input type="text" class="form-control mx-2 font-bs" placeholder="Avatar name">
+    </div>
+    <div class="input-group input-group-custom rounded-pill p-1 block-signup-input d-flex align-items-center my-3">
+      <input type="password" class="form-control mx-2 font-bs" placeholder="Password">
+      <div class="input-group-append m-1">
+        <img class="btn-eye input-icon-custom" src="../static/svg/showpassword.svg" alt="eye icon"
+          onclick="togglePassword(this.parentNode.previousElementSibling)">
+      </div>
+    </div>
+    <div class="input-group input-group-custom rounded-pill p-1 block-signup-input d-flex align-items-center my-3">
+      <input type="password" class="form-control mx-2 font-bs" placeholder="Confirm Password">
+      <div class="input-group-append m-1">
+        <img class="btn-eye input-icon-custom" src="../static/svg/showpassword.svg" alt="eye icon"
+          onclick="togglePassword(this.parentNode.previousElementSibling)">
+      </div>
+    </div>
+    <!-- <div class="font-bs error-text">Password must be the same!</div> -->
+    <div class="d-flex my-3 from-check">
+      <input type="checkbox" class="form-check-input checkbox-lg" id="remember-me">
+      <label class="form-check-label font-bs-bold ms-2 checkbox-label-lg" for="remember-me">
+        I Agree with <span style="color: #B63A3A;">privacy</span> and <span style="color: #B63A3A;">policy</span>
+      </label>
+    </div>
+    <div class="d-flex align-self-stretch my-3">
+      <a href="/signup" class="flex-grow-1 font-bs-bold btn btn-primary btn-custom py-2 px-1">Create account</a>
+    </div>
+  </div>
+</form>
+<div class="font-bs-bold bottom-right">
+  Already have an account?
+  <a href="/">Sign in</a>
+</div>

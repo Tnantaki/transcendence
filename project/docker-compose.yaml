@@ -46,6 +46,15 @@ services:
       - backend
       - frontend
 
+  # for testing frontend only
+  front: 
+    build: nginx
+    ports:
+      - '8002:80'
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - frontend
 
 networks:
   backend:
