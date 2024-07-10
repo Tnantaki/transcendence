@@ -13,7 +13,7 @@ class LoginPostOut(Schema):
     token: str
 
 @router.post(
-    "/login",
+    "/login/",
     response={
         201: LoginPostOut
     }
