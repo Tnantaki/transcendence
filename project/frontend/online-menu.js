@@ -27,7 +27,7 @@ function execOnline()
 }
 
 // pre-load the image
-var rooms = [{name: ""}];
+var rooms = [{name: "", players: 1, status: true}];
 function createOnline()
 {
 	if (tmp == 0)

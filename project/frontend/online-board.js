@@ -36,6 +36,9 @@ function drawRoomDisplay()
 	rooms.forEach((room, index) => {
 		const yPos = startY + (padding + space)  * index;
 		ctx.fillText(room.name, startX + textPadding * 2.2, yPos);
+		if (index == 0)
+			return ;
+		ctx.fillText("1/2", maxWidth - 10 , yPos);
 	});
 	ctx.closePath();
 }
