@@ -1,20 +1,17 @@
-const formRegister = document.getElementById('login-form');
-const popOutText = document.getElementById('popOutErrMsg');
-alert("Login js");
-
+const formRegister = document.getElementById('register-form');
 formRegister.addEventListener('submit', (event) => {
   event.preventDefault();
-  const form = event.target;
 
   // Create JSON object
   const formData = new FormData(event.target);
   const data = {
     username: formData.get('username'),
     password: formData.get('password'),
+    avatarName: formData.get('avatarName'),
   };
 
   // send post requets with JSON data
-  fetch(apiURL + '/api/user/login', {
+  fetch(apiURL + '/api/user/register', {
     method: 'POST',
     headers: {
       'content-Type': 'application/json'
@@ -24,16 +21,10 @@ formRegister.addEventListener('submit', (event) => {
   .then(response => response.json())
   .then(data => {
     console.log('Success:', data);
-    // window.location.href = 'http://localhost:' TODO: redirect page
+    alert('Register user succesfully.');
   })
   .catch(error => {
     console.error('Error:', error);
-    popOutText.style.display = 'block';
-  });
-
-  // Clear input
-  event.target.querySelectorAll('.login-input').forEach((input) => {
-    input.value = '';
+    alert('Failed to register!');
   });
 });
-

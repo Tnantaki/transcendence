@@ -1,0 +1,96 @@
+.circle-background {
+  border: var(--bs-xl) solid var(--clr-border);
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  position: absolute;
+  width: min(650px, max(calc(650px * 0.10) + calc(650vw * 0.035), calc(650px * 0.10) + calc(650vh * 0.035)));
+}
+
+.main-header {
+  position: relative;
+  width: 100%;
+  height: 13vh;
+}
+
+.main-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border: none;
+  width: 100%;
+  height: 13vh;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: var(--clr-bg-title);
+}
+
+.main-item1 {
+  font-size: min(110px, max(calc(110px * 0.10) + calc(110vw * 0.035), calc(110px * 0.10) + calc(110vh * 0.035)));
+}
+
+.main-item2 {
+  font-size: min(90px, max(calc(90px * 0.10) + calc(90vw * 0.035), calc(90px * 0.10) + calc(90vh * 0.035)));
+}
+
+.main-item3 {
+  font-size: min(90px, max(calc(90px * 0.10) + calc(90vw * 0.035), calc(90px * 0.10) + calc(90vh * 0.035)));
+  transform: translateX(-15%);
+}
+
+.main-item4 {
+  font-size: min(30px, max(calc(30px * 0.10) + calc(30vw * 0.035), calc(30px * 0.10) + calc(30vh * 0.035)));
+  transform: translateX(5%);
+}
+
+.main-item5 {
+  margin-top: 5%;
+}
+
+.btn-play {
+  font-size: min(50px, max(calc(50px * 0.10) + calc(50vw * 0.035), calc(50px * 0.10) + calc(50vh * 0.035)));
+  border: var(--bs-md) solid var(--clr-border);
+  border-radius: min(50px, calc(50px * 0.10) + calc(50vw * 0.035));
+  text-decoration: none;
+  padding: 4% 3% 2% 4%;
+} 
+
+.btn-play:hover {
+  box-shadow: 0px 0px 30px var(--clr-shadow);
+  border: var(--bs-md) solid var(--clr-shadow);
+}
+
+.pingpong-racket-main {
+  position: absolute;
+  top: 32%;
+  left: 40%;
+  width: min(230px, max(calc(230px * 0.10) + calc(230vw * 0.035), calc(230px * 0.10) + calc(230vh * 0.035)));
+  z-index: -1;
+}
+
+.credit-picture > img {
+  width: min(90px, max(calc(90px * 0.10) + calc(90vw * 0.035), calc(90px * 0.10) + calc(90vh * 0.035)));
+}
+
+.box-profile {
+  margin-left: var(--mg-xl);
+}
+
+.profile-frame {
+  width: min(90px, 10px + 4vw);
+  aspect-ratio: 1 / 1;
+  position: relative;
+}
+
+.profile-frame img {
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: 50%;
+  width: 100%;
+  height: auto;
+}
+
+.rounded-box-text {
+  padding: var(--bs-xxl);
+}

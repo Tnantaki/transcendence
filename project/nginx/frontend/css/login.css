@@ -2,11 +2,21 @@
   height: 30vh;
   flex-wrap: wrap;
   transform: translateX(-5%);
+  margin-bottom: var(--mg-xl);
+}
+
+.title-1 {
+  font-size: min(160px, max(calc(160px * 0.15) + calc(160vw * 0.038), calc(160px * 0.15) + calc(160vh * 0.038)));
+}
+
+.title-2 {
+  font-size: min(90px, max(calc(90px * 0.15) + calc(90vw * 0.038), calc(90px * 0.15) + calc(90vh * 0.038)));
 }
 
 .block-login-input {
-  border-bottom: solid 5px var(--clr-border);
+  border-bottom: var(--bs-lg)  solid var(--clr-border);
   font-size: var(--fs-xxl);
+  margin-bottom: var(--mg-lg);
 }
 
 .input-login-custom {
@@ -14,25 +24,9 @@
 }
 
 .img-login-pingpong-racket {
-  width: clamp(180px, 18vw + 2rem, 350px);
+  width: min(350px, max(calc(350px * 0.15) + calc(350vw * 0.038), calc(350px * 0.15) + calc(350vh * 0.038)));
   bottom: 0;
   z-index: -2;
   transform: translateX(-50%);
   position: absolute;
-}
-
-input:focus {
-  border: transparent;
-  outline: none;
-  box-shadow: none;
-}
-
-/* input:focus-within {
-} */
-
-input:-webkit-autofill,
-input:-webkit-autofill:focus {
-  appearance: none;
-  -webkit-text-fill-color: var(--clr-text) !important;
-  -webkit-box-shadow: 0 0 0px 1000px black inset !important;
 }

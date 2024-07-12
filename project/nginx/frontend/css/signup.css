@@ -1,13 +1,14 @@
 .block-title {
   height: 15vh;
+  margin: var(--mg-lg);
+}
+
+.title-1 {
+  font-size: min(80px, max(calc(80px * 0.15) + calc(80vw * 0.038), calc(80px * 0.15) + calc(80vh * 0.038)));
 }
 
 .block-signup {
-  width: min(500px, 300px + 20vw);
-}
-
-.block-signup-input input {
-  font-size: var(--fs-xl);
+  width: min(500px, 150px + 20vw);
 }
 
 .bottom-right {

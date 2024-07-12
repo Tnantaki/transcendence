@@ -1,0 +1,101 @@
+[
+  {
+    "avatar_name": "Wink Warrior",
+    "bio": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi voluptate minus ducimus placeat nemo delectus eveniet temporibus deleniti. Doloremque dolore distinctio enim nostrum illum ad aperiam porro placeat",
+    "email": "Wink_Warrior@42mail.com",
+    "total_games_play": 150,
+    "wins": 140,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/wink.png"
+  },
+  {
+    "avatar_name": "Storm Breaker",
+    "bio": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi voluptate minus ducimus placeat nemo delectus eveniet temporibus deleniti. Doloremque dolore distinctio enim nostrum illum ad aperiam porro placeat",
+    "email": "catplanet@gmail.com",
+    "total_games_play": 25,
+    "wins": 15,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/storm.png"
+  },
+  {
+    "avatar_name": "Mystic Luna",
+    "bio": "Hi! I'm Wink, a brave explorer who loves adventure. With my excellent gaming skills, I'm always ready to conquer any challenge and lead my team to victory!.....",
+    "email": "Wink_Warrior@42mail.com",
+    "total_games_play": 25,
+    "wins": 15,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/mystic.png"
+  },
+  {
+    "avatar_name": "Raven Queen",
+    "bio": "Hi! I'm Wink, a brave explorer who loves adventure. With my excellent gaming skills, I'm always ready to conquer any challenge and lead my team to victory!.....",
+    "email": "Wink_Warrior@42mail.com",
+    "total_games_play": 25,
+    "wins": 15,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/raven.png"
+  },
+  {
+    "avatar_name": "Rexar",
+    "bio": "Hi! I'm Wink, a brave explorer who loves adventure. With my excellent gaming skills, I'm always ready to conquer any challenge and lead my team to victory!.....",
+    "email": "Wink_Warrior@42mail.com",
+    "total_games_play": 25,
+    "wins": 15,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/rexar.png"
+  },
+  {
+    "avatar_name": "Seraphina",
+    "bio": "Hi! I'm Wink, a brave explorer who loves adventure. With my excellent gaming skills, I'm always ready to conquer any challenge and lead my team to victory!.....",
+    "email": "Wink_Warrior@42mail.com",
+    "total_games_play": 25,
+    "wins": 15,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/seraphina.png"
+  },
+  {
+    "avatar_name": "Gideon",
+    "bio": "Hi! I'm Wink, a brave explorer who loves adventure. With my excellent gaming skills, I'm always ready to conquer any challenge and lead my team to victory!.....",
+    "email": "Wink_Warrior@42mail.com",
+    "total_games_play": 25,
+    "wins": 15,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/gideon.png"
+  },
+  {
+    "avatar_name": "Popped",
+    "bio": "Hi! I'm Wink, a brave explorer who loves adventure. With my excellent gaming skills, I'm always ready to conquer any challenge and lead my team to victory!.....",
+    "email": "Wink_Warrior@42mail.com",
+    "total_games_play": 25,
+    "wins": 15,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/popped.png"
+  },
+  {
+    "avatar_name": "Joey",
+    "bio": "Hi! I'm Wink, a brave explorer who loves adventure. With my excellent gaming skills, I'm always ready to conquer any challenge and lead my team to victory!.....",
+    "email": "Wink_Warrior@42mail.com",
+    "total_games_play": 25,
+    "wins": 15,
+    "losses": 10,
+    "tour_play": 3,
+    "tour_won": 1,
+    "image": "../js/mock/joey.png"
+  }
+]
