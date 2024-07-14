@@ -1,15 +1,23 @@
 from ninja import Router
+from appuac.models.user import User
+from ninja import Schema, ModelSchema
+
+debug_router = Router()
+
+class UserSchema(ModelSchema):
+    class Meta:
+        model = User
+        fields = ["username", "first_name", "last_name", "date_joined", "id"]
+        # exclude = ["password"]
 
 router = Router()
 
 @router.get(
-    '/hello/',
+    '/me/',
     response = {
-        200: dict,
+        200: UserSchema,
     }
 )
-def test_hello(request):
-    return 200, {
-        'test': 'test', 
-        'toase': 'baking'
-    }
+def get_me(request):
+    user = request.auth.user
+    return 200, user

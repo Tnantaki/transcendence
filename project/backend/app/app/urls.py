@@ -18,21 +18,19 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 from appuac.url import UACRouter
-from api.urls import apiRouter
+# from api.urls import apiRouter
+from ninja import Swagger
 
-api = NinjaAPI()
+api = NinjaAPI(
+    # docs=Swagger(),
+)
 
 api.add_router(
     prefix="/",
     router=UACRouter,
 )
 
-api.add_router(
-    prefix="",
-    router=apiRouter,
-)
-
 urlpatterns = [
-    path("api/", api.urls),
+    path("i/", api.urls),
     path('admin/', admin.site.urls),
 ]
