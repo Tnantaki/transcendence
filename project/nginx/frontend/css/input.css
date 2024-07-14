@@ -1,0 +1,27 @@
+.input-group-custom {
+  border: 3px solid #ccc;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.input-group-custom:focus-within {
+  border-color: #007BFF;
+}
+
+.input-group-custom .form-control:focus {
+  box-shadow: none;
+}
+
+.input-group-custom .form-control,
+.input-group-custom .input-group-append .btn {
+  border: none;
+  border-radius: 0;
+}
+
+.input-group-custom .input-group-append .btn {
+  border-left: 1px solid #ccc;
+}
+
+.input-group-custom:focus-within .input-group-append .btn {
+  border-left-color: #007BFF;
+}

@@ -1,0 +1,32 @@
+.block-login-title {
+  height: 30vh;
+  flex-wrap: wrap;
+  transform: translateX(-5%);
+  margin-bottom: var(--mg-xl);
+}
+
+.title-1 {
+  font-size: min(160px, max(calc(160px * 0.15) + calc(160vw * 0.038), calc(160px * 0.15) + calc(160vh * 0.038)));
+}
+
+.title-2 {
+  font-size: min(90px, max(calc(90px * 0.15) + calc(90vw * 0.038), calc(90px * 0.15) + calc(90vh * 0.038)));
+}
+
+.block-login-input {
+  border-bottom: var(--bs-lg)  solid var(--clr-border);
+  font-size: var(--fs-xxl);
+  margin-bottom: var(--mg-lg);
+}
+
+.input-login-custom {
+  min-width: 0;
+}
+
+.img-login-pingpong-racket {
+  width: min(350px, max(calc(350px * 0.15) + calc(350vw * 0.038), calc(350px * 0.15) + calc(350vh * 0.038)));
+  bottom: 0;
+  z-index: -2;
+  transform: translateX(-50%);
+  position: absolute;
+}

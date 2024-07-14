@@ -1,0 +1,23 @@
+.block-title {
+  height: 15vh;
+  margin: var(--mg-lg);
+}
+
+.title-1 {
+  font-size: min(80px, max(calc(80px * 0.15) + calc(80vw * 0.038), calc(80px * 0.15) + calc(80vh * 0.038)));
+}
+
+.block-signup {
+  width: min(500px, 150px + 20vw);
+}
+
+.bottom-right {
+  font-size: var(--fs-lg);
+  position: absolute;
+  bottom: 5px;
+  right: 15px;
+}
+
+.bottom-right a {
+  color: var(--clr-red);
+}
