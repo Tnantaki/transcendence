@@ -54,7 +54,8 @@
   border: var(--bs-md) solid var(--clr-border);
   border-radius: min(50px, calc(50px * 0.10) + calc(50vw * 0.035));
   text-decoration: none;
-  padding: 4% 3% 2% 4%;
+  padding: 2%;
+  /* padding: 4% 3% 2% 4%; */
 } 
 
 .btn-play:hover {
@@ -93,4 +94,10 @@
 
 .rounded-box-text {
   padding: var(--bs-xxl);
+}
+
+#languageSelect {
+  background: black;
+  font-size: var(--fs-lg);
+  padding: var(--bs-xl);
 }

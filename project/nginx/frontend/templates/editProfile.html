@@ -20,25 +20,28 @@
       <div class="col">
         <div class="d-flex flex-column h-100">
           <div class="input-group input-group-custom rounded-pill d-flex align-items-center edit-input">
-            <input type="text" id="editName" class="form-control mx-3 font-bs fs-xxl" placeholder="Avatar name" disabled
-              readonly>
+            <input type="text" id="editName" class="form-control mx-3 font-bs fs-xxl"
+              data-i18n="avatar_name" placeholder="Avatar name" disabled readonly>
           </div>
           <div class="input-group input-group-custom rounded-pill d-flex align-items-center edit-input">
-            <input type="email" class="form-control mx-3 font-bs fs-xxl" placeholder="Email">
+            <input type="email" class="form-control mx-3 font-bs fs-xxl"
+              data-i18n="email" placeholder="Email">
           </div>
         </div>
       </div>
       <div class="col">
         <div class="d-flex flex-column h-100 justify-content-start">
           <div class="input-group input-group-custom rounded-pill d-flex align-items-center edit-input">
-            <input type="password" class="form-control mx-3 font-bs fs-xxl" placeholder="Password">
+            <input type="password" class="form-control mx-3 font-bs fs-xxl"
+              data-i18n="password" placeholder="Password">
             <div class="input-group-append mx-1">
               <img class="btn-eye btn-hover ic-lg mx-2" src="../static/svg/showpassword.svg" alt="eye icon"
                 onclick="togglePassword(this.parentNode.previousElementSibling)">
             </div>
           </div>
           <div class="input-group input-group-custom rounded-pill d-flex align-items-center edit-input">
-            <input type="password" class="form-control mx-3 font-bs fs-xxl" placeholder="Confirm Password">
+            <input type="password" class="form-control mx-3 font-bs fs-xxl"
+              data-i18n="confirm_password" placeholder="Confirm Password">
             <div class="input-group-append mx-1">
               <img class="btn-eye btn-hover ic-lg mx-2" src="../static/svg/showpassword.svg" alt="eye icon"
                 onclick="togglePassword(this.parentNode.previousElementSibling)">
@@ -50,18 +53,22 @@
     <div class="second-block-input">
       <div class="d-flex position-relative">
         <textarea class="form-control font-bs bio-input" name="" id="bioInput" placeholder="About me..."
-          maxlength="200"></textarea>
+          data-i18n="about_me" maxlength="200"></textarea>
         <div class="font-bs char-count">0/200</div>
       </div>
       <div class="d-flex flex-column h-100">
         <div class="d-flex justify-content-center align-items-center flex-grow-1 edit-warning">
-          <p class="font-bs-bold text-center">Your changes will be lose if you don’t save them</p>
+          <p class="font-bs-bold text-center" data-i18n="edit_profile_warning">
+            Your changes will be lose if you don’t save them
+          </p>
         </div>
         <div class="d-flex justify-content-between">
           <a href="/profile">
-            <button type="button" class="font-bs-bold btn btn-secondary edit-btn" data-bs-dismiss="modal">Back</button>
+            <button type="button" class="font-bs-bold btn btn-secondary edit-btn" data-bs-dismiss="modal"
+              data-i18n="back">Back</button>
           </a>
-          <button type="submit" class="font-bs-bold btn btn-primary edit-btn" data-bs-dismiss="modal">Save</button>
+          <button type="submit" class="font-bs-bold btn btn-primary edit-btn" data-bs-dismiss="modal"
+            data-i18n="save">Save</button>
         </div>
       </div>
     </div>

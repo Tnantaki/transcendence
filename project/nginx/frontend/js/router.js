@@ -5,7 +5,7 @@ const title_extension = "Transcendence";
 const urlRoute = {
   "/": {
     urlPath: template_dir + "main.html",
-    script: "",
+    script: js_dir + "main.js",
     title: title_extension,
   },
   "/signup": {
@@ -32,10 +32,9 @@ const urlRoute = {
 
 document.addEventListener('DOMContentLoaded', function() {
   const contentDiv = document.getElementById('content');
-  // const location = window.location.pathname.replace(/^\/frontend/, ""); // TODO: replace frontend with real path
   const location = window.location.pathname;
   const page = urlRoute[location];
-  console.log(page.script);
+  console.log(location); // Print Debug
 
   function loadPage(page) {
     fetch(page.urlPath)
@@ -44,11 +43,11 @@ document.addEventListener('DOMContentLoaded', function() {
         contentDiv.innerHTML = data;
         document.title = page.title;
         if (page.script) {
-          const wrapScript = document.getElementById('addScript');
           const addScript = document.createElement('script');
 
           addScript.src = page.script;
-          wrapScript.appendChild(addScript);
+          addScript.type = 'module';
+          contentDiv.appendChild(addScript);
         }
       })
       .catch(error => {

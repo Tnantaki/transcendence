@@ -1,6 +1,5 @@
 const formRegister = document.getElementById('login-form');
 const popOutText = document.getElementById('popOutErrMsg');
-alert("Login js");
 
 formRegister.addEventListener('submit', (event) => {
   event.preventDefault();

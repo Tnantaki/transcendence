@@ -6,6 +6,7 @@
   --clr-bg-title: #4D4A4A;
   --clr-red: #B63A3A;
   --clr-green: #62E54C;
+  --clr-white: #ffffff;
 
   /* icon-size */
   --ic-xl: min(50px, calc(50px * 0.15) + calc(50vw * 0.045));
@@ -60,7 +61,6 @@
     --pd-md: 2px;
   }
 }
-
 /* Large Size */
 @media (max-width: 992px) {
   :root {
@@ -84,7 +84,6 @@
     --pd-md: 1.25px;
   }
 }
-
 /* Medium Size */
 @media (max-width: 768px) {
   :root {
@@ -108,7 +107,6 @@
     --pd-md: 1px;
   }
 }
-
 /* Small Size */
 @media (max-width: 576px) {
   :root {
@@ -218,6 +216,7 @@ body {
   cursor: pointer;
 }
 .btn-hover:hover {
+  cursor: pointer;
   transform: scale(1.2);
 }
 
@@ -331,3 +330,63 @@ body {
   border-radius: 50%;
   margin: var(--mg-lg);
 }
+
+.modal-content {
+  background-color: black;
+  box-shadow: 0 0 20px var(--clr-shadow);
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: 15px;
+  padding: var(--mg-lg);
+  width: auto;
+}
+.modal-dialog {
+  width: auto;
+}
+.modal-body {
+  max-width: fit-content;
+}
+.popup-content {
+  border: var(--bs-lg) solid var(--clr-white);
+  display: flex;
+}
+.popup-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: min(450px, max(calc(450px * 0.15) + calc(450vw * 0.038), calc(450px * 0.15) + calc(450vh * 0.038)));
+  height: min(600px, max(calc(600px * 0.15) + calc(600vw * 0.038), calc(600px * 0.15) + calc(600vh * 0.038)));
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: 15px;
+}
+.popup-header-icon img {
+ width: min(150px, max(calc(150px * 0.15) + calc(150vw * 0.038), calc(150px * 0.15) + calc(150vh * 0.038)));
+}
+.popup-body p {
+  text-align: center;
+  text-wrap: pretty;
+  margin: var(--mg-lg);
+}
+.popup-footer button {
+  font-size: var(--fs-xl);
+  padding: var(--pd-md) var(--mg-xl);
+}
+
+/* @media screen and (orientation:portrait) {
+  body {
+    background-color: #62E54C;
+    height: 100vw;
+    width: 100vh;
+    overflow-x: auto;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    transform-origin: 100% 0vh 0;
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+  }
+} */

@@ -1,4 +1,5 @@
 // import mockupProfiles from "./mock/mockProfiles.json" with { type: "json" };
+import { loadLanguage } from "./i18n.js";
 
 // match history
   // player1_id: int
@@ -57,7 +58,6 @@ function profileFriend(friendId) {
     });
 }
 
-
 function getFriendList(myId) {
   fetch('../js/mock/mockFriends.json') // TODO: fetch data from backend by use id and parse JSON
     .then(response => response.json())
@@ -98,9 +98,15 @@ function getFriendList(myId) {
 
 const id = 0;
 
-// text line.
-// const elem = document.querySelector('.bio-box');
-// elem.style.setProperty('-webkit-line-clamp', Math.floor(window.innerHeight / 150));
-
 getProfile(id);
 getFriendList(id);
+
+if (document.readyState !== 'loading') {
+  loadLanguage();
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    loadLanguage();
+  });
+}
+
+window.profileFriend = profileFriend;

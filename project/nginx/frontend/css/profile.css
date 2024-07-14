@@ -160,23 +160,6 @@ p {
   background: var(--clr-shadow); 
 }
 
-.modal-content {
-  background-color: black;
-  box-shadow: 0 0 20px var(--clr-shadow);
-  border: var(--bs-lg) solid var(--clr-border);
-  border-radius: 15px;
-  padding: var(--mg-lg);
-  width: auto;
-}
-
-.modal-dialog {
-  width: auto;
-}
-
-.modal-body {
-  max-width: fit-content;
-}
-
 .bk-friend-list-title {
   position: relative;
 }
