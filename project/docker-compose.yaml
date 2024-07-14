@@ -40,15 +40,15 @@ services:
       - frontend
 
   # for testing frontend only
-  front: 
-    build: nginx
-    ports:
-      - '8002:80'
-    volumes:
-      - './nginx/frontend:/usr/share/nginx/html'
-      - ./nginx:/etc/nginx/conf.d
-    networks:
-      - frontend
+  # front: 
+  #   build: nginx
+  #   ports:
+  #     - '8002:80'
+  #   volumes:
+  #     - './frontend:/usr/share/nginx/html'
+  #     - ./nginx:/etc/nginx/conf.d
+  #   networks:
+  #     - frontend
 
 networks:
   backend:
