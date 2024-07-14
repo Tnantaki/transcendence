@@ -34,6 +34,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "uac",
     "uploadfile",
+    "daphne",
+    "chat",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -71,7 +73,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "app.wsgi.application"
-
+# Asyn server GateWay interface
+# Daphne
+ASGI_APPLICATION = "app.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -135,3 +139,18 @@ DATABASES = {
 # Media files configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     },
+# }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
