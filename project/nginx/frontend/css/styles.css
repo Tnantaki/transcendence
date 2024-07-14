@@ -108,10 +108,10 @@
   }
 }
 /* Small Size */
-@media (max-width: 576px) {
+/* @media (max-width: 576px) {
   :root {
   }
-}
+} */
 
 .fs-sm {
   font-size: var(--fs-sm);
@@ -321,7 +321,6 @@ body {
 .input-group-custom > p, .input-group-custom > a {
   font-size: var(--fs-lg);
 }
-
 
 .online-status {
   background-color: var(--clr-green);

@@ -7,7 +7,6 @@
   display: grid;
   grid-template-rows: 2fr 3fr auto;
   min-width: min(800px, max(calc(800px * 0.15) + calc(800vw * 0.038), calc(800px * 0.15) + calc(800vh * 0.038)));
-  min-height: 0;
 }
 
 .block-profile-main {
@@ -16,6 +15,7 @@
   width: 100%;
   gap: var(--mg-xxl);
   margin: var(--mg-xxl);
+  min-height: 0;
 }
 
 .bk-profile-title {
@@ -162,6 +162,9 @@ p {
 
 .bk-friend-list-title {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .friend-title {
