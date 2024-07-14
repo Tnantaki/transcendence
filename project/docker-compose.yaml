@@ -12,14 +12,6 @@ services:
     networks:
       - backend
 
-
-  adminer:
-    image: adminer
-    ports:
-      - '8089:8080'
-    networks:
-      - backend
-
   backend: 
     build: backend
     ports: 
@@ -36,10 +28,11 @@ services:
   nginx:
     build: nginx
     ports:
+      - '443:443'
       - '8001:80'
     volumes:
-      - ./backend:/app
       - ./nginx:/etc/nginx/conf.d
+      - ./frontend:/frontend/
     depends_on:
       - backend
     networks:
