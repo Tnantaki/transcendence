@@ -1,3 +1,13 @@
+// function drawRoomStatus(maxWidth, yPos)
+// {
+// 	if (rooms.type == "online")
+// 	{
+		
+// 	}
+// 	// const onlineStatus = ["1/2", "2/2"];
+// 	// const tourStatus = ["1/8", ]
+// }
+
 function drawRoomDisplay()
 {
 	const	startX = BOARD_PADDING;
@@ -38,7 +48,7 @@ function drawRoomDisplay()
 		ctx.fillText(room.name, startX + textPadding * 2.2, yPos);
 		if (index == 0)
 			return ;
-		ctx.fillText("1/2", maxWidth - 10 , yPos);
+		ctx.fillText("1/2", maxWidth - 10 , yPos); //! temporary --> will create specific function later
 	});
 	ctx.closePath();
 }
@@ -46,7 +56,7 @@ function drawRoomDisplay()
 function addRoom(newRoom)
 {
 	rooms.push({name: newRoom});
-	updateOnlineCanvas();
+	updateLobby();
 }
 
 function handleCreateBtn(btnObj, event)

@@ -16,9 +16,12 @@ const createBtn = (event) => handleCreateBtn(createBtnObj, event);
 // #                       EXECUTION 					  #
 // ########################################################
 
-function execOnline()
+function execLobby()
 {
-	initCanvas("Online Match");
+	if (rooms.type == "online")
+		initCanvas("Online Match");
+	else
+		initCanvas("Tournament");
 	drawTextBtn(createBtnObj);
 	drawTextBtn(backBtnObj);
 	drawRoomDisplay();
@@ -27,24 +30,31 @@ function execOnline()
 }
 
 // pre-load the image
-var rooms = [{name: "", players: 1, status: true}];
-function createOnline()
+var rooms = [{
+		name: "", 
+		players: 1, //! add more players if one or more join the room
+		status: true, 
+		type: ""
+}];
+
+function createLobby(type)
 {
+	rooms.type = type;
 	if (tmp == 0)
 	{
 		const pongImg = new Image();
 		pongImg.src = "images/table-tennis.png";
 		pongImg.onload = function() { // call the anonymous function when the image is loaded
-			execOnline();
+			execLobby();
 		};
 		tmp = pongImg;
 	}
 	else
-		execOnline();
+		execLobby();
 }
 
-function updateOnlineCanvas()
+function updateLobby()
 {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	createOnline();
+	createLobby(rooms.type);
 }
