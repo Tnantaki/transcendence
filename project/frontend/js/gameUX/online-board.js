@@ -1,3 +1,13 @@
+// function drawRoomStatus(maxWidth, yPos)
+// {
+// 	if (rooms.type == "online")
+// 	{
+		
+// 	}
+// 	// const onlineStatus = ["1/2", "2/2"];
+// 	// const tourStatus = ["1/8", ]
+// }
+
 function drawRoomDisplay()
 {
 	const	startX = BOARD_PADDING;
