@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ENVS['ALLOWED_HOSTS']
 # Application definition
 
 INSTALLED_APPS = [
+    'api',
     'appuac',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,0 +1,186 @@
+.bk-item {
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: 15px;
+}
+
+.bk-profile {
+  display: grid;
+  grid-template-rows: 2fr 3fr auto;
+  min-width: min(800px, max(calc(800px * 0.15) + calc(800vw * 0.038), calc(800px * 0.15) + calc(800vh * 0.038)));
+}
+
+.block-profile-main {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  width: 100%;
+  gap: var(--mg-xxl);
+  margin: var(--mg-xxl);
+  min-height: 0;
+}
+
+.bk-profile-title {
+  display: grid;
+  grid-template-columns: 1fr 3fr auto;
+  background-color: var(--clr-bg-title);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.bk-profile-stat {
+  margin: var(--mg-xl);
+  margin-bottom: var(--mg-md);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap:var(--mg-xl);
+}
+
+.micro-item {
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: min(20px, calc(20px * 0.20) + calc(20vw * 0.038));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: min(24px, calc(24px * 0.20) + calc(24vw * 0.038));
+}
+
+.profile-image {
+  width: min(180px, max(calc(180px * 0.15) + calc(180vw * 0.038), calc(180px * 0.15) + calc(180vh * 0.038)));
+  aspect-ratio: 1 / 1;
+}
+
+.profile-image img {
+  border: var(--bs-md) solid var(--clr-border);
+  border-radius: 50%;
+  width: 100%;
+  height: auto;
+}
+
+.bk-profile-button > a {
+  font-size: min(24px, calc(24px * 0.20) + calc(24vw * 0.038));
+}
+
+.micro-item .stat {
+  font-size: min(60px, max(calc(60px * 0.15) + calc(60vw * 0.038), calc(60px * 0.15) + calc(60vh * 0.038)));
+}
+
+.edit-button {
+  margin: var(--mg-md);
+}
+
+.edit-button img {
+  background-color: var(--clr-border);
+  padding: 8%;
+  border: var(--bs-md) solid black;
+  border-radius: min(10px, calc(20px * 0.20) + calc(20vw * 0.038));
+  width: min(50px, calc(50px * 0.15) + calc(50vw * 0.045));
+}
+
+#avatarName {
+  margin-top: var(--mg-xl);
+  margin-bottom: var(--mg-md);
+}
+
+.bio-box {
+  text-indent: 10%;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  /* -webkit-line-clamp: 0; change in JS */
+}
+
+p {
+  margin: 0;
+}
+
+.bk-friend {
+  display: grid;
+  grid-template-rows: 1fr 6fr;
+  min-height: 0;
+}
+
+.friend-list-item {
+  display: grid;
+  position: relative;
+  grid-template-columns: 1fr 3fr;
+  width: 85%;
+  margin: var(--mg-md);
+}
+
+.friend-item-picture img {
+  border: var(--bs-md) solid var(--clr-border);
+  border-radius: 50%;
+  width: min(100px, max(calc(100px * 0.15) + calc(100vw * 0.038), calc(100px * 0.15) + calc(100vh * 0.038)));
+  aspect-ratio: 1 / 1;
+}
+
+.friend-name {
+  color: var(--clr-bg-btn);
+  text-decoration: none;
+}
+
+.friend-name:hover {
+  text-decoration: underline;
+}
+
+.friend-item-background {
+  z-index: -2;
+  position: absolute;
+  width: 100%;
+  height: 60%;
+  transform: translateY(-50%);
+  top: 50%;
+  border: var(--bs-md) solid var(--clr-border);
+  background-color: var(--clr-text);
+  border-radius: var(--bs-xxl);
+}
+
+.bk-friend-list {
+  position: relative;
+  margin-bottom: 0;
+  padding: 0;
+  padding-top: var(--mg-xl);
+  overflow: visible;
+}
+
+.bk-friend-list::-webkit-scrollbar {
+  width: var(--ic-sm);
+  background-color: var(--clr-text);
+  border-radius: 10px;
+  border: var(--bs-md) solid var(--clr-border);
+}
+
+.bk-friend-list::-webkit-scrollbar-thumb {
+  background: var(--clr-bg-btn); 
+  border-radius: 10px;
+}
+
+.bk-friend-list::-webkit-scrollbar-thumb:hover {
+  background: var(--clr-shadow); 
+}
+
+.bk-friend-list-title {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.friend-title {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(20%, -100%);
+  border: var(--bs-lg) solid var(--clr-border);
+  border-top-left-radius: var(--mg-lg);
+  border-top-right-radius: var(--mg-lg);
+  background-color: var(--clr-text);
+  padding: var(--mg-lg);
+}
+
+.bk-friend-button {
+  font-size: var(--fs-lg);
+  width: min(230px, max(calc(230px * 0.15) + calc(230vw * 0.038), calc(230px * 0.15) + calc(230vh * 0.038)));
+}
