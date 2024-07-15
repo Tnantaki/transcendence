@@ -1,3 +1,5 @@
+import * as constant from './constants.js';
+
 const formRegister = document.getElementById('login-form');
 const popOutText = document.getElementById('popOutErrMsg');
 
@@ -13,7 +15,7 @@ formRegister.addEventListener('submit', (event) => {
   };
 
   // send post requets with JSON data
-  fetch(apiURL + '/api/user/login', {
+  fetch(constant.API_LOGIN, {
     method: 'POST',
     headers: {
       'content-Type': 'application/json'
@@ -22,6 +24,7 @@ formRegister.addEventListener('submit', (event) => {
   })
   .then(response => response.json())
   .then(data => {
+    localStorage.setItem("token", data.token);
     console.log('Success:', data);
     // window.location.href = 'http://localhost:' TODO: redirect page
   })
