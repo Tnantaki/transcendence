@@ -1,5 +1,7 @@
 import { loadLanguage } from "./i18n.js";
 
+console.log("Viewing main page.");
+
 if (document.readyState !== 'loading') {
   setDisplayLaguage();
 } else {

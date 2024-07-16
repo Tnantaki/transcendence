@@ -28,9 +28,7 @@ export function translatePage(language) {
     translations = thLanguage;  
   else
     translations = enLanguage;  
-  console.log("translage page");
   document.querySelectorAll('[data-i18n]').forEach((element) => {
-    console.log("translage");
     const key = element.getAttribute('data-i18n');
     if (element.placeholder !== undefined) {
       element.placeholder = translations[key] || key;

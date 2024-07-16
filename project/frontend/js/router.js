@@ -1,6 +1,7 @@
 const template_dir = "/templates/";
 const js_dir = "js/";
 const title_extension = "Transcendence";
+const initialURL = "/";
 
 const urlRoute = {
   "/": {
@@ -30,30 +31,61 @@ const urlRoute = {
   }, 
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-  const contentDiv = document.getElementById('content');
-  const location = window.location.pathname;
-  const page = urlRoute[location];
-  console.log(location); // Print Debug
+// Check Token
+function getRoute(url) {
+  const token = localStorage.getItem('token');
 
-  function loadPage(page) {
-    fetch(page.urlPath)
-      .then(response => response.text())
-      .then(data => {
-        contentDiv.innerHTML = data;
-        document.title = page.title;
-        if (page.script) {
-          const addScript = document.createElement('script');
-
-          addScript.src = page.script;
-          addScript.type = 'module';
-          contentDiv.appendChild(addScript);
-        }
-      })
-      .catch(error => {
-        contentDiv.innerHTML = '<p>Error loading page.</p>';
-        console.error('Error loading page:', error);
-      });
+  if (!token) {
+    return urlRoute['/login'];
+  } else if (token && url === '/login') {
+    return urlRoute['/'];
   }
-  loadPage(page);
+  return urlRoute[url];
+}
+
+// Disable default a tag behavior of reload full page to make SPA
+function setATagDefault() {
+  const linkTags = document.querySelectorAll('a');
+  linkTags.forEach(link => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const url = link.getAttribute('href'); 
+      loadPage(url);
+      history.pushState({url: url}, null, url);
+    });
+  });
+}
+
+// Load content from route
+function loadPage(url) {
+  const route = getRoute(url);
+  const contentDiv = document.getElementById('content');
+
+  fetch(route.urlPath)
+    .then(response => response.text())
+    .then(data => {
+      contentDiv.innerHTML = data;
+      document.title = route.title;
+      if (route.script) {
+        const addScript = document.createElement('script');
+
+        addScript.src = route.script;
+        addScript.type = 'module';
+        contentDiv.appendChild(addScript);
+        setATagDefault();
+      }
+    })
+    .catch(error => {
+      contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;
+      console.error('Error loading page:', error);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadPage(location.pathname);
+});
+
+window.addEventListener('popstate', (event) => {
+  if (event.state)
+    loadPage(event.state.url);
 });

@@ -1,5 +1,8 @@
 // import mockupProfiles from "./mock/mockProfiles.json" with { type: "json" };
 import { loadLanguage } from "./i18n.js";
+import * as constant from "./constants.js"
+
+console.log("Viewing Profile page.");
 
 // match history
   // player1_id: int
@@ -11,13 +14,15 @@ import { loadLanguage } from "./i18n.js";
   // duration: int
 
 // take id as parameter
+// async function fetchMyProfile() {
+//   const res = fetch()
+// }
 
 function getProfile(myId) {
   fetch('../js/mock/mockProfiles.json') // TODO: fetch data from backend by use id and parse JSON
     .then(response => response.json())
     .then(data => {
       const profileValue = data[myId];
-      // const profileValue = JSON.parse(mockupProfiles[myId]);
       const profile = document.getElementById('my-profile');
 
       profile.querySelector('#avatarName').innerHTML = profileValue["avatar_name"];

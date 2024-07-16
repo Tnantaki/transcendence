@@ -5,7 +5,6 @@ const popOutText = document.getElementById('popOutErrMsg');
 
 formRegister.addEventListener('submit', (event) => {
   event.preventDefault();
-  const form = event.target;
 
   // Create JSON object
   const formData = new FormData(event.target);
@@ -25,8 +24,8 @@ formRegister.addEventListener('submit', (event) => {
   .then(response => response.json())
   .then(data => {
     localStorage.setItem("token", data.token);
+    window.location.href = '/';
     console.log('Success:', data);
-    // window.location.href = 'http://localhost:' TODO: redirect page
   })
   .catch(error => {
     console.error('Error:', error);
