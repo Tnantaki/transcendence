@@ -184,3 +184,12 @@ p {
   font-size: var(--fs-lg);
   width: min(230px, max(calc(230px * 0.15) + calc(230vw * 0.038), calc(230px * 0.15) + calc(230vh * 0.038)));
 }
+
+.bk-friend-title {
+  gap: var(--mg-lg);
+}
+
+.bk-notification {
+  border: var(--bs-md) solid var(--clr-border);
+  border-radius: 15px;
+}

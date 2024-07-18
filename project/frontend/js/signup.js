@@ -1,30 +1,23 @@
-const formRegister = document.getElementById('register-form');
-formRegister.addEventListener('submit', (event) => {
-  event.preventDefault();
+import { postProfile } from "./api.js";
 
-  // Create JSON object
-  const formData = new FormData(event.target);
-  const data = {
-    username: formData.get('username'),
-    password: formData.get('password'),
-    avatarName: formData.get('avatarName'),
-  };
+document.addEventListener('DOMContentLoaded', () => {
+  const formRegister = document.getElementById('register-form');
+  formRegister.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-  // send post requets with JSON data
-  fetch(apiURL + '/api/user/register', {
-    method: 'POST',
-    headers: {
-      'content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Success:', data);
-    alert('Register user succesfully.');
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Failed to register!');
+    // Create JSON object
+    const formData = new FormData(event.target);
+    const data = {
+      username: formData.get('username'),
+      password: formData.get('password'),
+      avatarName: formData.get('avatarName'),
+    };
+
+    try {
+      const result = await postProfile(data);
+      console.log("Signup Success:", result);
+    } catch (error) {
+      console.error("Failed Signup:", error);
+    }
   });
 });

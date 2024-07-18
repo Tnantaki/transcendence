@@ -69,3 +69,25 @@ export async function fetchProfileById(id) {
     throw error;
   }
 }
+
+export async function postProfile(data) {
+  try {
+    const response = await fetch(constant.API_SIGNUP, {
+      method: "POST",
+      headers: {
+        'content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error: fetching", error);
+    throw error;
+  }
+}

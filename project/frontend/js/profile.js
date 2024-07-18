@@ -1,21 +1,5 @@
 import { fetchFriendList, fetchProfileById, fetchUserProfile } from "./api.js";
 
-console.log("Viewing Profile page.");
-
-// match history
-  // player1_id: int
-  // player2_id: int
-  // win_id: int
-  // score1: int
-  // score2: int
-  // start_date: str
-  // duration: int
-
-// take id as parameter
-// async function fetchMyProfile() {
-//   const res = await fetch(constant.API_GET_MY_PROFILE);
-// }
-
 async function getProfile() {
   try {
     const profileValue = await fetchUserProfile();
@@ -83,5 +67,4 @@ async function getFriendList() {
 
 getProfile();
 getFriendList();
-
-// window.profileFriend = profileFriend;
+window.getProfileById = getProfileById;
