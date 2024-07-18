@@ -3,6 +3,7 @@ import { setSelectLanguage } from "./i18n.js";
 const template_dir = "/templates/";
 const js_dir = "js/";
 const title_extension = "Transcendence";
+const js_game_dir = js_dir + "gameUX/";
 
 const urlRoute = {
   "/": {
@@ -29,6 +30,16 @@ const urlRoute = {
     urlPath: template_dir + "editProfile.html",
     script: js_dir + "editProfile.js",
     title: "Edit Profile" + " - " + title_extension,
+  }, 
+  "/game": {
+    urlPath: template_dir + "game.html",
+    script: [js_game_dir + "utils.js",
+      js_game_dir + "main-menu.js",
+      js_game_dir + "tournament-board.js",
+      js_game_dir + "players-board.js",
+      js_game_dir + "online-menu.js",
+      js_game_dir + "online-board.js"],
+    title: "Game" + " - " + title_extension,
   }, 
 };
 
@@ -66,17 +77,25 @@ function loadPage(url) {
     .then(data => {
       contentDiv.innerHTML = data;
       document.title = route.title;
+      console.log("load route");
       if (route.script) {
-        const addScript = document.createElement('script');
-
-        // append query parameter timestamp to the script URL to prevent caching.
-        addScript.src = route.script + "?v=" + new Date().getTime();
-        addScript.type = 'module';
-        contentDiv.appendChild(addScript);
-        setATagDefault();
-        setSelectLanguage();
-        history.pushState({url: url}, null, url);
+        if (url === '/game') {
+          route.script.forEach(e => {
+            const addScript = document.createElement('script');
+            addScript.src = e + "?v=" + new Date().getTime();
+            contentDiv.appendChild(addScript);
+          })
+        } else {
+          const addScript = document.createElement('script');
+          // append query parameter timestamp to the script URL to prevent caching.
+          addScript.src = route.script + "?v=" + new Date().getTime();
+          addScript.type = 'module';
+          contentDiv.appendChild(addScript);
+        }
       }
+      setATagDefault();
+      setSelectLanguage();
+      history.pushState({url: url}, null, url);
     })
     .catch(error => {
       contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;

@@ -1,7 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-  countCharacter();
-  editProfile();
-});
+// document.addEventListener('DOMContentLoaded', () => {
+// });
 
 function countCharacter() {
   const textArea = document.getElementById('bioInput');
@@ -23,6 +21,9 @@ async function editProfile() {
     console.error("Failed update profile:", error);
   }
 }
+
+countCharacter();
+editProfile();
 // TODO: update api
 // const formUpload = document.getElementById('upload-form');
 // formUpload.addEventListener('submit', (event) => {
