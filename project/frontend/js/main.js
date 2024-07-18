@@ -1,24 +1,19 @@
-import { loadLanguage } from "./i18n.js";
+import { fetchUserProfile } from "./api.js"
 
 console.log("Viewing main page.");
 
-if (document.readyState !== 'loading') {
-  setDisplayLaguage();
-} else {
-  document.addEventListener('DOMContentLoaded', () => {
-    setDisplayLaguage();
-  });
-}
+async function getProfile() {
+  try {
+    console.log("fetching Profile data");
+    const profileValue = await fetchUserProfile();
+    const profile = document.getElementById("blockProfile");
 
-function setDisplayLaguage() {
-  const selectedLanguage = document.getElementsByClassName('language-select')[0];
-
-  if (selectedLanguage) {
-    let savedLanguage = localStorage.getItem('currentLanguage');
-
-    if (savedLanguage === 'undefined')
-      savedLanguage = 'en';
-    selectedLanguage.value = savedLanguage
+    profile.querySelector("#profilePicture").src = profileValue["image"];
+    profile.querySelector("#profileName").innerHTML = profileValue["avatar_name"];
+    
+  } catch (error) {
+    console.error("Failed to fetch user profile:", error);
   }
-  loadLanguage();
 }
+
+getProfile();

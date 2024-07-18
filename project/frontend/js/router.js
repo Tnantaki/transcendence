@@ -1,7 +1,8 @@
+import { setSelectLanguage } from "./i18n.js";
+
 const template_dir = "/templates/";
 const js_dir = "js/";
 const title_extension = "Transcendence";
-const initialURL = "/";
 
 const urlRoute = {
   "/": {
@@ -35,11 +36,11 @@ const urlRoute = {
 function getRoute(url) {
   const token = localStorage.getItem('token');
 
-  if (!token) {
-    return urlRoute['/login'];
-  } else if (token && url === '/login') {
-    return urlRoute['/'];
-  }
+  // if (!token) {
+  //   return urlRoute['/login'];
+  // } else if (token && url === '/login') {
+  //   return urlRoute['/'];
+  // }
   return urlRoute[url];
 }
 
@@ -51,7 +52,6 @@ function setATagDefault() {
       event.preventDefault();
       const url = link.getAttribute('href'); 
       loadPage(url);
-      history.pushState({url: url}, null, url);
     });
   });
 }
@@ -69,10 +69,13 @@ function loadPage(url) {
       if (route.script) {
         const addScript = document.createElement('script');
 
-        addScript.src = route.script;
+        // append query parameter timestamp to the script URL to prevent caching.
+        addScript.src = route.script + "?v=" + new Date().getTime();
         addScript.type = 'module';
         contentDiv.appendChild(addScript);
         setATagDefault();
+        setSelectLanguage();
+        history.pushState({url: url}, null, url);
       }
     })
     .catch(error => {
@@ -81,10 +84,12 @@ function loadPage(url) {
     });
 }
 
+// Triggering index.html to load content page from url input
 document.addEventListener('DOMContentLoaded', () => {
   loadPage(location.pathname);
 });
 
+// Popstate will trigger on back and forward buttom
 window.addEventListener('popstate', (event) => {
   if (event.state)
     loadPage(event.state.url);
