@@ -78,7 +78,6 @@ function handleMenu(event)
 				createLobby("online");
 			else if (btn == "Tournament")
 				createTournament(players);
-				// createLobby("tournament");
 			else if (btn == "Setting")
 				console.log("Setting");
 			break;
@@ -87,10 +86,8 @@ function handleMenu(event)
 	}
 }
 
-
 function createMenu()
 {
-	console.log("this is game page");
 	drawCanvas();
 	drawBtn();
 	manageEvt(0, handleMenu);

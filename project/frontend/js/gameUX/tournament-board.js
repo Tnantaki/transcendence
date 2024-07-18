@@ -48,6 +48,7 @@ let tmp = 0;
 var players = [{name: "Join The Tournament !"}];
 function createTournament()
 {
+	console.log("clicked tournament");
 	if (tmp == 0)
 	{
 		const pongImg = new Image();
