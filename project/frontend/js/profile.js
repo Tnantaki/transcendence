@@ -1,9 +1,12 @@
-import { fetchFriendList, fetchProfileById, fetchUserProfile } from "./api.js";
+import * as constant from "./constants.js"
+import { fetchAPI } from "./api.js"
 
 async function getProfile() {
   try {
-    const profileValue = await fetchUserProfile();
     const profile = document.getElementById("my-profile");
+    const profileValue = await fetchAPI("GET", constant.API_USER_PROFILE, {
+      auth: false,
+    }); // TODO: auth must be true
 
     profile.querySelector("#avatarName").innerHTML = profileValue["avatar_name"];
     profile.querySelector("#bio").innerHTML = profileValue["bio"];
@@ -20,8 +23,8 @@ async function getProfile() {
 
 async function getProfileById(id) {
   try {
-    const profileValue = await fetchProfileById(id);
     const profile = document.getElementById("friend-profile");
+    const profileValue = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id);
 
     profile.querySelector("#friendAvatarName").innerHTML = profileValue["avatar_name"];
     profile.querySelector("#friendBio").innerHTML = profileValue["bio"];
@@ -38,9 +41,10 @@ async function getProfileById(id) {
 
 async function getFriendList() {
   try {
-    console.log("fetching Friend list data");
-    const friendListValue = await fetchFriendList();
     const friendList = document.getElementById("friendList");
+    const friendListValue = await fetchAPI("GET", constant.API_FRIEND_LIST, {
+      auth: false,
+    }); // TODO: auth must be true
 
     friendListValue.forEach(friend => {
       const item = document.createElement("li");

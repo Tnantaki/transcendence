@@ -1,7 +1,9 @@
-export const BACKEND_URL = "http://localhost:8132";
-
+export const BACKEND_URL = "http://localhost:8001/";
 // API backend
-export const API_LOGIN = BACKEND_URL + "/i/uac/login/";
+export const API_LOGIN = BACKEND_URL + "api/i/uac/login/";
+export const API_LOGOUT = BACKEND_URL + "api/i/uac/logout/";
+
+export const API_SIGNUP = BACKEND_URL + "api/i/uac/signup/";
 
 // MOCKUP API
 export const API_USER_PROFILE = "./js/mock/mockProfile.json";

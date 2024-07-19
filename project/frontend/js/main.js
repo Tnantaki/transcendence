@@ -1,16 +1,38 @@
-import { fetchUserProfile } from "./api.js"
+import * as constant from "./constants.js"
+import { fetchAPI } from "./api.js"
 
 async function getProfile() {
   try {
-    const profileValue = await fetchUserProfile();
     const profile = document.getElementById("blockProfile");
+    const profileValue = await fetchAPI("GET", constant.API_USER_PROFILE, {
+      auth: false,
+    }); // TODO: auth must be true
 
     profile.querySelector("#profilePicture").src = profileValue["image"];
     profile.querySelector("#profileName").innerHTML = profileValue["avatar_name"];
     
   } catch (error) {
-    console.error("Failed to fetch user profile:", error);
+    console.error("Failed to fetch API:", error);
   }
 }
+
+async function submitLogout() {
+  try {
+    await fetchAPI("POST", constant.API_LOGOUT);
+
+    localStorage.removeItem("token");
+    console.log("Logout success");
+  } catch (error) {
+    console.error("Failed to fetch API:", error);
+  }
+}
+
+const btnLogout = document.getElementById("submitLogout");
+
+btnLogout.addEventListener('click', () => {
+  submitLogout();
+  const modal = bootstrap.Modal.getInstance(document.getElementById("logoutModal"));
+  modal.hide();
+});
 
 getProfile();

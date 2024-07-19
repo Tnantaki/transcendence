@@ -33,12 +33,14 @@ const urlRoute = {
   }, 
   "/game": {
     urlPath: template_dir + "game.html",
-    script: [js_game_dir + "utils.js",
+    script: [
+      js_game_dir + "utils.js",
       js_game_dir + "main-menu.js",
       js_game_dir + "tournament-board.js",
       js_game_dir + "players-board.js",
       js_game_dir + "online-menu.js",
-      js_game_dir + "online-board.js"],
+      js_game_dir + "online-board.js"
+    ],
     title: "Game" + " - " + title_extension,
   }, 
 };
@@ -47,11 +49,14 @@ const urlRoute = {
 function getRoute(url) {
   const token = localStorage.getItem('token');
 
-  // if (!token) {
-  //   return urlRoute['/login'];
-  // } else if (token && url === '/login') {
-  //   return urlRoute['/'];
-  // }
+  if (!token) {
+    if (url === '/signup')
+      return urlRoute['/signup'];
+    else
+      return urlRoute['/login'];
+  } else if (token && url === '/login') {
+    return urlRoute['/'];
+  }
   return urlRoute[url];
 }
 
@@ -67,8 +72,23 @@ function setATagDefault() {
   });
 }
 
+// Sequential Script Loading
+function loadScriptInOrder(scripts, contentDiv) {
+  return scripts.reduce((promise, script) => {
+    return promise.then(() => {
+      return new Promise((resolve, reject) => {
+        const addScript = document.createElement('script');
+        addScript.src = script + "?v=" + new Date().getTime();
+        addScript.onload = resolve;
+        addScript.onerror = reject;
+        contentDiv.appendChild(addScript);
+      });
+    });
+  }, Promise.resolve());
+}
+
 // Load content from route
-function loadPage(url) {
+export function loadPage(url) {
   const route = getRoute(url);
   const contentDiv = document.getElementById('content');
 
@@ -77,14 +97,14 @@ function loadPage(url) {
     .then(data => {
       contentDiv.innerHTML = data;
       document.title = route.title;
-      console.log("load route");
       if (route.script) {
         if (url === '/game') {
-          route.script.forEach(e => {
-            const addScript = document.createElement('script');
-            addScript.src = e + "?v=" + new Date().getTime();
-            contentDiv.appendChild(addScript);
-          })
+          loadScriptInOrder(route.script, contentDiv);
+          // route.script.forEach(e => {
+          //   const addScript = document.createElement('script');
+          //   addScript.src = e + "?v=" + new Date().getTime();
+          //   contentDiv.appendChild(addScript);
+          // })
         } else {
           const addScript = document.createElement('script');
           // append query parameter timestamp to the script URL to prevent caching.

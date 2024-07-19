@@ -1,17 +1,33 @@
-import * as constant from "./constants.js"
+export async function fetchAPI(method, url, options = {}) {
+  const {
+    auth = true,
+    headers = {},
+    body,
+    throwErrors = true,
+    ...otherOptions
+  } = options;
 
-export async function fetchUserProfile() {
-  // const token = localStorage.getItem("token");
-  // if (!token) {
-  //   throw new Error("Error: Can't get token.")
-  // }
+  const myHeaders = new Headers(headers);
+
+  if (auth) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Error: Can't get token.")
+    }
+    myHeaders.append("Authorization", "Bearer " + token);
+  }
+
+  if (body && !myHeaders.has("Content-Type")) {
+    console.log("get it");
+    myHeaders.append('Content-Type', 'application/json');
+  }
 
   try {
-    const response = await fetch(constant.API_USER_PROFILE, {
-      method: "GET",
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      // },
+    const response = await fetch(url, {
+      method: method,
+      Headers: myHeaders,
+      body: body ? JSON.stringify(body) : undefined,
+      ...otherOptions
     });
 
     if (!response.ok) {
@@ -26,68 +42,24 @@ export async function fetchUserProfile() {
   }
 }
 
-export async function fetchFriendList() {
-  // const token = localStorage.getItem("token");
-  // if (!token) {
-  //   throw new Error("Error: Can't get token.")
-  // }
+// export async function postProfile(data) {
+//   try {
+//     const response = await fetch(constant.API_SIGNUP, {
+//       method: "POST",
+//       headers: {
+//         'content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(data)
+//     });
 
-  try {
-    const response = await fetch(constant.API_FRIEND_LIST, {
-      method: "GET",
-      // headers: {
-      //   Authorization: "Bearer " + token,
-      // },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
     
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("Error: fetching user profile", error);
-    throw error;
-  }
-}
-
-export async function fetchProfileById(id) {
-  try {
-    const response = await fetch(constant.API_PROFILE_BY_ID + id, {
-      method: "GET",
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("Error: fetching user profile", error);
-    throw error;
-  }
-}
-
-export async function postProfile(data) {
-  try {
-    const response = await fetch(constant.API_SIGNUP, {
-      method: "POST",
-      headers: {
-        'content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("Error: fetching", error);
-    throw error;
-  }
-}
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.log("Error: fetching", error);
+//     throw error;
+//   }
+// }
