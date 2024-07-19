@@ -44,19 +44,17 @@ function execTournament()
 }
 
 // pre-load the image
-let tmp = 0;
+let pongImg = null;
 var players = [{name: "Join The Tournament !"}];
 function createTournament()
 {
-	console.log("clicked tournament");
-	if (tmp == 0)
+	if (!pongImg)
 	{
-		const pongImg = new Image();
-		pongImg.src = "images/table-tennis.png";
+		pongImg = new Image();
+		pongImg.src = "js/gameUI/images/table-tennis.png";
 		pongImg.onload = function() { // call the anonymous function when the image is loaded
 			execTournament();
 		};
-		tmp = pongImg;
 	}
 	else
 		execTournament();
@@ -92,15 +90,15 @@ function handleBackBtn(btnObj, event)
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		manageEvt(1, startBtn);
-		manageEvt(1, createBtn);
 		manageEvt(1, backBtn);
 		manageEvt(1, handleAddPlayerBtn);
 		createMenu();
+		// manageEvt(1, createBtn);
 		// console.log("Back");
 	}
 }
 
-function drawNewCanvas()
+function updateTour()
 {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	createTournament();
