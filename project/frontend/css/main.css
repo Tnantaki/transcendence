@@ -97,6 +97,7 @@
 }
 
 #languageSelect {
+  /* visibility: visible; */
   background: black;
   font-size: var(--fs-lg);
   padding: var(--bs-xl);

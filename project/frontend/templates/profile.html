@@ -54,20 +54,23 @@
     </div>
     <div class="bk-friend">
       <div class="d-flex align-items-start justify-content-end bk-friend-title">
-        <a href="/">
-          <img class="ic-xl btn-hover mt-0 me-0" src="../static/svg/home.svg" alt="sign out button">
+        <!-- popup notification -->
+        <img class="ic-xl btn-hover"  data-bs-toggle="modal" data-bs-target="#notificationModal"
+          src="../static/svg/notification.svg" alt="notification button"
+        >
+        <a class="m-0 p-0" href="/">
+          <img class="ic-xl btn-hover p-0 mt-0 me-0" src="../static/svg/home.svg" alt="Home button">
         </a>
       </div>
       <div class="bk-item bk-friend-list-title">
         <h1 class="font-pixel font-stk-h3 friend-title h-md" data-i18n="friends">Friends</h1>
-        <ol class="d-flex flex-column align-items-center overflow-auto bk-friend-list" id="friend-scroll">
+        <ol class="d-flex flex-column align-items-center overflow-auto bk-friend-list scroll-custom" id="friendList"></ol>
       </div>
-      </ol>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Friend Profile -->
 <div class="modal fade" id="profileModal" tabindex="-1">
   <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
     <div class="modal-content">
@@ -118,3 +121,54 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Notification -->
+<div class="modal fade" id="notificationModal" tabindex="-1">
+  <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div id="friend-profile" class="bk-noti">
+          <div class="d-flex justify-content-center align-items-center bk-noti-title">
+            <h1 class="font-bs-bold h-md" data-i18n="friend_requests">Friend Requests</h1>
+          </div>
+          <ol class="d-flex flex-column align-items-center overflow-auto bk-noti-list scroll-custom" id="notiList">
+
+            <li class="noti-list-item">
+              <div class="d-flex align-items-center">
+                <div class="noti-item-picture">
+                  <img id="friendProfileImage" alt="profile-picture" src="../static/svg/default-user-picture.svg">
+                </div>
+                <div class="d-flex flex-column">
+                  <p class="font-bs fs-lg" style="color: #A2B1B5;">SSSSSSSSSSSSSSSSSSSS</p>
+                  <p class="font-bs fs-md" style="color: #0946A6;">Wants to be your friend</p>
+                </div>
+              </div>
+              <div class="d-flex justify-content-evenly align-items-center">
+                <button type="button" class="font-bs-bold btn btn-secondary m-0 fs-md"
+                  data-i18n="decline"></button>
+                <button type="button" class="font-bs-bold btn btn-primary m-0 fs-md"
+                  data-i18n="accept"></button>
+              </div>
+            </li>
+
+          </ol>
+          <div class="d-flex justify-content-evenly">
+            <button type="button" class="font-bs-bold fs-lg btn btn-primary"
+              data-bs-dismiss="modal" data-i18n="back">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <!-- <div class="d-flex justify-content-center friend-item-picture ">
+          <img src="${friend.image}" alt="profile picture">
+        </div>
+        <div class="d-flex align-items-center friend-item-name">
+          <div class="online-status ms-0"></div>
+          <p class="font-bs-bold fs-xl friend-name" data-bs-toggle="modal" data-bs-target="#profileModal" 
+            onclick="getProfileById(${friend.friend_id})">
+            ${friend.avatar_name}
+          </p>
+        </div>
+        <div class="friend-item-background"></div> -->
