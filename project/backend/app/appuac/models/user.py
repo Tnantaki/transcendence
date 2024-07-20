@@ -17,36 +17,22 @@ class User(AbstractUser):
         editable=False,
     )
     bio = models.TextField(default="")
-    avatar_name = models.CharField(max_length=255)
+    display_name = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+
     class Meta:
         db_table = "auth_user"
+    
+    def __repr__(self) -> str:
+        return f"user: {self.id}"
+
+    def __repr__(self) -> str:
+        return f"user: {self.id}"
 
 
-class MakeFriend(BaseID, BaseAutoDate):
-    """
-    if statis is accept both are friend
-    """
-
-    requestor = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="friend_request",
-    )
-    reciever = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="friend_list",
-    )
-
-    class StatusChoice(models.TextChoices):
-        pending = "P", "Pending"
-        accept = "A", "Accept"
-        reject = "R", "Reject"
-
-    status = models.CharField(
-        choices=StatusChoice.choices,
-        default=StatusChoice.pending,
-    )
+class FriendRequest(BaseAutoDate, BaseID):
+    requestor = models.ForeignKey(User, related_name="friend_requestor", on_delete=models.CASCADE,)
+    receiver = models.ForeignKey(User, related_name="friend_reciever", on_delete=models.CASCADE,)
+    status = models.CharField(max_length=255, default="pending")

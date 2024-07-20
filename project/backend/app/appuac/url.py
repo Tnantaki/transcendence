@@ -28,3 +28,9 @@ UACRouter.add_router(
     router=debug.debug_router,
     tags=["Debug"],
 )
+
+UACRouter.add_router(
+    prefix="uac/",
+    router=user.open_router,
+    tags=["Authentications"]
+)
