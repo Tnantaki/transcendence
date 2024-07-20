@@ -8,6 +8,7 @@ Import env variable from this module.
 import os
 from typing import Any
 
+
 ENV_NAMES = [
     'DJ_DB_NAME',
     'DJ_DB_USER',
@@ -47,6 +48,13 @@ def convert_env(env: str, value: str) -> Any:
             return value.lower() == 'true'
         case _:
             return value
+
+
+# with open("../.env", "r") as file:
+#     # print(file.read())
+#     for line in file.read().split("\n"):
+#         k, v = line.split("=")
+#         ENVS[k] = convert_env(k, v)
 
 
 for env in ENV_NAMES:

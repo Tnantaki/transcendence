@@ -1,0 +1,113 @@
+.main-block {
+  display: grid;
+  height: 100%;
+  grid-template-rows: 1fr minmax(0, 2fr);
+  grid-auto-flow: row;
+}
+
+.form-block {
+  display: grid;
+  grid-template-rows: 2fr 3fr;
+  margin: 0 10% 3% 10%;
+}
+
+.title-banner {
+  z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  width: 100%;
+  height: 60%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background-color: var(--clr-bg-title);
+}
+
+.picture-frame > img {
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: 50%;
+  width: min(200px, max(calc(200px * 0.15) + calc(200vw * 0.038), calc(200px * 0.15) + calc(200vh * 0.038)));
+  aspect-ratio: 1 / 1;
+}
+
+.grid-item {
+  display: flex;
+}
+
+.bio-input {
+  padding: var(--mg-xl);
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: var(--mg-xl);
+  background-color: transparent;
+  font-size: var(--fs-xxl);
+  resize: none;
+}
+.bio-input:focus {
+  border-color: var(--clr-shadow);
+  color: var(--clr-text);
+  background-color: transparent;
+}
+
+/* #bioInput:focus {
+  height: 100%;
+  resize: none;
+} */
+
+.edit-input {
+  margin: 0;
+  margin-bottom: var(--mg-xxl);
+  font-size: var(--fs-xxl);
+}
+
+.first-block-input {
+  display: flex;
+  gap: 15%;
+}
+
+.second-block-input {
+  column-gap: var(--mg-xxl);
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  min-height: 0;
+}
+
+.edit-btn {
+  padding: var(--pd-md);
+  font-size: var(--fs-xl);
+  width: min(200px, max(calc(200px * 0.15) + calc(200vw * 0.038), calc(200px * 0.15) + calc(200vh * 0.038)));
+  margin: var(--mg-xl) 0 0 0;
+}
+
+.edit-warning {
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: var(--mg-xl);
+}
+.edit-warning p {
+  margin: var(--mg-lg);
+  font-size: var(--fs-xl);
+  color: var(--clr-red);
+}
+
+.char-count {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: var(--fs-xl);
+  color: var(--clr-text);
+  padding: var(--mg-md);
+}
+
+#editName::placeholder {
+  opacity: 1;
+}
+
+.upload-btn img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--clr-border);
+  border: var(--bs-md) solid black;
+  border-radius: min(10px, calc(20px * 0.20) + calc(20vw * 0.038));
+  transform: translate(20%, 20%);
+}

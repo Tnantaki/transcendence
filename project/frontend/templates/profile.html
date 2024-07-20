@@ -1,0 +1,120 @@
+<link rel="stylesheet" href="../css/profile.css">
+
+<div class="d-flex w-100 h-100">
+  <div class="block-profile-main">
+    <div id="my-profile" class="bk-item bk-profile">
+      <div class="bk-profile-title">
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="profile-image">
+            <img id="profileImage" alt="profile-picture">
+          </div>
+        </div>
+        <div class="d-flex flex-column align-items-center font-bs">
+          <h1 class="h-md" id="avatarName"></h1>
+          <div>
+            <img class="ic-md" src="../static/svg/email_icon.svg" alt="email icon">
+            <p class="d-inline-block fs-lg" id="email"></p>
+          </div>
+          <p class="fs-md bio-box" id="bio"></p>
+        </div>
+        <div class="edit-button">
+          <a class="" href="/editProfile">
+            <img class="btn btn-primary ic-lg" src="../static/svg/edit_button.svg" alt="edit button">
+          </a>
+        </div>
+      </div>
+      <div class="bk-profile-stat font-bs">
+        <div class="micro-item">
+          <p data-i18n="win_lose">WIN / LOSE</p>
+          <p id="winLose" class="font-pixel font-stk-h3 stat"></p>
+        </div>
+        <div class="micro-item">
+          <p data-i18n="total">TOTAL</p>
+          <p id="totalPlay" class="font-pixel font-stk-h3 stat"></p>
+        </div>
+        <div class="micro-item">
+          <p data-i18n="tour_won">TOURNAMENT WON</p>
+          <p id="tourWon" class="font-pixel font-stk-h3 stat"></p>
+        </div>
+        <div class="micro-item">
+          <p data-i18n="tour_join">TOURNAMENT JOIN</p>
+          <p id="tourPlay" class="font-pixel font-stk-h3 stat"></p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-evenly">
+        <a href="/#">
+          <button class="font-bs-bold btn btn-primary bk-profile-button fs-lg" data-i18n="match_history">MATCH HISTORY &gt;&gt;</button>
+        </a>
+        <a href="/#">
+          <button class="font-bs-bold btn btn-primary bk-profile-button fs-lg" data-i18n="leaderboard">LEADERBOARD &gt;&gt;</button>
+        </a>
+      </div>
+      <div class="d-flex justify-content-evenly align-item">
+      </div>
+    </div>
+    <div class="bk-friend">
+      <div class="d-flex align-items-start justify-content-end bk-friend-title">
+        <a href="/">
+          <img class="ic-xl btn-hover mt-0 me-0" src="../static/svg/home.svg" alt="sign out button">
+        </a>
+      </div>
+      <div class="bk-item bk-friend-list-title">
+        <h1 class="font-pixel font-stk-h3 friend-title h-md" data-i18n="friends">Friends</h1>
+        <ol class="d-flex flex-column align-items-center overflow-auto bk-friend-list" id="friend-scroll">
+      </div>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1">
+  <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div id="friend-profile" class="bk-item bk-profile">
+          <div class="bk-profile-title">
+            <div class="d-flex justify-content-center align-items-center">
+              <div class="profile-image">
+                <img id="friendProfileImage" alt="profile-picture">
+              </div>
+            </div>
+            <div class="d-flex flex-column align-items-center font-bs">
+              <h1 class="h-md" id="friendAvatarName"></h1>
+              <div>
+                <img class="ic-md" src="../static/svg/email_icon.svg" alt="email icon">
+                <p class="d-inline-block fs-lg" id="friendEmail"></p>
+              </div>
+              <p class="fs-md bio-box" id="friendBio"></p>
+            </div>
+          </div>
+          <div class="bk-profile-stat font-bs">
+            <div class="micro-item">
+              <p data-i18n="win_lose">WIN / LOSE</p>
+              <p id="friendWinLose" class="font-pixel font-stk-h3 stat"></p>
+            </div>
+            <div class="micro-item">
+              <p data-i18n="total">TOTAL</p>
+              <p id="friendTotalPlay" class="font-pixel font-stk-h3 stat"></p>
+            </div>
+            <div class="micro-item">
+              <p data-i18n="tour_won">TOURNAMENT WON</p>
+              <p id="friendTourWon" class="font-pixel font-stk-h3 stat"></p>
+            </div>
+            <div class="micro-item">
+              <p data-i18n="tour_join">TOURNAMENT JOIN</p>
+              <p id="friendTourPlay" class="font-pixel font-stk-h3 stat"></p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-evenly">
+            <button type="button" class="font-bs-bold btn btn-secondary bk-friend-button"
+              data-bs-dismiss="modal" data-i18n="back">Back</button>
+            <a href="/#" class="font-bs-bold btn btn-danger bk-friend-button" data-i18n="delete_friend">Delete friend</a>
+          </div>
+          <div class="d-flex justify-content-evenly align-item">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
