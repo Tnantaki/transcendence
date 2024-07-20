@@ -20,6 +20,7 @@ class User(AbstractUser):
     display_name = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    friend = models.ManyToManyField("User", related_name="myfriend")
 
 
     class Meta:
@@ -35,4 +36,4 @@ class User(AbstractUser):
 class FriendRequest(BaseAutoDate, BaseID):
     requestor = models.ForeignKey(User, related_name="friend_requestor", on_delete=models.CASCADE,)
     receiver = models.ForeignKey(User, related_name="friend_reciever", on_delete=models.CASCADE,)
-    status = models.CharField(max_length=255, default="pending")
+    status = models.CharField(max_length=255, default="PENDING")

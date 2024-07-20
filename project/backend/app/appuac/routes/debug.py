@@ -1,5 +1,6 @@
 from ninja import Router
 from appuac.models.user import User
+from appuac.models.authsession import AuthSession
 from ninja import Schema, ModelSchema
 from faker import Faker
 import re
@@ -37,3 +38,20 @@ def post_create_userschema(request):
 )
 def get_all_user(request):
     return User.objects.all()
+
+@debug_router.get(
+    "/fast-token",
+    response={
+        200:dict
+    }
+)
+def fast_create_simple_token(request):
+    user = User.objects.create_user(
+        username=Faker().user_name(),
+        password="1234",
+    )
+    auth = AuthSession.objects.create(user=user) 
+    
+    return 200, {
+        "token": auth.id
+    }
