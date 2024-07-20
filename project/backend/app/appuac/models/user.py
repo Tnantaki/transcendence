@@ -5,10 +5,12 @@ from appuac.models.base import (
     BaseAutoDate,
     BaseID,
 )
-
+from datetime import timedelta
+from django.utils import timezone
 
 def gen_id():
     return generate(size=24)
+
 
 class User(AbstractUser):
     id = models.CharField(
@@ -17,36 +19,35 @@ class User(AbstractUser):
         editable=False,
     )
     bio = models.TextField(default="")
-    avatar_name = models.CharField(max_length=255)
+    display_name = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    friend = models.ManyToManyField("User", related_name="myfriend")
+
+    @property
+    def is_online(self):
+        res = self.authsession_set.filter(last_used__gte=timezone.now() - timedelta(minutes=60))
+        return res.exists()
 
     class Meta:
         db_table = "auth_user"
 
+    def __repr__(self) -> str:
+        return f"user: {self.id}"
 
-class MakeFriend(BaseID, BaseAutoDate):
-    """
-    if statis is accept both are friend
-    """
+    def __repr__(self) -> str:
+        return f"user: {self.id}"
 
+
+class FriendRequest(BaseAutoDate, BaseID):
     requestor = models.ForeignKey(
         User,
+        related_name="friend_requestor",
         on_delete=models.CASCADE,
-        related_name="friend_request",
     )
-    reciever = models.ForeignKey(
+    receiver = models.ForeignKey(
         User,
+        related_name="friend_reciever",
         on_delete=models.CASCADE,
-        related_name="friend_list",
     )
-
-    class StatusChoice(models.TextChoices):
-        pending = "P", "Pending"
-        accept = "A", "Accept"
-        reject = "R", "Reject"
-
-    status = models.CharField(
-        choices=StatusChoice.choices,
-        default=StatusChoice.pending,
-    )
+    status = models.CharField(max_length=255, default="PENDING")
