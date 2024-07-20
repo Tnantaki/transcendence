@@ -1,6 +1,7 @@
 from ninja import Router, Path, Field
 from ninja.errors import HttpError
 from appuac.models.user import User, FriendRequest
+from appuac.models.authsession import AuthSession
 from ninja import Schema, ModelSchema
 from pydantic import field_validator
 from django.shortcuts import get_object_or_404
@@ -13,6 +14,8 @@ class SimpleRespone(Schema):
 
 
 class UserSchema(ModelSchema):
+    is_online: bool = Field(default=False)
+
     class Meta:
         model = User
         fields = [
@@ -261,7 +264,7 @@ def get_friend_list(request):
     return user.friend
 
 @router.delete(
-    "/friend/{user_id}/",
+    "/friend/{friend_id}/",
     response={
         204: None,
     }
