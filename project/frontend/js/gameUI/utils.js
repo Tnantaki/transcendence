@@ -41,7 +41,7 @@ function initCanvas(title)
 	const imgRatio = 300;
 	imageX = textX - (imgRatio / 2);
 	imageY = textY + textHeight + (100 / 2);
-	ctx.drawImage(tmp, imageX, imageY, imgRatio, imgRatio);
+	ctx.drawImage(pongImg, imageX, imageY, imgRatio, imgRatio);
 	ctx.closePath();	
 	// console.log("canvas: " + imageX + " " + imageY)
 }

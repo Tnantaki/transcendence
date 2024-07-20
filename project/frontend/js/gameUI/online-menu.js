@@ -40,14 +40,13 @@ var rooms = [{
 function createLobby(type)
 {
 	rooms.type = type;
-	if (tmp == 0)
+	if (!pongImg)
 	{
-		const pongImg = new Image();
-		pongImg.src = "images/table-tennis.png";
+		pongImg = new Image();
+		pongImg.src = "js/gameUi/images/table-tennis.png";
 		pongImg.onload = function() { // call the anonymous function when the image is loaded
 			execLobby();
 		};
-		tmp = pongImg;
 	}
 	else
 		execLobby();

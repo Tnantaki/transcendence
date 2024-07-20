@@ -47,7 +47,7 @@ function addPlayer(name)
 		players[0].name = name;
 	else
 		players.push({name: name});
-	drawNewCanvas(players);
+	updateTour(players);
 }
 
 function drawCircle(x, y, radius, fillStyle)
