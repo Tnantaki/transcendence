@@ -1,36 +1,32 @@
 import enLanguage from '../locales/en.json' with {type: "json"};
 import thLanguage from '../locales/th.json' with {type: "json"};
 
+export function setSelectLanguage() {
+  const savedLanguage = localStorage.getItem('currentLanguage') || 'en';
+  const selectLanguage = document.getElementsByClassName('language-select')[0];
 
-// import thLanguage from '../locales/th.json';
+  if (selectLanguage) {
+    selectLanguage.addEventListener('change', (event) => {
+      const savedLanguage  = localStorage.getItem('currentLanguage');
+      const chooseLanguage = event.target.value;
 
-// async function loadTranslations() {
-//   const enResponse = await fetch('/locales/en.json');
-//   translations.en = await enResponse.json();
-  
-//   const esResponse = await fetch('/locales/es.json');
-//   translations.es = await esResponse.json();
-// }
-
-export function loadLanguage() {
-  let currentLanguage = localStorage.getItem('currentLanguage');
-
-  if (currentLanguage === 'undefined') {
-    currentLanguage = 'en';
-    localStorage.setItem('currentLanguage', currentLanguage);
+      if (chooseLanguage != savedLanguage) {
+        translatePage(chooseLanguage);
+      }
+    });
+    selectLanguage.value = savedLanguage;
   }
-  translatePage(currentLanguage);
+  translatePage(savedLanguage);
 }
 
-export function translatePage(language) {
+function translatePage(language) {
   let translations = {};
+
   if (language === 'th')
     translations = thLanguage;  
   else
     translations = enLanguage;  
-  console.log("translage page");
   document.querySelectorAll('[data-i18n]').forEach((element) => {
-    console.log("translage");
     const key = element.getAttribute('data-i18n');
     if (element.placeholder !== undefined) {
       element.placeholder = translations[key] || key;
@@ -38,15 +34,5 @@ export function translatePage(language) {
       element.textContent = translations[key] || key;
     }
   });
+  localStorage.setItem('currentLanguage', language);
 }
-
-
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   loadTranslations();
-//   const savedLanguage = localStorage.getItem('language');
-//   if (savedLanguage) {
-//     currentLanguage = savedLanguage;
-//   }
-//   translatePage();
-// });

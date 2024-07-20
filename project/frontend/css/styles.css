@@ -224,7 +224,8 @@ body {
   border: var(--bs-md) solid var(--clr-border);
   background-color: transparent;
   overflow: hidden;
-  margin: var(--mg-lg);
+  margin-top: var(--bs-xl);
+  margin-bottom: var(--mg-xl);
   padding: var(--pd-lg);
 }
 
@@ -264,6 +265,7 @@ body {
 }
 
 .text-error {
+  align-self: self-start;
   display: none;
   order: flex-wrap;
   color: var(--clr-red);

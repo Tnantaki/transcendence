@@ -16,37 +16,42 @@
 </head>
 
 <body>
-	<!-- standby-page -->
-	<div class="border-line" id="content"></div>
-	<div id="login">
-		<script type="module" src="./js/index.js"></script>
-		<script type="module" src="./js/i18n.js"></script>
-		<script src="js/router.js"></script>
- 		<script>
-			function toGamePage(){
-				document.getElementById('content').style.display = 'none';
-				document.getElementById('game-page').style.display = 'block';
-			};
-  		</script>
-	</div>
+  <div class="border-line" id="content"></div>
 
-	<!-- game-page -->
-	<div id="game-page" style="display: none;">
-		<!-- <div style="background-color: bisque;"> -->
-			<center>
-					<canvas id="gameArea" width="1024" height="600"></canvas>
-					<script src="./js/gameUI/utils.js"></script>
-					<script src="./js/gameUI/main-menu.js"></script>
-					<script src="./js/gameUI/tournament-board.js"></script>
-					<script src="./js/gameUI/players-board.js"></script>
-					<script src="./js/gameUI/online-menu.js"></script>
-					<script src="./js/gameUI/online-board.js"></script>
-			</center>
-		<!-- </div> -->
-	</div>
+  <!-- Modal Logout -->
+  <div class="modal fade" id="logoutModal" tabindex="-1">
+    <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+      <div class="modal-content popup-content">
+        <div class="modal-body">
+          <div class="popup-frame">
+            <div class="popup-header-icon">
+              <img src="../static/svg/alert.svg" alt="alert picture">
+            </div>
+            <h1 class="font-bs-bold fs-xl" style="color: #B63A3A;" data-i18n="confirm_logout">CONFIRM LOGOUT</h1>
+            <div class="d-flex justify-content-center popup-body">
+              <p class="font-bs fs-lg" style="color: #ffffff;" data-i18n="confirm_logout_content">
+                Oh no !!  You’re leaving........  Are you sure you want to logout from our Pong42 ?
+              </p>
+            </div>
+            <div class="d-flex justify-content-evenly popup-footer">
+              <button type="button" class="font-bs-bold btn btn-secondary"
+                data-bs-dismiss="modal" data-i18n="no">No !!</button>
+              <a href="/login">
+                <button type="button" class="font-bs-bold btn btn-danger"
+                data-i18n="yes" id="submitLogout">Yes</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
+  <script src="./js/index.js" async></script>
+  <script type="module" src="./js/router.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>
