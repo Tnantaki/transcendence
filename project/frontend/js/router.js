@@ -1,6 +1,9 @@
+import { setSelectLanguage } from "./i18n.js";
+
 const template_dir = "/templates/";
 const js_dir = "js/";
 const title_extension = "Transcendence";
+const js_game_dir = js_dir + "gameUX/";
 
 const urlRoute = {
   "/": {
@@ -28,32 +31,105 @@ const urlRoute = {
     script: js_dir + "editProfile.js",
     title: "Edit Profile" + " - " + title_extension,
   }, 
+  "/game": {
+    urlPath: template_dir + "game.html",
+    script: [
+      js_game_dir + "utils.js",
+      js_game_dir + "main-menu.js",
+      js_game_dir + "tournament-board.js",
+      js_game_dir + "players-board.js",
+      js_game_dir + "online-menu.js",
+      js_game_dir + "online-board.js"
+    ],
+    title: "Game" + " - " + title_extension,
+  }, 
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+// Check Token
+function getRoute(url) {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    if (url === '/signup')
+      return urlRoute['/signup'];
+    else
+      return urlRoute['/login'];
+  } else if (token && url === '/login') {
+    return urlRoute['/'];
+  }
+  return urlRoute[url];
+}
+
+// Disable default a tag behavior of reload full page to make SPA
+function setATagDefault() {
+  const linkTags = document.querySelectorAll('a');
+  linkTags.forEach(link => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const url = link.getAttribute('href'); 
+      loadPage(url);
+    });
+  });
+}
+
+// Sequential Script Loading
+function loadScriptInOrder(scripts, contentDiv) {
+  return scripts.reduce((promise, script) => {
+    return promise.then(() => {
+      return new Promise((resolve, reject) => {
+        const addScript = document.createElement('script');
+        addScript.src = script + "?v=" + new Date().getTime();
+        addScript.onload = resolve;
+        addScript.onerror = reject;
+        contentDiv.appendChild(addScript);
+      });
+    });
+  }, Promise.resolve());
+}
+
+// Load content from route
+export function loadPage(url) {
+  const route = getRoute(url);
   const contentDiv = document.getElementById('content');
-  const location = window.location.pathname;
-  const page = urlRoute[location];
-  console.log(location); // Print Debug
 
-  function loadPage(page) {
-    fetch(page.urlPath)
-      .then(response => response.text())
-      .then(data => {
-        contentDiv.innerHTML = data;
-        document.title = page.title;
-        if (page.script) {
+  fetch(route.urlPath)
+    .then(response => response.text())
+    .then(data => {
+      contentDiv.innerHTML = data;
+      document.title = route.title;
+      if (route.script) {
+        if (url === '/game') {
+          loadScriptInOrder(route.script, contentDiv);
+          // route.script.forEach(e => {
+          //   const addScript = document.createElement('script');
+          //   addScript.src = e + "?v=" + new Date().getTime();
+          //   contentDiv.appendChild(addScript);
+          // })
+        } else {
           const addScript = document.createElement('script');
-
-          addScript.src = page.script;
+          // append query parameter timestamp to the script URL to prevent caching.
+          addScript.src = route.script + "?v=" + new Date().getTime();
           addScript.type = 'module';
           contentDiv.appendChild(addScript);
         }
-      })
-      .catch(error => {
-        contentDiv.innerHTML = '<p>Error loading page.</p>';
-        console.error('Error loading page:', error);
-      });
-  }
-  loadPage(page);
+      }
+      setATagDefault();
+      setSelectLanguage();
+      history.pushState({url: url}, null, url);
+    })
+    .catch(error => {
+      contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;
+      console.error('Error loading page:', error);
+    });
+}
+
+// Triggering index.html to load content page from url input
+document.addEventListener('DOMContentLoaded', () => {
+  loadPage(location.pathname);
+});
+
+// Popstate will trigger on back and forward buttom
+window.addEventListener('popstate', (event) => {
+  if (event.state)
+    loadPage(event.state.url);
 });

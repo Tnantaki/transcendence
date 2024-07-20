@@ -10,14 +10,14 @@
   <div class="container col-xxl-4 col-xl-5 col-sm-5 d-flex flex-column">
     <div class="d-flex block-login-input ">
       <img class="icon-custom" src="../static/svg/username.svg" alt="user image">
-      <input type="text" class="border border-0 text-center font-bs-bold input-login-custom login-input" name="username"
-        placeholder="Username" required>
+      <input type="text" class="border border-0 text-center font-bs-bold input-login-custom login-input"
+        name="username" placeholder="Username" required>
       <div class="icon-custom"></div>
     </div>
     <div class="d-flex block-login-input">
       <img class="icon-custom" src="../static/svg/password.svg" alt="lock image">
       <input type="password" class="border border-0 text-center font-bs-bold input-login-custom login-input"
-        name="password" placeholder="Password" required>
+        autocomplete="on" name="password" placeholder="Password" required>
       <img class="icon-custom btn-eye btn-hover" src="../static/svg/showpassword.svg" alt="eye image"
         onclick="togglePassword(this.previousElementSibling)">
     </div>

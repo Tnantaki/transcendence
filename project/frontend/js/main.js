@@ -1,22 +1,38 @@
-import { loadLanguage } from "./i18n.js";
+import * as constant from "./constants.js"
+import { fetchAPI } from "./api.js"
 
-if (document.readyState !== 'loading') {
-  setDisplayLaguage();
-} else {
-  document.addEventListener('DOMContentLoaded', () => {
-    setDisplayLaguage();
-  });
-}
+async function getProfile() {
+  try {
+    const profile = document.getElementById("blockProfile");
+    const profileValue = await fetchAPI("GET", constant.API_USER_PROFILE, {
+      auth: false,
+    }); // TODO: auth must be true
 
-function setDisplayLaguage() {
-  const selectedLanguage = document.getElementsByClassName('language-select')[0];
-
-  if (selectedLanguage) {
-    let savedLanguage = localStorage.getItem('currentLanguage');
-
-    if (savedLanguage === 'undefined')
-      savedLanguage = 'en';
-    selectedLanguage.value = savedLanguage
+    profile.querySelector("#profilePicture").src = profileValue["image"];
+    profile.querySelector("#profileName").innerHTML = profileValue["avatar_name"];
+    
+  } catch (error) {
+    console.error("Failed to fetch API:", error);
   }
-  loadLanguage();
 }
+
+async function submitLogout() {
+  try {
+    await fetchAPI("POST", constant.API_LOGOUT);
+
+    localStorage.removeItem("token");
+    console.log("Logout success");
+  } catch (error) {
+    console.error("Failed to fetch API:", error);
+  }
+}
+
+const btnLogout = document.getElementById("submitLogout");
+
+btnLogout.addEventListener('click', () => {
+  submitLogout();
+  const modal = bootstrap.Modal.getInstance(document.getElementById("logoutModal"));
+  modal.hide();
+});
+
+getProfile();

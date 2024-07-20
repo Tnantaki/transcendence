@@ -1,17 +1,5 @@
-import { loadLanguage } from "./i18n.js";
-
-// Prevent Event fire
-if (document.readyState !== 'loading') {
-  console.log("Document is ready");
-  countCharacter();
-  loadLanguage();
-} else {
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log("Document was not ready");
-    countCharacter();
-    loadLanguage();
-  });
-}
+// document.addEventListener('DOMContentLoaded', () => {
+// });
 
 function countCharacter() {
   const textArea = document.getElementById('bioInput');
@@ -23,6 +11,19 @@ function countCharacter() {
   });
 }
 
+async function editProfile() {
+  try {
+    const formUpload = document.getElementById('upload-form');
+    const Formbody = new FormData();
+    // const profileValue = await fetchProfileById(id);
+    // await 
+  } catch (error) {
+    console.error("Failed update profile:", error);
+  }
+}
+
+countCharacter();
+editProfile();
 // TODO: update api
 // const formUpload = document.getElementById('upload-form');
 // formUpload.addEventListener('submit', (event) => {

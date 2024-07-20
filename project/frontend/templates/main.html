@@ -1,18 +1,18 @@
 <link rel="stylesheet" href="../css/main.css">
 
 <nav class="d-flex align-items-center justify-content-between main-header">
-  <div class="d-flex align-items-center box-profile">
+  <div class="d-flex align-items-center box-profile" id="blockProfile">
     <div class="profile-frame">
       <a href="/profile">
-        <img src="../static/svg/default-user-picture.svg" alt="profile-picture">
+        <img id="profilePicture" alt="profile-picture">
       </a>
     </div>
     <div>
-      <p class="font-bs-bold fs-lg ms-2">Wink_Warrior</p>
+      <p id="profileName" class="font-bs-bold fs-lg ms-2"></p>
     </div>
   </div>
   <div class="d-flex align-items-center justify-content-end gap-3 me-4">
-    <select class="rounded-pill font-bs-bold btn-custom-pill language-select" name="" id="languageSelect" onchange="toggleLanguage(event)">
+    <select class="rounded-pill font-bs-bold btn-custom-pill language-select" name="" id="languageSelect">
       <option value="en" data-i18n="english">English</option>
       <option value="th" data-i18n="thai">Thai</option>
     </select>
@@ -23,13 +23,12 @@
   </div>
 </nav>
 <div class="d-flex flex-column justify-content-center circle-background">
-  <h2 class="d-flex justify-content-center m-0 font-train font-stk-h1 main-item1" data-i18n="welcome">WELCOME</h2>
+  <h2 class="d-flex justify-content-center m-0 font-train font-stk-h1 main-item1" data-i18n="welcome"></h2>
   <h3 class="d-flex justify-content-end m-0 font-train font-stk-h3 main-item2" data-i18n="to">TO</h3>
   <h3 class="d-flex justify-content-center m-0 font-pixel font-stk-h3 main-item3">42</h3>
   <h5 class="d-flex justify-content-center font-pixel font-stk-h3 main-item4">PONGAME</h5>
   <div class="d-flex justify-content-center main-item5">
-    <button id="play-button" class="font-pixel font-stk-h3 btn-play" data-i18n="play" onclick="toGamePage()">PLAY</button>
-    <!-- <button id="play-button" class="font-pixel font-stk-h3 btn-play" data-i18n="play">PLAY</button> -->
+    <a class="font-pixel font-stk-h3 btn-play" href="/game" data-i18n="play">PLAY</a>
   </div>
   <img class="pingpong-racket-main" src="../static/svg/Table tennis.svg" alt="Table tennis image">
 </div>
@@ -62,31 +61,4 @@
         <p class="font-bs">LULLNA</p>
       </div>
     </div>
-</div>
-
-<!-- Modal Logout -->
-<div class="modal fade" id="logoutModal" tabindex="-1">
-  <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
-    <div class="modal-content popup-content">
-      <div class="modal-body">
-        <div class="popup-frame">
-          <div class="popup-header-icon">
-            <img src="../static/svg/alert.svg" alt="alert picture">
-          </div>
-          <h1 class="font-bs-bold fs-xl" style="color: #B63A3A;" data-i18n="confirm_logout">CONFIRM LOGOUT</h1>
-          <div class="d-flex justify-content-center popup-body">
-            <p class="font-bs fs-lg" style="color: #ffffff;" data-i18n="confirm_logout_content">
-              Oh no !!  You’re leaving........  Are you sure you want to logout from our Pong42 ?
-            </p>
-          </div>
-          <div class="d-flex justify-content-evenly popup-footer">
-            <button type="button" class="font-bs-bold btn btn-secondary bk-friend-button"
-              data-bs-dismiss="modal" data-i18n="no">No !!</button>
-            <button type="button" class="font-bs-bold btn btn-danger"
-              data-i18n="yes">Yes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

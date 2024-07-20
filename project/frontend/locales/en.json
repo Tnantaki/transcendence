@@ -29,5 +29,8 @@
   "continue": "Continue",
   "create_account_content": "YOUR ACCOUNT HAS BEEN CREATED",
   "delete_friend_content": "Are you sure you want to delete this contact ?",
-  "back_to_login": "Back to login"
+  "back_to_login": "Back to login",
+  "friend_requests": "Friend Requests",
+  "decline": "Decline",
+  "accept": "Accept"
 }
