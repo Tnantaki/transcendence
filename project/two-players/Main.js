@@ -8,12 +8,14 @@ let leftPaddle;
 let rightPaddle;
 let ball;
 
-leftPaddle = new Paddle(26, canvas, ctx, 'w', 's');
-rightPaddle = new Paddle(canvas.width - 48, canvas, ctx, 'ArrowUp', 'ArrowDown');
+leftPaddle = new Paddle(26, canvas, ctx, 87, 83);
+rightPaddle = new Paddle(canvas.width - 48, canvas, ctx, 38, 40);
 ball = new Ball(canvas, ctx);
 
 document.addEventListener("keydown", (event) => { leftPaddle.keyPressed(event)} );
 document.addEventListener("keyup", (event) => { leftPaddle.keyReleased(event)} );
+document.addEventListener("keydown", (event) => { rightPaddle.keyPressed(event)} );
+document.addEventListener("keyup", (event) => { rightPaddle.keyReleased(event)} );
 
 function drawGame() {
     clearScreen();
