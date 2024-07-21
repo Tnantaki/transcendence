@@ -1,15 +1,20 @@
 import { Paddle } from "./Paddle.js";
 import { Ball } from "./Ball.js";
+import { Score } from "./Score.js";
 
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
 
 let leftPaddle;
 let rightPaddle;
+let leftScore;
+let rightScore;
 let ball;
 
 leftPaddle = new Paddle(26, canvas, ctx, 87, 83);
 rightPaddle = new Paddle(canvas.width - 48, canvas, ctx, 38, 40);
+leftScore = new Score(canvas.width / 2 - 40, canvas, ctx);
+rightScore = new Score(canvas.width / 2 + 40, canvas, ctx);
 ball = new Ball(canvas, ctx);
 
 document.addEventListener("keydown", (event) => { leftPaddle.keyPressed(event)} );
@@ -27,12 +32,14 @@ function drawGame() {
     rightPaddle.update();
     // rightPaddle.runAI(ball.y);
 
-    ball.update();
+    ball.update(leftScore, rightScore);
     ball.display();
     ball.hitLeftPaddle(leftPaddle);
     ball.hitRightPaddle(rightPaddle);
 
     drawCenLine();
+    leftScore.display();
+    rightScore.display();
     requestAnimationFrame(drawGame);
 }
 
