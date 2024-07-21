@@ -1,8 +1,8 @@
 import { setSelectLanguage } from "./i18n.js";
 
+const title_extension = "Transcendence";
 const template_dir = "/templates/";
 const js_dir = "js/";
-const title_extension = "Transcendence";
 const js_game_dir = js_dir + "gameUX/";
 const js_user_dir = js_dir + "userManage/";
 
@@ -56,21 +56,6 @@ const urlRoute = {
   }, 
 };
 
-// Check Token
-function getRoute(url) {
-  const token = localStorage.getItem('token');
-
-  // if (!token) {
-  //   if (url === '/signup')
-  //     return urlRoute['/signup'];
-  //   else
-  //     return urlRoute['/login'];
-  // } else if (token && url === '/login') {
-  //   return urlRoute['/'];
-  // }
-  return urlRoute[url];
-}
-
 // Disable default a tag behavior of reload full page to make SPA
 function setATagDefault() {
   const linkTags = document.querySelectorAll('a');
@@ -100,7 +85,14 @@ function loadScriptInOrder(scripts, contentDiv) {
 
 // Load content from route
 export function loadPage(url) {
-  const route = getRoute(url);
+  const token = localStorage.getItem('token');
+
+  if (!token && url !== "/signup") {
+    url = "/login"
+  } else if (token && url === '/login') {
+    url = "/"
+  }
+  const route = urlRoute[url];
   const contentDiv = document.getElementById('content');
 
   fetch(route.urlPath)

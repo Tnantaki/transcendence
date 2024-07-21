@@ -1,26 +1,29 @@
 import * as constant from "../constants.js"
-import { fetchAPI } from "../api.js"
+import { fetchAPI } from "./api.js"
 
 async function getProfile() {
   try {
     const profile = document.getElementById("my-profile");
-    const response = await fetchAPI("GET", constant.MOCKUP_PROFILE, {
-      auth: false,
-    }); // TODO: auth must be true
+    const response = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true, });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const profileValue = await response.json();
+    console.log("fetch profile success");
 
-    profile.querySelector("#displayName").innerHTML = profileValue["avatar_name"];
-    profile.querySelector("#bio").innerHTML = profileValue["bio"];
-    profile.querySelector("#email").innerHTML = profileValue["email"];
-    profile.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
-    profile.querySelector("#totalPlay").innerHTML = profileValue["total_games_play"];
-    profile.querySelector("#tourWon").innerHTML = profileValue["tour_won"];
-    profile.querySelector("#tourPlay").innerHTML = profileValue["tour_play"];
-    profile.querySelector("#profileImage").src = profileValue["image"];
+    profile.querySelector("#displayName").innerHTML = profileValue["display_name"] || "";
+    profile.querySelector("#bio").innerHTML = profileValue["bio"] || "";
+    profile.querySelector("#email").innerHTML = profileValue["email"] || "";
+    if (!profileValue["wins"] || !profileValue["losses"])
+      profile.querySelector("#winLose").innerHTML = "";
+    else
+      profile.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
+    profile.querySelector("#totalPlay").innerHTML = profileValue["total_games_play"] || "";
+    profile.querySelector("#tourWon").innerHTML = profileValue["tour_won"] || "";
+    profile.querySelector("#tourPlay").innerHTML = profileValue["tour_play"] || "";
+    profile.querySelector("#profileImage").src = profileValue["image"]
+      || "../static/svg/default-user-picture.svg";
   } catch (error) {
     console.error(error.message);
   }
@@ -36,14 +39,18 @@ async function getProfileById(id) {
     }
     const profileValue = await response.json();
 
-    profile.querySelector("#friendDisplayName").innerHTML = profileValue["avatar_name"];
-    profile.querySelector("#friendBio").innerHTML = profileValue["bio"];
-    profile.querySelector("#friendEmail").innerHTML = profileValue["email"];
-    profile.querySelector("#friendWinLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
-    profile.querySelector("#friendTotalPlay").innerHTML = profileValue["total_games_play"];
-    profile.querySelector("#friendTourWon").innerHTML = profileValue["tour_won"];
-    profile.querySelector("#friendTourPlay").innerHTML = profileValue["tour_play"];
-    profile.querySelector("#friendProfileImage").src = profileValue["image"];
+    profile.querySelector("#friendDisplayName").innerHTML = profileValue["display_name"] || "";
+    profile.querySelector("#friendBio").innerHTML = profileValue["bio"] || "";
+    profile.querySelector("#friendEmail").innerHTML = profileValue["email"] || "";
+    if (!profileValue["wins"] || !profileValue["losses"])
+      profile.querySelector("#friendWinLose").innerHTML = "";
+    else
+      profile.querySelector("#friendWinLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
+    profile.querySelector("#friendTotalPlay").innerHTML = profileValue["total_games_play"] || "";
+    profile.querySelector("#friendTourWon").innerHTML = profileValue["tour_won"] || "";
+    profile.querySelector("#friendTourPlay").innerHTML = profileValue["tour_play"] || "";
+    profile.querySelector("#friendProfileImage").src = profileValue["image"]
+      || "./static/svg/default-user-picture.svg";
   } catch (error) {
     console.error(error.message);
   }
@@ -71,8 +78,8 @@ async function getFriendList() {
         <div class="d-flex align-items-center friend-item-name">
           <div class="online-status ms-0"></div>
           <p class="font-bs-bold fs-xl friend-name" data-bs-toggle="modal" data-bs-target="#profileModal" 
-            onclick="getProfileById(${friend.friend_id})">
-            ${friend.avatar_name}
+            onclick="getProfileById(${friend.id})">
+            ${friend.display_name}
           </p>
         </div>
         <div class="friend-item-background"></div>

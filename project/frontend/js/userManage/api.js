@@ -20,13 +20,11 @@ export async function fetchAPI(method, url, options = {}) {
   if (body && !myHeaders.has("Content-Type")) {
     myHeaders.append('Content-Type', 'application/json');
   }
-  console.log(url);
-  console.log("mytoken:", myHeaders.get("Authorization"));
 
   try {
     const response = await fetch(url, {
       method: method,
-      Headers: myHeaders,
+      headers: myHeaders,
       body: body ? JSON.stringify(body) : undefined,
       ...otherOptions
     });
