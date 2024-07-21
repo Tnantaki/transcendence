@@ -1,3 +1,5 @@
+// import { drawGame } from "../gamePlay/Main";
+
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
 
@@ -71,7 +73,7 @@ function handleMenu(event)
 		{
 			manageEvt(1, handleMenu);
 			if (btn == "Single Player")
-				console.log("Single Player");
+				drawGame();
 			else if (btn == "Versus")
 				console.log("Versus");
 			else if (btn == "Online")
