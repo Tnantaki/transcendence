@@ -31,6 +31,16 @@ const urlRoute = {
     script: js_dir + "editProfile.js",
     title: "Edit Profile" + " - " + title_extension,
   }, 
+  "/history": {
+    urlPath: template_dir + "match-history.html",
+    script: "",
+    title: "Match History" + " - " + title_extension,
+  }, 
+  "/leaderboard": {
+    urlPath: template_dir + "leaderboard.html",
+    script: "",
+    title: "Leaderboard" + " - " + title_extension,
+  }, 
   "/game": {
     urlPath: template_dir + "game.html",
     script: [

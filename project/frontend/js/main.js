@@ -1,30 +1,38 @@
 import * as constant from "./constants.js"
 import { fetchAPI } from "./api.js"
+import { loadPage } from "./router.js";
 
 async function getProfile() {
   try {
     const profile = document.getElementById("blockProfile");
-    const profileValue = await fetchAPI("GET", constant.API_USER_PROFILE, {
-      auth: false,
-    }); // TODO: auth must be true
+    const response = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const profileValue = await response.json();
 
     profile.querySelector("#profilePicture").src = profileValue["image"];
     profile.querySelector("#profileName").innerHTML = profileValue["avatar_name"];
     
   } catch (error) {
-    console.error("Failed to fetch API:", error);
+    console.error(error.message);
   }
 }
 
 async function submitLogout() {
   try {
-    await fetchAPI("POST", constant.API_LOGOUT);
+    const response = await fetchAPI("POST", constant.API_LOGOUT, { auth: true });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     localStorage.removeItem("token");
     console.log("Logout success");
   } catch (error) {
-    console.error("Failed to fetch API:", error);
+    console.error(error.message);
   }
+  loadPage("/login");
 }
 
 const btnLogout = document.getElementById("submitLogout");

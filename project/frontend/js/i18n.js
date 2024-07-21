@@ -19,7 +19,7 @@ export function setSelectLanguage() {
   translatePage(savedLanguage);
 }
 
-function translatePage(language) {
+export function translatePage(language) {
   let translations = {};
 
   if (language === 'th')

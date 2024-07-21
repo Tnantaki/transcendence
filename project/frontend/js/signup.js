@@ -1,5 +1,7 @@
 import * as constant from "./constants.js"
 import { fetchAPI } from "./api.js"
+import { loadPage } from "./router.js";
+import { translatePage } from "./i18n.js";
 
 console.log("Signup Page");
 
@@ -13,15 +15,8 @@ function validateInput(input) {
     const errMsg = signupForm.querySelector("#username-error");
     errMsg.previousElementSibling.style.marginBottom = "2px";
     errMsg.style.display = "block";
-    errMsg.innerHTML = "Alphabet or number, At least 6 character";
-    returnValue = false;
-  }
-
-  if (!regex.test(input.avatarName)) {
-    const errMsg = signupForm.querySelector("#avatarName-error");
-    errMsg.previousElementSibling.style.marginBottom = "2px";
-    errMsg.style.display = "block";
-    errMsg.innerHTML = "Alphabet or number, At least 6 character";
+    errMsg.setAttribute("data-i18n", "error_username_invalid");
+    translatePage();
     returnValue = false;
   }
 
@@ -29,7 +24,6 @@ function validateInput(input) {
     const errMsg = signupForm.querySelector("#password2-error");
     errMsg.previousElementSibling.style.marginBottom = "2px";
     errMsg.style.display = "block";
-    errMsg.innerHTML = "Password must be the same!";
     returnValue = false;
   }
   return returnValue;
@@ -41,7 +35,7 @@ signupForm.addEventListener("submit", async (event) => {
 
   const input = {
     username: formData.get("username"),
-    avatarName: formData.get("avatarName"),
+    email: formData.get("email"),
     password: formData.get("password"),
     password2: formData.get("password2"),
   };
@@ -51,22 +45,31 @@ signupForm.addEventListener("submit", async (event) => {
     return ;
   }
 
-  // Create JSON object
   const body = {
     username: input.username,
     password: input.password,
-    avatarName: input.avatarName,
+    email: input.email,
   };
 
   try {
-    const data = await fetchAPI("POST", constant.API_SINGUP, {
-      auth: false,
-      body: body,
-    });
+    const response = await fetchAPI("POST", constant.API_SIGNUP, { body: body });
 
-    console.log("Signup Success:", result);
-    window.location.href = "/login";
+    if (!response.ok) {
+      if (response.status === 409) { // data conflict
+        const errMsg = signupForm.querySelector("#username-error");
+        errMsg.previousElementSibling.style.marginBottom = "2px";
+        errMsg.style.display = "block";
+        errMsg.setAttribute("data-i18n", "error_username_same");
+        translatePage();
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    console.log("Signup Success");
+    console.log(data);
+    loadPage("/login");
   } catch (error) {
-    console.error("Failed to fetch API:", error);
+    console.error(error.message);
   }
 });

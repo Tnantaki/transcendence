@@ -1,6 +1,6 @@
 export async function fetchAPI(method, url, options = {}) {
   const {
-    auth = true,
+    auth = false,
     headers = {},
     body,
     throwErrors = true,
@@ -18,9 +18,10 @@ export async function fetchAPI(method, url, options = {}) {
   }
 
   if (body && !myHeaders.has("Content-Type")) {
-    console.log("get it");
     myHeaders.append('Content-Type', 'application/json');
   }
+  console.log(url);
+  console.log("mytoken:", myHeaders.get("Authorization"));
 
   try {
     const response = await fetch(url, {
@@ -29,37 +30,9 @@ export async function fetchAPI(method, url, options = {}) {
       body: body ? JSON.stringify(body) : undefined,
       ...otherOptions
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return data;
+    return response;
   } catch (error) {
     console.log("Error: fetching user profile", error);
     throw error;
   }
 }
-
-// export async function postProfile(data) {
-//   try {
-//     const response = await fetch(constant.API_SIGNUP, {
-//       method: "POST",
-//       headers: {
-//         'content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(data)
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-    
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.log("Error: fetching", error);
-//     throw error;
-//   }
-// }

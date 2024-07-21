@@ -8,7 +8,7 @@ async function getProfile() {
       auth: false,
     }); // TODO: auth must be true
 
-    profile.querySelector("#avatarName").innerHTML = profileValue["avatar_name"];
+    profile.querySelector("#displayName").innerHTML = profileValue["avatar_name"];
     profile.querySelector("#bio").innerHTML = profileValue["bio"];
     profile.querySelector("#email").innerHTML = profileValue["email"];
     profile.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
@@ -26,7 +26,7 @@ async function getProfileById(id) {
     const profile = document.getElementById("friend-profile");
     const profileValue = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id);
 
-    profile.querySelector("#friendAvatarName").innerHTML = profileValue["avatar_name"];
+    profile.querySelector("#friendDisplayName").innerHTML = profileValue["avatar_name"];
     profile.querySelector("#friendBio").innerHTML = profileValue["bio"];
     profile.querySelector("#friendEmail").innerHTML = profileValue["email"];
     profile.querySelector("#friendWinLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
