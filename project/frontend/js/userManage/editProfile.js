@@ -1,8 +1,13 @@
-// document.addEventListener("DOMContentLoaded", () => {
-// });
+import * as constand from "../constants.js";
+import { loadPage } from "../router.js";
+import { fetchAPI } from "./api.js";
+
+console.log("Edit Profile page")
+
+const profileForm = document.getElementById("profileForm");
 
 function countCharacter() {
-  const textArea = document.getElementById("bioInput");
+  const textArea = document.getElementById("bio");
   const charCount = document.querySelector(".char-count");
 
   textArea.addEventListener("input", () => {
@@ -29,20 +34,69 @@ function displayProfilePicture() {
   });
 }
 
-async function editProfile() {
-  try {
-    const formUpload = document.getElementById("upload-form");
-    const Formbody = new FormData();
-    // const profileValue = await fetchProfileById(id);
-    // await 
-  } catch (error) {
-    console.error("Failed update profile:", error);
+function validateInput(input) {
+  let returnValue = true;
+
+  if (input.password !== input.password2) {
+    const errMsg = profileForm.querySelector("#password2-error");
+    errMsg.previousElementSibling.style.marginBottom = "2px";
+    errMsg.style.display = "block";
+    returnValue = false;
   }
+  return returnValue;
 }
+
+
+profileForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const input = {
+    displayName: formData.get("displayName"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    password2: formData.get("password2"),
+    bio: formData.get("bio"),
+  };
+
+  if (!validateInput(input)) {
+    console.error("Invalid input!");
+    return ;
+  }
+
+  const body = {
+    display_name: input.displayName,
+    email: input.email,
+    password: input.password,
+    bio: input.bio,
+  }
+  console.log(body);
+  
+  try {
+    const response = await fetchAPI("PATCH", constand.API_MY_PROFILE, {
+      auth: true,
+      body: body,
+    });
+
+    if (!response.ok) {
+      if (response.status === 409) { // data conflict
+        const errMsg = signupForm.querySelector("#displayName-error");
+        errMsg.previousElementSibling.style.marginBottom = "2px";
+        errMsg.style.display = "block";
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    console.log(data);
+    loadPage("/profile");
+  } catch (error) {
+    console.error(error.message);
+  }
+});
 
 countCharacter();
 displayProfilePicture();
-editProfile();
+
 // TODO: update api
 // const formUpload = document.getElementById("upload-form");
 // formUpload.addEventListener("submit", (event) => {

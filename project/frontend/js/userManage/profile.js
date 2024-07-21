@@ -1,5 +1,5 @@
-import * as constant from "../constants.js"
-import { fetchAPI } from "./api.js"
+import * as constant from "../constants.js";
+import { fetchAPI } from "./api.js";
 
 async function getProfile() {
   try {

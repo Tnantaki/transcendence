@@ -1,6 +1,6 @@
-import * as constant from "../constants.js"
+import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
-import { fetchAPI } from "./api.js"
+import { fetchAPI } from "./api.js";
 
 async function getProfile() {
   try {
