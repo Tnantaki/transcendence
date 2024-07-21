@@ -49,14 +49,14 @@ const urlRoute = {
 function getRoute(url) {
   const token = localStorage.getItem('token');
 
-  if (!token) {
-    if (url === '/signup')
-      return urlRoute['/signup'];
-    else
-      return urlRoute['/login'];
-  } else if (token && url === '/login') {
-    return urlRoute['/'];
-  }
+  // if (!token) {
+  //   if (url === '/signup')
+  //     return urlRoute['/signup'];
+  //   else
+  //     return urlRoute['/login'];
+  // } else if (token && url === '/login') {
+  //   return urlRoute['/'];
+  // }
   return urlRoute[url];
 }
 
