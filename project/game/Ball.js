@@ -7,12 +7,16 @@ export class Ball {
         this.reset();
     }
 
-    update() {
+    update(leftScore, rightScore) {
         if (this.y < this.radius || this.y > this.canvas.height - this.radius) {
             this.ySpeed = -this.ySpeed;
         }
 
-        if (this.x < this.radius || this.x > this.canvas.width + this.radius) {
+        if (this.x < this.radius) {
+            leftScore.increment();
+            this.reset()
+        } else if (this.x > this.canvas.width + this.radius) {
+            rightScore.increment();
             this.reset();
         }
 
