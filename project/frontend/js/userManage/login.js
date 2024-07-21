@@ -1,16 +1,17 @@
-import * as constant from "./constants.js"
-import { fetchAPI } from "./api.js"
-import { loadPage } from "./router.js";
+import * as constant from "../constants.js";
+import { loadPage } from "../router.js";
+import { fetchAPI } from "./api.js";
 
-const loginForm = document.getElementById('login-form');
+const loginForm = document.getElementById("login-form");
 
-loginForm.addEventListener('submit', async (event) => {
+loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(event.target);
   const body = {
-    username: formData.get('username'),
-    password: formData.get('password'),
+    username: formData.get("username"),
+    password: formData.get("password"),
+    remember: formData.get("remember") ? true : false,
   };
 
   try {
@@ -27,14 +28,14 @@ loginForm.addEventListener('submit', async (event) => {
     const data = await response.json();
     localStorage.setItem("token", data.token);
     loadPage("/");
-    console.log('Success:', data);
+    console.log("Success:", data);
   } catch (error) {
     console.error(error.message);
-    popOutText.style.display = 'block';
+    popOutText.style.display = "block";
 
     // Clear input
-    event.target.querySelectorAll('.login-input').forEach((input) => {
-      input.value = '';
+    event.target.querySelectorAll(".login-input").forEach((input) => {
+      input.value = "";
     });
   }
 });

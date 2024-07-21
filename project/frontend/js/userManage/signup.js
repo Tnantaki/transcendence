@@ -1,14 +1,14 @@
-import * as constant from "./constants.js"
-import { fetchAPI } from "./api.js"
-import { loadPage } from "./router.js";
-import { translatePage } from "./i18n.js";
+import * as constant from "../constants.js";
+import { loadPage } from "../router.js";
+import { translatePage } from "../i18n.js";
+import { fetchAPI } from "./api.js";
 
 console.log("Signup Page");
 
 const signupForm = document.getElementById("signupForm");
 
 function validateInput(input) {
-  const returnValue = true;
+  let returnValue = true;
   const regex = /^[a-zA-Z0-9_]{6,20}$/;
 
   if (!regex.test(input.username)) {
@@ -32,7 +32,6 @@ function validateInput(input) {
 signupForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(event.target);
-
   const input = {
     username: formData.get("username"),
     email: formData.get("email"),
@@ -52,7 +51,9 @@ signupForm.addEventListener("submit", async (event) => {
   };
 
   try {
-    const response = await fetchAPI("POST", constant.API_SIGNUP, { body: body });
+    const response = await fetchAPI("POST", constant.API_SIGNUP, {
+      body: body
+    });
 
     if (!response.ok) {
       if (response.status === 409) { // data conflict
