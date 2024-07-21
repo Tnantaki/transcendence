@@ -15,7 +15,7 @@
   "back": "Back",
   "delete_friend": "Delete friend",
   "save": "Save",
-  "avatar_name": "Avatar name",
+  "display_name": "Display name",
   "email": "Email",
   "password": "Password",
   "confirm_password": "Confirm Password",
@@ -32,5 +32,9 @@
   "back_to_login": "Back to login",
   "friend_requests": "Friend Requests",
   "decline": "Decline",
-  "accept": "Accept"
+  "accept": "Accept",
+  "error_login": "Incorrect username or password!",
+  "error_username_invalid": "Username must be alphabet or number, At least 6 character",
+  "error_username_same": "This username already taken!",
+  "error_confirm_password": "Password must be the same!"
 }

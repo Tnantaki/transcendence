@@ -98,16 +98,16 @@
   padding: var(--mg-md);
 }
 
-#editName::placeholder {
-  opacity: 1;
-}
-
-.upload-btn img {
+.file-label {
   position: absolute;
   bottom: 0;
   right: 0;
+  transform: translate(-10%, -10%);
+}
+
+.upload-btn img {
+  position: relative;
   background-color: var(--clr-border);
   border: var(--bs-md) solid black;
   border-radius: min(10px, calc(20px * 0.20) + calc(20vw * 0.038));
-  transform: translate(20%, 20%);
 }

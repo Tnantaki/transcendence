@@ -31,4 +31,4 @@ function togglePassword(inputPassword) {
 // Password must be the same!
 
 window.togglePassword = togglePassword;
-window.checkPassword = checkPassword;
+// window.checkPassword = checkPassword;

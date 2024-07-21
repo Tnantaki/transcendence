@@ -1,5 +1,6 @@
 import * as constant from "./constants.js"
 import { fetchAPI } from "./api.js"
+import { loadPage } from "./router.js";
 
 async function getProfile() {
   try {
@@ -18,13 +19,14 @@ async function getProfile() {
 
 async function submitLogout() {
   try {
-    await fetchAPI("POST", constant.API_LOGOUT);
+    await fetchAPI("POST", constant.API_LOGOUT, { auth: true });
 
     localStorage.removeItem("token");
     console.log("Logout success");
   } catch (error) {
-    console.error("Failed to fetch API:", error);
+    console.error(error.message);
   }
+  loadPage("/login");
 }
 
 const btnLogout = document.getElementById("submitLogout");

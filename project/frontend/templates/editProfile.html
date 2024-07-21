@@ -5,11 +5,12 @@
     <div class="z-0 title-banner"></div>
     <div class="z-2 edit-title">
       <div class="position-relative picture-frame">
-        <img src="../static/svg/default-user-picture.svg" alt="profile picture">
+        <img id="profile-picture" src="../static/svg/default-user-picture.svg" alt="profile picture">
         <div class="upload-btn">
-          <a class="" href="#">
-            <img class="btn btn-primary ic-lg p-1" src="../static/svg/edit_button.svg" alt="edit button">
-          </a>
+          <input type="file" id="file" class="d-none" accept=".png, .jpg, .jpeg">
+          <label for="file" class="m-0 p-0 file-label">
+            <img class="btn btn-primary ic-lg m-0 p-1" src="../static/svg/edit_button.svg" alt="edit button">
+          </label>
         </div>
       </div>
     </div>
@@ -20,11 +21,11 @@
       <div class="col">
         <div class="d-flex flex-column h-100">
           <div class="input-group input-group-custom rounded-pill d-flex align-items-center edit-input">
-            <input type="text" id="editName" class="form-control mx-3 font-bs fs-xxl"
-              data-i18n="avatar_name" placeholder="Avatar name" disabled readonly>
+            <input type="text" id="editName" class="form-control mx-1 font-bs fs-xxl"
+              data-i18n="display_name" placeholder="Display name">
           </div>
           <div class="input-group input-group-custom rounded-pill d-flex align-items-center edit-input">
-            <input type="email" class="form-control mx-3 font-bs fs-xxl"
+            <input type="email" class="form-control mx-1 font-bs fs-xxl"
               data-i18n="email" placeholder="Email">
           </div>
         </div>
@@ -32,20 +33,16 @@
       <div class="col">
         <div class="d-flex flex-column h-100 justify-content-start">
           <div class="input-group input-group-custom rounded-pill d-flex align-items-center edit-input">
-            <input type="password" class="form-control mx-3 font-bs fs-xxl"
+            <input type="password" class="form-control mx-1 font-bs fs-xxl" autocomplete="on"
               data-i18n="password" placeholder="Password">
-            <div class="input-group-append mx-1">
-              <img class="btn-eye btn-hover ic-lg mx-2" src="../static/svg/showpassword.svg" alt="eye icon"
-                onclick="togglePassword(this.parentNode.previousElementSibling)">
-            </div>
+            <img class="btn-eye btn-hover ic-lg mx-1" src="../static/svg/eye.svg" alt="eye icon"
+              onclick="togglePassword(this.previousElementSibling)">
           </div>
           <div class="input-group input-group-custom rounded-pill d-flex align-items-center edit-input">
-            <input type="password" class="form-control mx-3 font-bs fs-xxl"
+            <input type="password" class="form-control mx-1 font-bs fs-xxl" autocomplete="on"
               data-i18n="confirm_password" placeholder="Confirm Password">
-            <div class="input-group-append mx-1">
-              <img class="btn-eye btn-hover ic-lg mx-2" src="../static/svg/showpassword.svg" alt="eye icon"
-                onclick="togglePassword(this.parentNode.previousElementSibling)">
-            </div>
+            <img class="btn-eye btn-hover ic-lg mx-1" src="../static/svg/eye.svg" alt="eye icon"
+              onclick="togglePassword(this.previousElementSibling)">
           </div>
         </div>
       </div>

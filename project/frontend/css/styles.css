@@ -149,7 +149,8 @@ input:-webkit-autofill:focus {
 
 .form-check-input[type=checkbox] {
   border-radius: 0;
-  margin: var(--mg-xl) 0;
+  margin: 0;
+  /* margin: var(--mg-lg) 0; */
 }
 
 .font-stk-h1 {
@@ -226,7 +227,7 @@ body {
   overflow: hidden;
   margin-top: var(--bs-xl);
   margin-bottom: var(--mg-xl);
-  padding: var(--pd-lg);
+  padding: var(--pd-lg) var(--mg-lg);
 }
 
 .input-group-custom:focus-within {
@@ -261,7 +262,6 @@ body {
 .input-icon-custom {
   width: var(--ic-lg);
   aspect-ratio: 1 / 1;
-  margin-right: 10px;
 }
 
 .text-error {
@@ -288,7 +288,7 @@ body {
   color: var(--clr-text);
   background-color: var(--clr-bg-btn);
   border: var(--bs-md) solid var(--clr-text);
-  margin: var(--mg-lg);
+  margin: var(--mg-lg) 0;
   border-radius: var(--bs-xl);
 }
 .btn-secondary {
