@@ -4,31 +4,32 @@ const template_dir = "/templates/";
 const js_dir = "js/";
 const title_extension = "Transcendence";
 const js_game_dir = js_dir + "gameUX/";
+const js_user_dir = js_dir + "userManage/";
 
 const urlRoute = {
   "/": {
     urlPath: template_dir + "main.html",
-    script: js_dir + "main.js",
+    script: js_user_dir + "main.js",
     title: title_extension,
   },
   "/signup": {
     urlPath: template_dir + "signup.html",
-    script: js_dir + "signup.js",
+    script: js_user_dir + "signup.js",
     title: "Signup" + " - " + title_extension,
   },
   "/login": {
     urlPath: template_dir + "login.html",
-    script: js_dir + "login.js",
+    script: js_user_dir + "login.js",
     title: "Login" + " - " + title_extension,
   }, 
   "/profile": {
     urlPath: template_dir + "profile.html",
-    script: js_dir + "profile.js",
+    script: js_user_dir + "profile.js",
     title: "Profile" + " - " + title_extension,
   }, 
   "/editProfile": {
     urlPath: template_dir + "editProfile.html",
-    script: js_dir + "editProfile.js",
+    script: js_user_dir + "editProfile.js",
     title: "Edit Profile" + " - " + title_extension,
   }, 
   "/history": {

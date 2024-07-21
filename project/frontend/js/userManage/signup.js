@@ -1,7 +1,7 @@
-import * as constant from "./constants.js"
-import { fetchAPI } from "./api.js"
-import { loadPage } from "./router.js";
-import { translatePage } from "./i18n.js";
+import * as constant from "../constants.js"
+import { fetchAPI } from "../api.js"
+import { loadPage } from "../router.js";
+import { translatePage } from "../i18n.js";
 
 console.log("Signup Page");
 

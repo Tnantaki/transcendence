@@ -1,6 +1,6 @@
-import * as constant from "./constants.js"
-import { fetchAPI } from "./api.js"
-import { loadPage } from "./router.js";
+import * as constant from "../constants.js"
+import { fetchAPI } from "../api.js"
+import { loadPage } from "../router.js";
 
 const loginForm = document.getElementById('login-form');
 

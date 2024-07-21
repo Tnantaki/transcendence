@@ -1,12 +1,17 @@
-import * as constant from "./constants.js"
-import { fetchAPI } from "./api.js"
+import * as constant from "../constants.js"
+import { fetchAPI } from "../api.js"
 
 async function getProfile() {
   try {
     const profile = document.getElementById("my-profile");
-    const profileValue = await fetchAPI("GET", constant.API_USER_PROFILE, {
+    const response = await fetchAPI("GET", constant.MOCKUP_PROFILE, {
       auth: false,
     }); // TODO: auth must be true
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const profileValue = await response.json();
 
     profile.querySelector("#displayName").innerHTML = profileValue["avatar_name"];
     profile.querySelector("#bio").innerHTML = profileValue["bio"];
@@ -17,14 +22,19 @@ async function getProfile() {
     profile.querySelector("#tourPlay").innerHTML = profileValue["tour_play"];
     profile.querySelector("#profileImage").src = profileValue["image"];
   } catch (error) {
-    console.error("Failed to fetch user profile:", error);
+    console.error(error.message);
   }
 }
 
 async function getProfileById(id) {
   try {
     const profile = document.getElementById("friend-profile");
-    const profileValue = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id);
+    const response = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const profileValue = await response.json();
 
     profile.querySelector("#friendDisplayName").innerHTML = profileValue["avatar_name"];
     profile.querySelector("#friendBio").innerHTML = profileValue["bio"];
@@ -35,16 +45,21 @@ async function getProfileById(id) {
     profile.querySelector("#friendTourPlay").innerHTML = profileValue["tour_play"];
     profile.querySelector("#friendProfileImage").src = profileValue["image"];
   } catch (error) {
-    console.error("Failed to fetch friend profile:", error);
+    console.error(error.message);
   }
 }
 
 async function getFriendList() {
   try {
     const friendList = document.getElementById("friendList");
-    const friendListValue = await fetchAPI("GET", constant.API_FRIEND_LIST, {
+    const response = await fetchAPI("GET", constant.MOCKUP_FRIENDLIST, {
       auth: false,
     }); // TODO: auth must be true
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const friendListValue = await response.json();
 
     friendListValue.forEach(friend => {
       const item = document.createElement("li");
@@ -65,7 +80,7 @@ async function getFriendList() {
       friendList.appendChild(item);
     })
   } catch (error) {
-    console.error("Failed to fetch friend list profile:", error);
+    console.error(error.message);
   }
 }
 
