@@ -2,7 +2,7 @@ import enLanguage from '../locales/en.json' with {type: "json"};
 import thLanguage from '../locales/th.json' with {type: "json"};
 
 export function setSelectLanguage() {
-  const savedLanguage = localStorage.getItem('currentLanguage') || 'en';
+  const savedLanguage = localStorage.getItem('currentLanguage') ?? 'en';
   const selectLanguage = document.getElementsByClassName('language-select')[0];
 
   if (selectLanguage) {

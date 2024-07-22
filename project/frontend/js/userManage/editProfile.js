@@ -46,6 +46,13 @@ function validateInput(input) {
   return returnValue;
 }
 
+function removeEmptyFields(obj) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => 
+      value !== null && value !== undefined && value !== ''
+    )
+  );
+}
 
 profileForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -63,12 +70,12 @@ profileForm.addEventListener("submit", async (event) => {
     return ;
   }
 
-  const body = {
+  const body = removeEmptyFields({
     display_name: input.displayName,
     email: input.email,
     password: input.password,
     bio: input.bio,
-  }
+  });
   console.log(body);
   
   try {

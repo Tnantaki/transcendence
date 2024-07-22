@@ -69,8 +69,18 @@ signupForm.addEventListener("submit", async (event) => {
 
     console.log("Signup Success");
     console.log(data);
-    loadPage("/login");
+    popupSuccess();
   } catch (error) {
     console.error(error.message);
   }
 });
+
+function popupSuccess() {
+  const modal = new bootstrap.Modal(document.getElementById("successCreateAccountModal"));
+  modal.show();
+
+  const btn = document.getElementById("btn-success");
+  btn.addEventListener('click', () => {
+    loadPage("/login");
+  });
+}
