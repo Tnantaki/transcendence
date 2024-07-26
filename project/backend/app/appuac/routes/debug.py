@@ -1,5 +1,5 @@
 from ninja import Router
-from appuac.models.user import User
+from appuac.models.user import User, FileUpload
 from appuac.models.authsession import AuthSession
 from ninja import Schema, ModelSchema
 from faker import Faker
@@ -55,3 +55,15 @@ def fast_create_simple_token(request):
     return 200, {
         "token": auth.id
     }
+    
+@debug_router.get(
+    "/file-upload",
+    response={
+        200: None,
+    },
+)
+def get_file(request):
+    f = FileUpload.objects.all()
+    f.delete()
+
+    return 200, None
