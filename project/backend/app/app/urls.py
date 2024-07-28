@@ -21,6 +21,10 @@ from appuac.url import UACRouter
 # from api.urls import apiRouter
 from ninja import Swagger
 
+from django.conf.urls.static import static
+from app import settings
+
+
 api = NinjaAPI(
     # docs=Swagger(),
 )
@@ -34,3 +38,5 @@ urlpatterns = [
     path("i/", api.urls),
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
