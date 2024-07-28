@@ -1,0 +1,18 @@
+h1 {
+    font-family: 'Press Start 2P', 'system-ui';
+    font-size: 60px;
+    margin: 60px;
+    text-align: center;
+    -webkit-text-stroke: var(--fs-h1-stk) var(--clr-shadow);
+    paint-order: stroke fill;
+
+    /* adding border style */
+    border: var(--bs-md) solid var(--clr-border);
+    border-radius: min(50px, calc(50px * 0.20) + calc(50vw * 0.038));
+    padding: 2.5rem;
+    display: block;
+    width: fit-content;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
