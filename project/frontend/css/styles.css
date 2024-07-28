@@ -265,9 +265,7 @@ body {
 }
 
 .text-error {
-  align-self: self-start;
   display: none;
-  order: flex-wrap;
   color: var(--clr-red);
   font-size: var(--fs-md);
   margin: 0;

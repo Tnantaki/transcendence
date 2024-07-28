@@ -30,7 +30,6 @@ export async function fetchAPI(method, url, options = {}) {
     });
     return response;
   } catch (error) {
-    console.log("Error: fetching user profile", error);
     throw error;
   }
 }

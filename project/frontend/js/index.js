@@ -33,8 +33,8 @@ function togglePassword(inputPassword) {
 window.togglePassword = togglePassword;
 // window.checkPassword = checkPassword;
 
+// For 2FA Popup
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("for input box");
   const inputs = document.querySelectorAll(".input-box");
 
   inputs.forEach((input, index) => {

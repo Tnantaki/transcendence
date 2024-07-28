@@ -18,10 +18,7 @@ loginForm.addEventListener("submit", async (event) => {
     const response = await fetchAPI("POST", constant.API_LOGIN, { body: body });
 
     if (!response.ok) {
-      const errMsg = loginForm.querySelector("#login-error");
-      errMsg.previousElementSibling.style.marginBottom = "3px";
-      errMsg.nextElementSibling.style.marginTop = "3px";
-      errMsg.style.display = "block";
+      displayErr("#login-error", "error_login");
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -31,11 +28,21 @@ loginForm.addEventListener("submit", async (event) => {
     console.log("Success:", data);
   } catch (error) {
     console.error(error.message);
-    popOutText.style.display = "block";
+    if (error.message === "Failed to fetch")
+      displayErr("#login-error", "error_server");
 
-    // Clear input
-    event.target.querySelectorAll(".login-input").forEach((input) => {
-      input.value = "";
-    });
+
+    // Clear password input
+    const inputPassword = loginForm.querySelector("#login-password");
+    inputPassword.value = "";
   }
 });
+
+function displayErr(errId, error) {
+  const errBlock = document.querySelector(errId);
+  errBlock.previousElementSibling.style.marginBottom = "3px";
+  errBlock.nextElementSibling.style.marginTop = "3px";
+
+  const errMsg = errBlock.querySelector(`[data-i18n="${error}"]`);
+  errMsg.style.display = "block";
+}
