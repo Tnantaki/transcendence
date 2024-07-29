@@ -1,10 +1,11 @@
-import * as constand from "../constants.js";
+import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
 import { fetchAPI } from "./api.js";
 
 console.log("Edit Profile page")
 
 const profileForm = document.getElementById("profileForm");
+const profilePicture = document.getElementById("profile-picture");
 
 function countCharacter() {
   const textArea = document.getElementById("bio");
@@ -18,7 +19,6 @@ function countCharacter() {
 
 function displayProfilePicture() {
   const fileInput = document.getElementById("file");
-  const profilePicture = document.getElementById("profile-picture");
 
   fileInput.addEventListener("change", (event) => {
     const file = event.target.files[0];
@@ -79,7 +79,7 @@ profileForm.addEventListener("submit", async (event) => {
   console.log(body);
   
   try {
-    const response = await fetchAPI("PATCH", constand.API_MY_PROFILE, {
+    const response = await fetchAPI("PATCH", constant.API_MY_PROFILE, {
       auth: true,
       body: body,
     });
@@ -128,3 +128,27 @@ displayProfilePicture();
 //     alert("Failed to upload image!");
 //   });
 // });
+
+async function getProfile() {
+  try {
+    const response = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true, });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const profileValue = await response.json();
+
+    if (profileValue["profile"])
+      profilePicture.src = "/api" + profileValue["profile"]
+    if (profileValue["display_name"])
+      profileForm.querySelector("#displayName").value = profileValue["display_name"];
+    if (profileValue["email"])
+      profileForm.querySelector("#email").value = profileValue["email"];
+    if (profileValue["bio"])
+      profileForm.querySelector("#bio").value = profileValue["bio"];
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+getProfile();
