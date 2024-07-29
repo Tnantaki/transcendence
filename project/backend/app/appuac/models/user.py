@@ -32,6 +32,22 @@ class User(AbstractUser):
             last_used__gte=timezone.now() - timedelta(minutes=60)
         )
         return res.exists()
+    
+    @property
+    def wins(self):
+        return 0
+    
+    @property
+    def losses(self):
+        return 0
+    
+    @property
+    def tour_won(self):
+        return 0
+    
+    @property
+    def tour_play(self):
+        return 0
 
     class Meta:
         db_table = "auth_user"

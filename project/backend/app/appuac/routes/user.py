@@ -1,79 +1,25 @@
-from ninja import Router, Path, Field
+from ninja import Router, Path
 from ninja.errors import HttpError
 from appuac.models.user import (
     User,
     FriendRequest,
     FileUpload,
 )
-from appuac.models.authsession import AuthSession
-from ninja import Schema, ModelSchema, UploadedFile
-from pydantic import field_validator
-from django.shortcuts import get_object_or_404
-from rich import inspect
+from ninja import UploadedFile
+from appuac.schema.user import (
+    SimpleRespond,
+    UserSchema,
+    UserPatchIn,
+    UserPathParam,
+    RegisterPostIn,
+    AcceptFriend,
+    FormRequestPathParam,
+    FriendRequestS,
+    FriendReceiveBaseOut,
+    FriendRequestorBaseOut,
+)
 
 debug_router = Router()
-
-
-class SimpleRespone(Schema):
-    message: str = Field(default="")
-
-
-class UserSchema(ModelSchema):
-    is_online: bool = Field(default=False)
-
-    class Meta:
-        model = User
-        fields = [
-            "username",
-            "display_name",
-            "id",
-            "bio",
-            "profile",
-            "email",
-        ]
-
-class UserPatchIn(ModelSchema):
-    
-    class Meta:
-        model = User
-        fields = [
-            "display_name",
-            "bio",
-            "email",
-        ]
-
-
-class UserPathParam(Schema):
-
-    user: str = Field(alias="user_id")
-
-    @field_validator("user")
-    @classmethod
-    def q_user_by_id(cls, v):
-        return get_object_or_404(User, id=v)
-
-
-class FrendRequestPostIn(Schema):
-    receiver: str = Field(..., alias="receiver_id")
-
-    @field_validator("receiver")
-    @classmethod
-    def q_user_by_id(cls, v):
-        return get_object_or_404(User, id=v)
-
-
-class RegistetPostIn(Schema):
-    email: str
-    username: str
-    password: str
-
-    @field_validator("username")
-    @classmethod
-    def q_user_by_id(cls, v):
-        u = User.objects.filter(username=v).first()
-        if u is not None:
-            raise HttpError(409, "username already exist")
-        return v
 
 
 router = Router()
@@ -107,7 +53,7 @@ def get_user_by_id(request, path_param: UserPathParam = Path(...)):
         201: UserSchema,
     },
 )
-def post_create_user(request, payload: RegistetPostIn):
+def post_create_user(request, payload: RegisterPostIn):
     """
     Post Create User
     """
@@ -130,9 +76,8 @@ def patch_user_by_id(request, payload: UserPatchIn):
     for k, v in d_payload.items():
         setattr(user, k, v)
     user.save()
-    
-    return 200, user
 
+    return 200, user
 
 
 @router.post(
@@ -161,7 +106,7 @@ def post_upload_file(request, file: UploadedFile):
         )
     user.profile = str(f.file_db.url)
     user.save()
-    
+
     return 200, user
 
 
@@ -174,49 +119,20 @@ def post_upload_file(request, file: UploadedFile):
 def get_all_user(request):
     return User.objects.all()
 
-
-# Create Friend Request
-class FriendRequestS(Schema):
-    receiver: str = Field(alias="receiver_id")
-
-    @field_validator("receiver")
-    @classmethod
-    def validate_user_exist(cls, v):
-        user = User.objects.filter(id=v)
-        if not user.exists():
-            raise HttpError(404, "USER_NOT_FOUND")
-        return user.first()
-
-class FriendReceiveBaseOut(Schema):
-    id: str
-    user: UserSchema
-    status: str
-
-    @staticmethod
-    def resolve_user(self):
-        return self.receiver
-
-class FriendRequestorBaseOut(Schema):
-    id: str
-    user: UserSchema
-    status: str
-
-    @staticmethod
-    def resolve_user(self):
-        return self.requestor
-
 ##################### FRIEND #######################
+
+
 @router.post(
     "/friend-request/",
     response={
-        201: SimpleRespone,
+        201: SimpleRespond,
     },
 )
 def post_request_friend(request, payload: FriendRequestS):
     """
     ส่ง ID user ที่จะขอเป็นเพื่อน มา
     """
-    
+
     req = request.auth.user
     f = FriendRequest.objects.filter(requestor=req, **payload.dict())
     if f.exists():
@@ -256,29 +172,6 @@ def get_my_request_friend(request):
     return 200, qs
 
 
-class AcceptFriend(Schema):
-
-    status: str
-
-    @field_validator("status")
-    @classmethod
-    def accept_friend_status(cls, v):
-        if v not in ["ACCEPT", "REJECT"]:
-            raise HttpError(400, "INVALID STATUS")
-        return v
-
-
-class FormRequestPathParam(Schema):
-
-    form: str = Field(alias="form_id")
-
-    @field_validator("form")
-    @classmethod
-    def qs_form(cls, v):
-        qs = FriendRequest.objects.filter(id=v).first()
-        if v is None:
-            raise HttpError(404)
-        return qs
 
 
 @router.post(
