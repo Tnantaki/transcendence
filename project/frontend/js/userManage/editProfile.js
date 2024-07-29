@@ -76,7 +76,6 @@ profileForm.addEventListener("submit", async (event) => {
     password: input.password,
     bio: input.bio,
   });
-  console.log(body);
   
   try {
     const response = await fetchAPI("PATCH", constant.API_MY_PROFILE, {

@@ -11,20 +11,15 @@ async function getProfile() {
     }
     const profileValue = await response.json();
     console.log("fetch profile success");
-    console.log(profileValue);
 
     profile.querySelector("#displayName").innerHTML = profileValue["display_name"] || "";
     profile.querySelector("#bio").innerHTML = profileValue["bio"] || "";
     profile.querySelector("#email").innerHTML = profileValue["email"] || "";
-    if (!profileValue["wins"] || !profileValue["losses"])
-      profile.querySelector("#winLose").innerHTML = "";
-    else
-      profile.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
-    profile.querySelector("#totalPlay").innerHTML = profileValue["total_games_play"] || "";
-    profile.querySelector("#tourWon").innerHTML = profileValue["tour_won"] || "";
-    profile.querySelector("#tourPlay").innerHTML = profileValue["tour_play"] || "";
-    profile.querySelector("#profileImage").src = "/api" + profileValue["profile"]
-      || "../static/svg/default-user-picture.svg";
+    profile.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
+    profile.querySelector("#totalPlay").innerHTML = profileValue["wins"] + profileValue["losses"];
+    profile.querySelector("#tourWon").innerHTML = profileValue["tour_won"];
+    profile.querySelector("#tourPlay").innerHTML = profileValue["tour_play"];
+    profile.querySelector("#profileImage").src = "/api" + profileValue["profile"];
   } catch (error) {
     console.error(error.message);
   }
