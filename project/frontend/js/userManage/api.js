@@ -53,10 +53,6 @@ export async function fetchUploadFile(method, url, options = {}) {
     myHeaders.append("Authorization", "Bearer " + token);
   }
 
-  if (body && !myHeaders.has("Content-Type")) {
-    myHeaders.append("Content-Type", "multipart/form-data");
-  }
-
   try {
     const response = await fetch(url, {
       method: method,

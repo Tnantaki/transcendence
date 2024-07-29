@@ -18,7 +18,7 @@ function countCharacter() {
 }
 
 function uploadProfilePicture() {
-  const fileInput = document.getElementById("file");
+  const fileInput = document.getElementById("fileInput");
 
   fileInput.addEventListener("change", async (event) => {
     const file = event.target.files[0];
@@ -27,7 +27,7 @@ function uploadProfilePicture() {
       formData.append("file", file);
 
       try {
-        const response = await fetchUploadFile("POST", constant.API_MY_PROFILE + "profile/", {
+        const response = await fetchUploadFile("POST", constant.API_UPLOAD, {
           auth: true,
           body: formData,
         });
@@ -35,12 +35,8 @@ function uploadProfilePicture() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          profilePicture.src = e.target.result;
-        }
-        reader.readAsDataURL(file);
+        const profileValue = await response.json();
+        profilePicture.src = "/api" + profileValue["profile"];
       } catch (error) {
         console.error(error.message);
       }
@@ -114,32 +110,6 @@ profileForm.addEventListener("submit", async (event) => {
   }
 });
 
-
-// TODO: update api
-// const formUpload = document.getElementById("upload-form");
-// formUpload.addEventListener("submit", (event) => {
-//   event.preventDefault();
-
-//   const formData = new FormData();
-//   const imageFile = document.getElementById("imageFile").files[0];
-//   formData.append("file", imageFile);
-//   alert("I"m uploader");
-
-//   fetch(apiURL + "/api/user/register", {
-//     method: "POST",
-//     body: formData,
-//   })
-//   .then(response => response.json())
-//   .then(data => {
-//     console.log("Success:", data);
-//     alert("Image uploaded successfully.");
-//   })
-//   .catch(error => {
-//     console.error("Error:", error);
-//     alert("Failed to upload image!");
-//   });
-// });
-
 async function getProfile() {
   try {
     const response = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true, });
@@ -155,8 +125,11 @@ async function getProfile() {
       profileForm.querySelector("#displayName").value = profileValue["display_name"];
     if (profileValue["email"])
       profileForm.querySelector("#email").value = profileValue["email"];
-    if (profileValue["bio"])
+    if (profileValue["bio"]) {
       profileForm.querySelector("#bio").value = profileValue["bio"];
+      const charCount = document.querySelector(".char-count");
+      charCount.textContent = `${profileValue["bio"].length}/200`
+    }
   } catch (error) {
     console.error(error.message);
   }
