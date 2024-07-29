@@ -1,6 +1,6 @@
 import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
-import { fetchAPI } from "./api.js";
+import { fetchAPI, fetchUploadFile } from "./api.js";
 
 console.log("Edit Profile page")
 
@@ -17,19 +17,33 @@ function countCharacter() {
   });
 }
 
-function displayProfilePicture() {
+function uploadProfilePicture() {
   const fileInput = document.getElementById("file");
 
-  fileInput.addEventListener("change", (event) => {
+  fileInput.addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        profilePicture.src = e.target.result;
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetchUploadFile("POST", constant.API_MY_PROFILE + "profile/", {
+          auth: true,
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          profilePicture.src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      } catch (error) {
+        console.error(error.message);
       }
-      reader.readAsDataURL(file);
-    } else {
-      profilePicture.src = "../static/svg/default-user-picture.svg";
     }
   });
 }
@@ -100,8 +114,6 @@ profileForm.addEventListener("submit", async (event) => {
   }
 });
 
-countCharacter();
-displayProfilePicture();
 
 // TODO: update api
 // const formUpload = document.getElementById("upload-form");
@@ -151,3 +163,5 @@ async function getProfile() {
 }
 
 getProfile();
+countCharacter();
+uploadProfilePicture();
