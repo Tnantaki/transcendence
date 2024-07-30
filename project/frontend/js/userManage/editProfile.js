@@ -1,10 +1,11 @@
-import * as constand from "../constants.js";
+import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
-import { fetchAPI } from "./api.js";
+import { fetchAPI, fetchUploadFile } from "./api.js";
 
 console.log("Edit Profile page")
 
 const profileForm = document.getElementById("profileForm");
+const profilePicture = document.getElementById("profile-picture");
 
 function countCharacter() {
   const textArea = document.getElementById("bio");
@@ -16,20 +17,29 @@ function countCharacter() {
   });
 }
 
-function displayProfilePicture() {
-  const fileInput = document.getElementById("file");
-  const profilePicture = document.getElementById("profile-picture");
+function uploadProfilePicture() {
+  const fileInput = document.getElementById("fileInput");
 
-  fileInput.addEventListener("change", (event) => {
+  fileInput.addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        profilePicture.src = e.target.result;
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetchUploadFile("POST", constant.API_UPLOAD, {
+          auth: true,
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const profileValue = await response.json();
+        profilePicture.src = "/api" + profileValue["profile"];
+      } catch (error) {
+        console.error(error.message);
       }
-      reader.readAsDataURL(file);
-    } else {
-      profilePicture.src = "../static/svg/default-user-picture.svg";
     }
   });
 }
@@ -46,6 +56,13 @@ function validateInput(input) {
   return returnValue;
 }
 
+function removeEmptyFields(obj) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => 
+      value !== null && value !== undefined && value !== ''
+    )
+  );
+}
 
 profileForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -63,16 +80,15 @@ profileForm.addEventListener("submit", async (event) => {
     return ;
   }
 
-  const body = {
+  const body = removeEmptyFields({
     display_name: input.displayName,
     email: input.email,
     password: input.password,
     bio: input.bio,
-  }
-  console.log(body);
+  });
   
   try {
-    const response = await fetchAPI("PATCH", constand.API_MY_PROFILE, {
+    const response = await fetchAPI("PATCH", constant.API_MY_PROFILE, {
       auth: true,
       body: body,
     });
@@ -94,30 +110,31 @@ profileForm.addEventListener("submit", async (event) => {
   }
 });
 
+async function getProfile() {
+  try {
+    const response = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true, });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const profileValue = await response.json();
+
+    if (profileValue["profile"])
+      profilePicture.src = "/api" + profileValue["profile"]
+    if (profileValue["display_name"])
+      profileForm.querySelector("#displayName").value = profileValue["display_name"];
+    if (profileValue["email"])
+      profileForm.querySelector("#email").value = profileValue["email"];
+    if (profileValue["bio"]) {
+      profileForm.querySelector("#bio").value = profileValue["bio"];
+      const charCount = document.querySelector(".char-count");
+      charCount.textContent = `${profileValue["bio"].length}/200`
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+getProfile();
 countCharacter();
-displayProfilePicture();
-
-// TODO: update api
-// const formUpload = document.getElementById("upload-form");
-// formUpload.addEventListener("submit", (event) => {
-//   event.preventDefault();
-
-//   const formData = new FormData();
-//   const imageFile = document.getElementById("imageFile").files[0];
-//   formData.append("file", imageFile);
-//   alert("I"m uploader");
-
-//   fetch(apiURL + "/api/user/register", {
-//     method: "POST",
-//     body: formData,
-//   })
-//   .then(response => response.json())
-//   .then(data => {
-//     console.log("Success:", data);
-//     alert("Image uploaded successfully.");
-//   })
-//   .catch(error => {
-//     console.error("Error:", error);
-//     alert("Failed to upload image!");
-//   });
-// });
+uploadProfilePicture();

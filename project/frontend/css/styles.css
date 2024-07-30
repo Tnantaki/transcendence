@@ -51,6 +51,9 @@
     --fs-sm: 0.6rem;
 
     --bs-xxl: 10px;
+    --bs-xl: 5px;
+    --bs-lg: 3px;
+    --bs-md: 2px;
 
     --mg-xxl: 30px;
     --mg-xl: 20px;
@@ -71,9 +74,6 @@
     --fs-sm: 0.45rem;
 
     --bs-xxl: 7px;
-    --bs-xl: 5px;
-    --bs-lg: 3px;
-    --bs-md: 2px;
 
     --mg-xxl: 20px;
     --mg-xl: 10px;
@@ -265,9 +265,7 @@ body {
 }
 
 .text-error {
-  align-self: self-start;
   display: none;
-  order: flex-wrap;
   color: var(--clr-red);
   font-size: var(--fs-md);
   margin: 0;

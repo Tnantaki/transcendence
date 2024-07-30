@@ -14,7 +14,7 @@ async function getProfile() {
     }
     const profileValue = await response.json();
 
-    profile.querySelector("#profilePicture").src = profileValue["image"]
+    profile.querySelector("#profilePicture").src = "api/" + profileValue["profile"]
       || "../static/svg/default-user-picture.svg";
     profile.querySelector("#profileName").innerHTML = profileValue["display_name"] || "";
     

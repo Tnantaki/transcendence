@@ -13,8 +13,8 @@
   display: grid;
   grid-template-columns: 7fr 5fr;
   width: 100%;
-  gap: var(--mg-xxl);
-  margin: var(--mg-xxl);
+  gap: var(--mg-xl);
+  margin: var(--mg-xl);
   min-height: 0;
 }
 
@@ -27,12 +27,12 @@
 }
 
 .bk-profile-stat {
-  margin: var(--mg-xl);
+  margin: var(--mg-lg);
   margin-bottom: var(--mg-md);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(2, 1fr);
-  gap:var(--mg-xl);
+  gap:var(--mg-lg);
 }
 
 .micro-item {
@@ -83,7 +83,7 @@
 }
 
 .bio-box {
-  text-indent: 10%;
+  text-indent: var(--mg-xl);
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -228,4 +228,15 @@ p {
   width: min(90px, max(calc(90px * 0.15) + calc(90vw * 0.038), calc(90px * 0.15) + calc(90vh * 0.038)));
   aspect-ratio: 1 / 1;
   margin: var(--mg-md);
+}
+
+#displayName {
+  margin-bottom: var(--mg-md);
+}
+#email {
+  margin-bottom: var(--mg-md);
+}
+
+.btn {
+  margin: var(--mg-md) 0;
 }
