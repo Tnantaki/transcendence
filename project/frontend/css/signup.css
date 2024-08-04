@@ -5,6 +5,8 @@
 
 .title-1 {
   font-size: min(80px, max(calc(80px * 0.15) + calc(80vw * 0.038), calc(80px * 0.15) + calc(80vh * 0.038)));
+  margin-top: var(--mg-lg);
+  margin-bottom: var(--mg-xl);
 }
 
 .block-signup {
@@ -20,4 +22,8 @@
 
 .bottom-right a {
   color: var(--clr-red);
+}
+
+.input-group-custom {
+  margin-top: var(--mg-lg);
 }

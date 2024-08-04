@@ -25,7 +25,7 @@
   Delete
 </button>
 
-<button class="btn btn-success btn-lg font-bs fs-xxl" data-bs-toggle="modal" data-bs-target="#successCreateAccountModal">
+<button class="btn btn-success btn-lg font-bs fs-xxl" data-bs-toggle="modal" data-bs-target="#2FA">
   Success
 </button>
 
@@ -82,32 +82,48 @@
   </div>
 </div>
 
-<!-- Modal Create Account Success -->
-<div class="modal fade" id="successCreateAccountModal" tabindex="-1">
+  <link rel="stylesheet" href="../css/2fa.css">
+
+<!-- Modal 2FA -->
+<div class="modal fade" id="2FA" tabindex="-1">
   <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
     <div class="modal-content popup-content">
-      <div class="modal-body">
-        <div class="popup-frame">
-          <div class="popup-header-icon">
-            <img src="../static/svg/success.svg" alt="alert picture">
+      <div class="modal-body p-0">
+        <div class="popup-2FA">
+          <p data-bs-dismiss="modal" class="font-bs-bold fs-md go-back">&lt; Go back and edit</p>
+          <div class="d-flex flex-column align-items-center">
+            <div class="popup-header-icon">
+              <img src="../static/svg/email-blue.svg" alt="alert picture">
+            </div>
+            <div class="d-flex justify-content-center">
+              <h1 class="font-bs-bold fs-xl header-2fa" style="color: #629DD2;">Enable two-factor authentication</h1>
+            </div>
           </div>
-          <h1 class="font-bs-bold fs-xl" style="color: #ffffff;">SUCCESS</h1>
-          <div class="d-flex justify-content-center popup-body">
-            <p class="font-bs fs-lg" style="color: #ffffff;">
-              YOUR ACCOUNT HAS BEEN CREATED
+          <div class="d-flex flex-column align-items-center">
+            <p class="font-bs fs-md body-2fa" style="color: #ffffff;">
+              We have sent a verification code to Wink_Warrior@42mail.com. Please enter it here.
             </p>
+            <div class="d-flex justify-content-between">
+              <input type="number" maxlength="1" class="form-control input-box" pattern="[0-9]*" inputmode="numeric" autocomplete="off">
+              <input type="number" maxlength="1" class="form-control input-box" pattern="[0-9]*" inputmode="numeric" autocomplete="off">
+              <input type="number" maxlength="1" class="form-control input-box" pattern="[0-9]*" inputmode="numeric" autocomplete="off">
+              <input type="number" maxlength="1" class="form-control input-box" pattern="[0-9]*" inputmode="numeric" autocomplete="off">
+              <input type="number" maxlength="1" class="form-control input-box" pattern="[0-9]*" inputmode="numeric" autocomplete="off">
+              <input type="number" maxlength="1" class="form-control input-box" pattern="[0-9]*" inputmode="numeric" autocomplete="off">
+            </div>
           </div>
-          <div class="d-flex justify-content-evenly popup-footer">
-            <a href="/login">
-              <button type="button" class="font-bs-bold btn btn-primary"
-                >Back to login</button>
-            </a>
+          <div class="d-flex flex-column align-items-center">
+            <button type="button" class="font-bs-bold fs-lg btn btn-primary m-2"
+              >Continue</button>
+            <button type="button" class="font-bs-bold fs-lg btn btn-primary m-2"
+              >Resend code</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 <!-- </body> -->
   <div id="addScript"></div>
   <script src="../js/index.js"></script>

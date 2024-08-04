@@ -8,6 +8,8 @@ router = Router()
 class LoginPostIn(Schema):
     username: str
     password: str
+    mem: bool | None = False
+    
 
 class LoginPostOut(Schema):
     token: str
@@ -22,8 +24,9 @@ def post_login(request, payload: LoginPostIn):
     """
     Post log in from FE
     """
+    d_payload = payload.dict()
     user = authenticate(
-        **payload.dict(),
+        **d_payload
     )
     if user is None:
         raise HttpError(404, "User not found")

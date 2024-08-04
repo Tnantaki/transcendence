@@ -1,8 +1,9 @@
 import enLanguage from '../locales/en.json' with {type: "json"};
 import thLanguage from '../locales/th.json' with {type: "json"};
+import frLanguage from '../locales/fr.json' with {type: "json"};
 
 export function setSelectLanguage() {
-  const savedLanguage = localStorage.getItem('currentLanguage') || 'en';
+  const savedLanguage = localStorage.getItem('currentLanguage') ?? 'en';
   const selectLanguage = document.getElementsByClassName('language-select')[0];
 
   if (selectLanguage) {
@@ -24,6 +25,8 @@ export function translatePage(language) {
 
   if (language === 'th')
     translations = thLanguage;  
+  else if (language === 'fr')
+    translations = frLanguage;  
   else
     translations = enLanguage;  
   document.querySelectorAll('[data-i18n]').forEach((element) => {

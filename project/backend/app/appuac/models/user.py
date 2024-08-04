@@ -8,6 +8,7 @@ from appuac.models.base import (
 from datetime import timedelta
 from django.utils import timezone
 
+
 def gen_id():
     return generate(size=24)
 
@@ -23,11 +24,30 @@ class User(AbstractUser):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     friend = models.ManyToManyField("User", related_name="myfriend")
+    profile = models.CharField(default="/asset/img/default.jpg")
 
     @property
     def is_online(self):
-        res = self.authsession_set.filter(last_used__gte=timezone.now() - timedelta(minutes=60))
+        res = self.authsession_set.filter(
+            last_used__gte=timezone.now() - timedelta(minutes=60)
+        )
         return res.exists()
+    
+    @property
+    def wins(self):
+        return 0
+    
+    @property
+    def losses(self):
+        return 0
+    
+    @property
+    def tour_won(self):
+        return 0
+    
+    @property
+    def tour_play(self):
+        return 0
 
     class Meta:
         db_table = "auth_user"
@@ -51,3 +71,17 @@ class FriendRequest(BaseAutoDate, BaseID):
         on_delete=models.CASCADE,
     )
     status = models.CharField(max_length=255, default="PENDING")
+
+
+class FileUpload(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    title = models.CharField(default="", max_length=255)
+    file_db = models.ImageField(upload_to="img/")
+
+    @property
+    def url(self):
+        return f"{self.file_db.url}"

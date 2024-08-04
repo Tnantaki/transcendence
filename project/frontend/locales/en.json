@@ -36,5 +36,8 @@
   "error_login": "Incorrect username or password!",
   "error_username_invalid": "Username must be alphabet or number, At least 6 character",
   "error_username_same": "This username already taken!",
-  "error_confirm_password": "Password must be the same!"
+  "error_confirm_password": "Password must be the same!",
+  "error_display_name_same": "This name already taken!",
+  "error_server": "Can't connect to the server!",
+  "france": "France"
 }

@@ -49,11 +49,6 @@
   background-color: transparent;
 }
 
-/* #bioInput:focus {
-  height: 100%;
-  resize: none;
-} */
-
 .edit-input {
   margin: 0;
   margin-bottom: var(--mg-xxl);

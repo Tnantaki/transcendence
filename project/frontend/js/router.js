@@ -1,34 +1,35 @@
 import { setSelectLanguage } from "./i18n.js";
 
+const title_extension = "Transcendence";
 const template_dir = "/templates/";
 const js_dir = "js/";
-const title_extension = "Transcendence";
 const js_game_dir = js_dir + "gameUI/";
+const js_user_dir = js_dir + "userManage/";
 
 const urlRoute = {
   "/": {
     urlPath: template_dir + "main.html",
-    script: js_dir + "main.js",
+    script: js_user_dir + "main.js",
     title: title_extension,
   },
   "/signup": {
     urlPath: template_dir + "signup.html",
-    script: js_dir + "signup.js",
+    script: js_user_dir + "signup.js",
     title: "Signup" + " - " + title_extension,
   },
   "/login": {
     urlPath: template_dir + "login.html",
-    script: js_dir + "login.js",
+    script: js_user_dir + "login.js",
     title: "Login" + " - " + title_extension,
   }, 
   "/profile": {
     urlPath: template_dir + "profile.html",
-    script: js_dir + "profile.js",
+    script: js_user_dir + "profile.js",
     title: "Profile" + " - " + title_extension,
   }, 
   "/editProfile": {
     urlPath: template_dir + "editProfile.html",
-    script: js_dir + "editProfile.js",
+    script: js_user_dir + "editProfile.js",
     title: "Edit Profile" + " - " + title_extension,
   }, 
   "/history": {
@@ -54,21 +55,6 @@ const urlRoute = {
     title: "Game" + " - " + title_extension,
   }, 
 };
-
-// Check Token
-function getRoute(url) {
-  const token = localStorage.getItem('token');
-
-  // if (!token) {
-  //   if (url === '/signup')
-  //     return urlRoute['/signup'];
-  //   else
-  //     return urlRoute['/login'];
-  // } else if (token && url === '/login') {
-  //   return urlRoute['/'];
-  // }
-  return urlRoute[url];
-}
 
 // Disable default a tag behavior of reload full page to make SPA
 function setATagDefault() {
@@ -99,7 +85,14 @@ function loadScriptInOrder(scripts, contentDiv) {
 
 // Load content from route
 export function loadPage(url) {
-  const route = getRoute(url);
+  // const token = localStorage.getItem('token');
+
+  // if (!token && url !== "/signup") {
+  //   url = "/login"
+  // } else if (token && url === '/login') {
+  //   url = "/"
+  // }
+  const route = urlRoute[url];
   const contentDiv = document.getElementById('content');
 
   fetch(route.urlPath)
