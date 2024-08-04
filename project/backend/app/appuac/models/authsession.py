@@ -31,6 +31,7 @@ class AuthSession(models.Model):
         """
         if self.mem:
             return timezone.now() > self.last_used + timedelta(minutes=self.LONG_TTL)
+            # return False
         return timezone.now() > self.last_used + timedelta(minutes=self.SHORT_TTL)
     
     def refresh(self):
