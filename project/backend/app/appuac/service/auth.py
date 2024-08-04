@@ -7,6 +7,7 @@ from appuac.models.authsession import AuthSession
 
 def token_auth(token: str):
     auth_session: AuthSession | None = AuthSession.objects.filter(id=token).first()
+    print(auth_session)
     if auth_session is None:
         return None
     if auth_session.is_expired:
