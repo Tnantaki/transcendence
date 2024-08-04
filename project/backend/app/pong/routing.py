@@ -33,15 +33,3 @@ def get_all_room(request):
 def post_create_room(request, payload: RoomPostIn):
     room = Room.objects.create(name=payload.name)
     return 201, room
-
-@pong_router.post(
-    "/pong/room/{room_id}/join/",
-    response={
-        200: RoomName
-    },
-    auth=BearerTokenAuth()
-)
-def post_join_room(request, room_id: int):
-    room = Room.objects.get(id=room_id)
-    room.add_player(request.user)
-    return 200, room
