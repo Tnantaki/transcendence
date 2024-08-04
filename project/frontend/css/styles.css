@@ -7,6 +7,7 @@
   --clr-red: #B63A3A;
   --clr-green: #62E54C;
   --clr-white: #ffffff;
+  --clr-grey: #A2B1B5;
 
   /* icon-size */
   --ic-xl: min(50px, calc(50px * 0.15) + calc(50vw * 0.045));

@@ -1,10 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/match-history.css">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../css/match-history.css">
 </head>
 <body>
-    <h1>MATCH HISTORY</h1>
+	<h1>MATCH HISTORY</h1>
+
+	<!-- headline -->
+	<div id="headline" class="container-fluid">
+		<div class="row">
+			<div class="col-3">
+			Player 1
+			</div>
+			<div class="col">
+			Score
+			</div>
+			<div class="col-3">
+			Player 2
+			</div>
+			<div class="col-3">
+			Date
+			</div>
+			<div class="col">
+			Time
+			</div>
+		</div>
+	  </div>
+
+	<!-- tables -->
+	<div id="match-history-table" class="container-fluid"></div>
+	<script src="../js/gameUI/history-table.js"></script>
+
+	<!-- button -->
+	<div class="wrapper">
+		<!-- ! the buttton is not working yet -->
+		<a href="game.html"> 
+			<button class="font-bs-bold btn btn-primary bk-profile-button fs-lg" data-i18n="GAME MENU">GAME MENU &gt;&gt;</button>
+		</a>
+	</div>
 </body>
 </html>
