@@ -57,3 +57,15 @@ h1 {
     position: absolute;
     top: 50%;
 }
+
+.icon-menu-container {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}
+
+.icon-menu { 
+    margin-left: 10px;
+}
+
+
