@@ -1,0 +1,59 @@
+h1 {
+    font-family: 'Press Start 2P', 'system-ui';
+    font-size: 60px;
+    color: white;
+    margin: 50px;
+    text-align: center;
+    -webkit-text-stroke: var(--fs-h1-stk) var(--clr-shadow);
+    paint-order: stroke fill;
+
+    /* adding border style */
+    border: var(--bs-md) solid var(--clr-border);
+    border-radius: min(50px, calc(50px * 0.20) + calc(50vw * 0.038));
+    padding: 2.5rem;
+    display: block;
+    width: fit-content;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row {
+    /* border */
+    min-height: 60px;
+    border: var(--bs-md) solid var(--clr-grey);
+    border-radius: min(5px, calc(5px * 0.20) + calc(5vw * 0.038));
+    margin-bottom: 60px;
+}
+
+#headline {
+    font-family: 'Orbitron', 'system ui';
+    font-size: 35px;
+    font-weight: bold;
+    color: #A2B1B5;
+    text-align: center;
+    background-color: #0946A6;
+}
+
+#match-history-table {
+    font-family: 'Orbitron', 'system ui';
+    font-size: 25px;
+    font-weight: bold;
+    color: #0946A6;
+    text-align: center;
+}
+
+#match-history-table .row {
+    background-color: #A2B1B5;
+    border: var(--bs-md) solid var(--clr-border);
+    border-radius: min(5px, calc(5px * 0.20) + calc(5vw * 0.038));
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+}

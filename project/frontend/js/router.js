@@ -3,7 +3,7 @@ import { setSelectLanguage } from "./i18n.js";
 const title_extension = "Transcendence";
 const template_dir = "/templates/";
 const js_dir = "js/";
-const js_game_dir = js_dir + "gameUX/";
+const js_game_dir = js_dir + "gameUI/";
 const js_user_dir = js_dir + "userManage/";
 
 const urlRoute = {
@@ -34,7 +34,7 @@ const urlRoute = {
   }, 
   "/history": {
     urlPath: template_dir + "match-history.html",
-    script: "",
+    script: js_game_dir + "history-table.js",
     title: "Match History" + " - " + title_extension,
   }, 
   "/leaderboard": {
