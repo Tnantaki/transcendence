@@ -1,71 +1,99 @@
 h1 {
-    font-family: 'Press Start 2P', 'system-ui';
-    font-size: 60px;
-    color: white;
-    margin: 50px;
-    text-align: center;
-    -webkit-text-stroke: var(--fs-h1-stk) var(--clr-shadow);
-    paint-order: stroke fill;
+	font-family: 'Press Start 2P', 'system-ui';
+	color: white;
+	margin: 50px;
+	text-align: center;
+	-webkit-text-stroke: var(--fs-h1-stk) var(--clr-shadow);
+	paint-order: stroke fill;
 
-    /* adding border style */
-    border: var(--bs-md) solid var(--clr-border);
-    border-radius: min(50px, calc(50px * 0.20) + calc(50vw * 0.038));
-    padding: 2.5rem;
-    display: block;
-    width: fit-content;
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+	/* adding border style */
+	border: var(--bs-md) solid var(--clr-border);
+	border-radius: min(50px, calc(50px * 0.20) + calc(50vw * 0.038));
+	padding: 2.5rem;
+	display: block;
+	width: fit-content;
+	max-width: 90%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .row {
-    /* border */
-    min-height: 60px;
-    border: var(--bs-md) solid var(--clr-grey);
-    border-radius: min(5px, calc(5px * 0.20) + calc(5vw * 0.038));
-    margin-bottom: 60px;
+	/* border */
+	min-height: 60px;
+	border: var(--bs-md) solid var(--clr-grey);
+	border-radius: min(5px, calc(5px * 0.20) + calc(5vw * 0.038));
+	margin-bottom: 60px;
 }
 
 #headline {
-    font-family: 'Orbitron', 'system ui';
-    font-size: 35px;
-    font-weight: bold;
-    color: #A2B1B5;
-    text-align: center;
-    background-color: #0946A6;
+	font-family: 'Orbitron', 'system ui';
+	/* font-size: 35px; */
+	font-size: var(--fs-xxl);
+	font-weight: bold;
+	color: #A2B1B5;
+	text-align: center;
+	background-color: #0946A6;
 }
 
 #match-history-table {
-    font-family: 'Orbitron', 'system ui';
-    font-size: 25px;
-    font-weight: bold;
-    color: #0946A6;
-    text-align: center;
+	font-family: 'Orbitron', 'system ui';
+	/* font-size: 25px; */
+	font-size: var(--fs-xl);
+	font-weight: bold;
+	color: #0946A6;
+	text-align: center;
 }
 
 #match-history-table .row {
-    background-color: #A2B1B5;
-    border: var(--bs-md) solid var(--clr-border);
-    border-radius: min(5px, calc(5px * 0.20) + calc(5vw * 0.038));
+	background-color: #A2B1B5;
+	border: var(--bs-md) solid var(--clr-border);
+	border-radius: min(5px, calc(5px * 0.20) + calc(5vw * 0.038));
 }
 
 .wrapper {
-    text-align: center;
+	text-align: center;
 }
 
 .button {
-    position: absolute;
-    top: 50%;
+	position: absolute;
+	top: 50%;
 }
 
 .icon-menu-container {
-    position: absolute;
-    top: 20px;
-    right: 30px;
+	position: absolute;
+	top: 20px;
+	right: 30px;
 }
 
 .icon-menu { 
-    margin-left: 10px;
+	margin-left: 10px;
 }
 
+.player-img {
+	border: var(--bs-md) solid var(--clr-border);
+	border-radius: 50%;
+	width: min(100px, max(calc(100px * 0.15) + calc(100vw * 0.038), calc(100px * 0.15) + calc(100vh * 0.038)));
+	aspect-ratio: 1 / 1;
+}
 
+.profile-img-overlay {
+	position: absolute;
+    display: flex;
+	/* right: 30px; */
+    justify-content: center;
+    align-items: center;
+}
+
+#my-profile {
+	position: relative;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+}
+
+#friend-profile {
+	position: relative;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+}

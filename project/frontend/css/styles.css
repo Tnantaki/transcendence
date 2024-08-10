@@ -132,6 +132,9 @@
 .h-md {
   font-size: min(40px, max(calc(40px * 0.15) + calc(40vw * 0.038), calc(40px * 0.15) + calc(40vh * 0.038)));
 }
+.h-lg {
+  font-size: min(60px, max(calc(60px * 0.15) + calc(60vw * 0.038), calc(60px * 0.15) + calc(60vh * 0.038)));
+}
 
 input {
   background-color: transparent;
