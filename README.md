@@ -8,10 +8,10 @@
 > - Match History: Users can view the history of their matches, including scores and opponents.
 ## Previews
 ### Account Pages
-|-----|-----|
-| ![.](images/account_login.png) | ![.](images/account_signup.png) |
-| ![.](images/account_main.png) | ![.](images/account_profile.png) |
-| ![.](images/account_edit_profile.png) |  |
+| ![.](images/account_login.png) <br> <center>**Login Page**</center> | ![.](images/account_signup.png) <br> <center>**Signup Page**</center> |
+| :-: | :-: |
+| ![.](images/account_main.png) <br> <center>**Main Page**</center> | ![.](images/account_profile.png) <br> <center>**Profile Page**</center> |
+| ![.](images/account_edit_profile.png) <br> <center>**Edit Profile Page**</center> | |
 
 ---
 ## 🛠️Built with
