@@ -1,22 +1,25 @@
-function removeEvent(evt){
+const canvas = document.getElementById("gameArea");
+const ctx = canvas.getContext("2d");
+
+export function removeEvent(evt){
 	canvas.removeEventListener("click", evt);
 	// console.log("remove main menu button");
 }
 
-function addEventToCanvas(evt) {
+export function addEvent(evt) {
 	canvas.addEventListener("click", evt);
 }
 
-function manageEvt(status, evt)
+export function manageEvt(status, evt)
 {
 	// 0 --> add event
 	if (!status)
-		addEventToCanvas(evt);
+		addEvent(evt);
 	else
 		removeEvent(evt);
 }
 
-function initCanvas(title)
+export function initCanvas(title)
 {
 	// clear canvas
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -47,7 +50,7 @@ function initCanvas(title)
 }
 
 // draw buttons that are text-based
-function drawTextBtn(btnObj)
+export function drawTextBtn(btnObj)
 {
 	const x = imageX + btnObj.xPos;
 	const y = imageY + btnObj.yPos;

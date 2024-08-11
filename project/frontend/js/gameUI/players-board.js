@@ -1,3 +1,6 @@
+// const canvas = document.getElementById("gameArea");
+// const ctx = canvas.getContext("2d");
+
 const BUTTON_RADIUS = 10;
 const BUTTON_SPACE = 40;
 const BOARD_MARGIN = 505;

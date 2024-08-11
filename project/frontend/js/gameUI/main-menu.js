@@ -1,4 +1,5 @@
-// import { drawGame } from "../gamePlay/Main";
+import { drawGame } from "../gamePlay/Main.js";
+import * as Utils from "./utils.js";
 
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
@@ -71,7 +72,7 @@ function handleMenu(event)
 	{
 		if (x >= startX && x <= startX + btnWidth && y >= btnY && y <= (btnY + btnHeight) - 20)
 		{
-			manageEvt(1, handleMenu);
+			Utils.manageEvt(1, handleMenu);
 			if (btn == "Single Player")
 				drawGame();
 			else if (btn == "Versus")
@@ -92,7 +93,7 @@ function createMenu()
 {
 	drawCanvas();
 	drawBtn();
-	manageEvt(0, handleMenu);
+	Utils.manageEvt(0, handleMenu);
 }
 
 createMenu();

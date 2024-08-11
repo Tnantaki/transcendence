@@ -20,7 +20,7 @@ ball = new Ball(canvas, ctx);
 document.addEventListener("keydown", (event) => { leftPaddle.keyPressed(event)} );
 document.addEventListener("keyup", (event) => { leftPaddle.keyReleased(event)} );
 
-function drawGame() {
+export function drawGame() {
     clearScreen();
 
     leftPaddle.display();
