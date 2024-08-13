@@ -74,8 +74,8 @@ function handleMenu(event)
 		{
 			Utils.manageEvt(1, handleMenu);
 			if (btn == "Single Player")
-				console.log("Single Player");
-				// drawGame();
+				// console.log("Single Player");
+				drawGame();
 			else if (btn == "Versus")
 				console.log("Versus");
 			else if (btn == "Online")
