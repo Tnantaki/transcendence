@@ -102,12 +102,13 @@ export function loadPage(url) {
       document.title = route.title;
       if (route.script) {
         if (url === '/game') {
-          loadScriptInOrder(route.script, contentDiv);
-          // route.script.forEach(e => {
-          //   const addScript = document.createElement('script');
-          //   addScript.src = e + "?v=" + new Date().getTime();
-          //   contentDiv.appendChild(addScript);
-          // })
+          // loadScriptInOrder(route.script, contentDiv);
+          route.script.forEach(e => {
+            const addScript = document.createElement('script');
+            addScript.src = e + "?v=" + new Date().getTime();
+            addScript.type = 'module';
+            contentDiv.appendChild(addScript);
+          })
         } else {
           const addScript = document.createElement('script');
           // append query parameter timestamp to the script URL to prevent caching.
