@@ -6,27 +6,6 @@
 let imageX = 0;
 let imageY = 0;
 
-// start button setting 
-const btnObj = {
-	width: 150, height: 50, bg: "transparent",
-	textColor: "white", font: "60px Irish Grover",
-	textAlign: "center", textBaseline: "middle",
-	text: "Start", xPos: 70, yPos: 320
-};
-
-// back button setting 
-const backBtnObj = {
-	width: 90, height: 35, bg: "transparent",
-	textColor: "white", font: "40px Irish Grover",
-	textAlign: "center", textBaseline: "middle",
-	text: "Back", xPos: 90, yPos: 380
-};
-
-// references for button events
-const startBtn = (event) => handleStartBtn(btnObj, event);
-const backBtn = (event) => handleBackBtn(backBtnObj, event);
-
-
 // ########################################################
 // #                       EXECUTION 					  #
 // ########################################################

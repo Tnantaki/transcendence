@@ -8,7 +8,11 @@
 // 	// const tourStatus = ["1/8", ]
 // }
 
-function drawRoomDisplay()
+const canvas = document.getElementById("gameArea");
+const ctx = canvas.getContext("2d");
+
+const BOARD_PADDING = canvas.width - 950;
+export function drawRoomDisplay()
 {
 	const	startX = BOARD_PADDING;
 	const	startY = 125;
@@ -43,13 +47,13 @@ function drawRoomDisplay()
 	ctx.fillStyle = "white";
 	ctx.textBaseline = "top";
 	ctx.textAlign = "center";
-	rooms.forEach((room, index) => {
-		const yPos = startY + (padding + space)  * index;
-		ctx.fillText(room.name, startX + textPadding * 2.2, yPos);
-		if (index == 0)
-			return ;
-		ctx.fillText("1/2", maxWidth - 10 , yPos); //! temporary --> will create specific function later
-	});
+	// rooms.forEach((room, index) => {
+	// 	const yPos = startY + (padding + space)  * index;
+	// 	ctx.fillText(room.name, startX + textPadding * 2.2, yPos);
+	// 	if (index == 0)
+	// 		return ;
+	// 	ctx.fillText("1/2", maxWidth - 10 , yPos); //! temporary --> will create specific function later
+	// });
 	ctx.closePath();
 }
 
@@ -57,23 +61,4 @@ function addRoom(newRoom)
 {
 	rooms.push({name: newRoom});
 	updateLobby();
-}
-
-function handleCreateBtn(btnObj, event)
-{
-	const	rect = canvas.getBoundingClientRect();
-	const	x = event.clientX - rect.left;
-	const	y = event.clientY - rect.top;
-
-	const	btnX = imageX + btnObj.xPos;
-	const	btnY = imageY + btnObj.yPos;
-	const	btnWidth = btnObj.width;
-	const	btnHeight = btnObj.height;
-	
-	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
-	{
-		const newRoom = prompt("Enter room name:");
-		if (newRoom)
-			addRoom(newRoom);
-	}	
 }

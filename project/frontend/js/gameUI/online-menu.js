@@ -1,49 +1,35 @@
 import { getPongImg } from "./shared-resources.js";
+import { btns, evtBtns } from "./shared-resources.js";
+import { drawRoomDisplay } from "./online-board.js";
 import * as Utils from "./utils.js";
-
-// ########################################################
-// #                       SETTING 					      #
-// ########################################################
-
-
-const createBtn = (event) => handleCreateBtn(createBtnObj, event);
 
 // ########################################################
 // #                       EXECUTION 					  #
 // ########################################################
 
-function execLobby(img)
+function execLobby(mode, img)
 {
 	console.log("start");
-	if (rooms.type == "online")
+	if (mode == "online")
 		Utils.initCanvas("Online Match", img);
 	else
 		Utils.initCanvas("Tournament", img);
 	console.log("done created canvas");
-	Utils.drawTextBtn(createBtnObj);
+	Utils.drawTextBtn(btns.createBtn);
 	console.log("drawnCreateBtn");
-	Utils.drawTextBtn(backBtnObj);
+	Utils.drawTextBtn(btns.backBtn);
 	console.log("drawnBackBtn");
-	Utils.drawRoomDisplay();
+	drawRoomDisplay();
 	console.log("drawnRoomDisplay");
-	Utils.manageEvt(0, createBtn);
-	Utils.manageEvt(0, backBtn);
+	Utils.manageEvt(0, evtBtns.createBtn);
+	Utils.manageEvt(0, evtBtns.backBtn);
 	console.log("end");
 }
 
-// pre-load the image
-var rooms = [{
-		name: "", 
-		players: 1, //! add more players if one or more join the room
-		status: true, 
-		type: ""
-}];
-
-export function createLobby(type)
+export function createLobby(mode)
 {
-	rooms.type = type;
 	getPongImg().then(img => {
-		execLobby(img);
+		execLobby(mode, img);
 	}).catch(error => {
 		console.error("Error cannot create a lobby: " + error);
 	})
@@ -52,5 +38,5 @@ export function createLobby(type)
 function updateLobby()
 {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	createLobby(rooms.type);
+	createLobby(mode);
 }
