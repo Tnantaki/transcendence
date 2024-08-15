@@ -5,13 +5,6 @@ import * as Utils from "./utils.js";
 // #                       SETTING 					      #
 // ########################################################
 
-// button settings
-const createBtnObj = {
-	width: 300, height: 50, bg: "transparent",
-	textColor: "white", font: "50px Irish Grover",
-	textAlign: "center", textBaseline: "middle",
-	text: "Create Room", xPos: 5, yPos: 320
-};
 
 const createBtn = (event) => handleCreateBtn(createBtnObj, event);
 
