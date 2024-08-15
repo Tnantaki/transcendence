@@ -1,4 +1,5 @@
 import { drawGame } from "../gamePlay/Main.js";
+import { createLobby } from "./online-menu.js";
 import * as Utils from "./utils.js";
 
 const canvas = document.getElementById("gameArea");
@@ -75,7 +76,6 @@ function handleMenu(event)
 			Utils.manageEvt(1, handleMenu);
 			if (btn == "Single Player")
 				drawGame();
-				// console.log("Single Player");
 			else if (btn == "Versus")
 				console.log("Versus");
 			else if (btn == "Online")

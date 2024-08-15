@@ -44,7 +44,7 @@ function execTournament()
 }
 
 // pre-load the image
-let pongImg = null;
+var pongImg = null;
 var players = [{name: "Join The Tournament !"}];
 function createTournament()
 {

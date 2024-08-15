@@ -1,3 +1,6 @@
+import { getPongImg } from "./shared-resources.js";
+import * as Utils from "./utils.js";
+
 // ########################################################
 // #                       SETTING 					      #
 // ########################################################
@@ -16,17 +19,23 @@ const createBtn = (event) => handleCreateBtn(createBtnObj, event);
 // #                       EXECUTION 					  #
 // ########################################################
 
-function execLobby()
+function execLobby(img)
 {
+	console.log("start");
 	if (rooms.type == "online")
-		initCanvas("Online Match");
+		Utils.initCanvas("Online Match", img);
 	else
-		initCanvas("Tournament");
-	drawTextBtn(createBtnObj);
-	drawTextBtn(backBtnObj);
-	drawRoomDisplay();
-	manageEvt(0, createBtn);
-	manageEvt(0, backBtn);
+		Utils.initCanvas("Tournament", img);
+	console.log("done created canvas");
+	Utils.drawTextBtn(createBtnObj);
+	console.log("drawnCreateBtn");
+	Utils.drawTextBtn(backBtnObj);
+	console.log("drawnBackBtn");
+	Utils.drawRoomDisplay();
+	console.log("drawnRoomDisplay");
+	Utils.manageEvt(0, createBtn);
+	Utils.manageEvt(0, backBtn);
+	console.log("end");
 }
 
 // pre-load the image
@@ -37,19 +46,14 @@ var rooms = [{
 		type: ""
 }];
 
-function createLobby(type)
+export function createLobby(type)
 {
 	rooms.type = type;
-	if (!pongImg)
-	{
-		pongImg = new Image();
-		pongImg.src = "js/gameUi/images/table-tennis.png";
-		pongImg.onload = function() { // call the anonymous function when the image is loaded
-			execLobby();
-		};
-	}
-	else
-		execLobby();
+	getPongImg().then(img => {
+		execLobby(img);
+	}).catch(error => {
+		console.error("Error cannot create a lobby: " + error);
+	})
 }
 
 function updateLobby()

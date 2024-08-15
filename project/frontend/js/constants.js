@@ -9,6 +9,9 @@ export const API_MY_PROFILE = BACKEND_URL + "i/uac/me/";
 export const API_UPLOAD = FRONTEND_URL + "api/i/uac/me/profile/";
 export const API_USER_ID = FRONTEND_URL + "/i/uac/user/";
 
+// API GAME
+export const API_CREATE_ROOM = BACKEND_URL + "/i/game/pong/room/";
+
 
 // MOCKUP API
 export const MOCKUP_PROFILE = "./js/mock/mockProfile.json";
