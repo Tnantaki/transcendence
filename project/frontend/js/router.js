@@ -85,13 +85,13 @@ function loadScriptInOrder(scripts, contentDiv) {
 
 // Load content from route
 export function loadPage(url) {
-  // const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
-  // if (!token && url !== "/signup") {
-  //   url = "/login"
-  // } else if (token && url === '/login') {
-  //   url = "/"
-  // }
+  if (!token && url !== "/signup") {
+    url = "/login"
+  } else if (token && url === '/login') {
+    url = "/"
+  }
   const route = urlRoute[url];
   const contentDiv = document.getElementById('content');
 
