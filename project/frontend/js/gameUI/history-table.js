@@ -20,26 +20,26 @@ async function getProfile() {
 	}
 }
 
-async function getProfileById(id) {
-	try {
-		// console.log("try to fetch");
-		const profile = document.getElementById("friend-profile");
-		const response = await fetchAPI("GET", constant.API_USER_ID + "uJOlSFOuL-n3qPZk3nDqUmGG");
-		// console.log("fetch:",response);
+// async function getProfileById(id) {
+// 	try {
+// 		// console.log("try to fetch");
+// 		const profile = document.getElementById("friend-profile");
+// 		const response = await fetchAPI("GET", constant.API_USER_ID + "uJOlSFOuL-n3qPZk3nDqUmGG");
+// 		// console.log("fetch:",response);
 
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-		// console.log("response ok");
-		const profileValue = await response.json();
-		// console.log("fetch friends' profiles success");
+// 		if (!response.ok) {
+// 			throw new Error(`HTTP error! status: ${response.status}`);
+// 		}
+// 		// console.log("response ok");
+// 		const profileValue = await response.json();
+// 		// console.log("fetch friends' profiles success");
 
-		profile.querySelector("#friendProfileImage").src = profileValue["image"]
-			|| "./static/svg/default-user-picture.svg";
-	} catch (error) {
-		console.error(error.message);
-	}
-}
+// 		profile.querySelector("#friendProfileImage").src = profileValue["image"]
+// 			|| "./static/svg/default-user-picture.svg";
+// 	} catch (error) {
+// 		console.error(error.message);
+// 	}
+// }
 
 
 // create table for match history
@@ -97,4 +97,42 @@ const matchRow = `
 matchHistoryTable.innerHTML += matchRow;
 
 getProfile();
-window.getProfileById = getProfileById("asd");
+// window.getProfileById = getProfileById("asd");
+
+// Mos Test Modal profile
+// async function getFriendList() {
+//   try {
+//     const friendList = document.getElementById("friendList");
+//     const response = await fetchAPI("GET", constant.MOCKUP_FRIENDLIST, {
+//       auth: false,
+//     }); // TODO: auth must be true
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+//     const friendListValue = await response.json();
+
+//     friendListValue.forEach(friend => {
+//       const item = document.createElement("li");
+//       item.classList.add("friend-list-item");
+//       item.innerHTML = `
+//         <div class="d-flex justify-content-center friend-item-picture ">
+//           <img src="${friend.image}" alt="profile picture">
+//         </div>
+//         <div class="d-flex align-items-center friend-item-name">
+//           <div class="online-status ms-0"></div>
+//           <p class="font-bs-bold fs-xl friend-name" data-bs-toggle="modal" data-bs-target="#profileModal" 
+//             onclick="getProfileById(${friend.id})">
+//             ${friend.display_name}
+//           </p>
+//         </div>
+//         <div class="friend-item-background"></div>
+//       `
+//       friendList.appendChild(item);
+//     })
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// }
+
+// getFriendList();

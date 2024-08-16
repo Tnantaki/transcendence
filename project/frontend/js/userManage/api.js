@@ -1,3 +1,5 @@
+import { loadPage } from "../router.js";
+
 export async function fetchAPI(method, url, options = {}) {
   const {
     auth = false,
@@ -28,8 +30,13 @@ export async function fetchAPI(method, url, options = {}) {
       body: body ? JSON.stringify(body) : undefined,
       ...otherOptions
     });
+    if (response.status === 401) {
+      console.log("Token has expired");
+      localStorage.removeItem("token");
+    }
     return response;
   } catch (error) {
+    console.log("get response");
     throw error;
   }
 }
@@ -60,6 +67,10 @@ export async function fetchUploadFile(method, url, options = {}) {
       body: body,
       ...otherOptions
     });
+    if (response.status === 401) {
+      console.log("Token has expired");
+      localStorage.removeItem("token");
+    }
     return response;
   } catch (error) {
     throw error;
