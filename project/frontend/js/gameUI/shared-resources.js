@@ -1,3 +1,10 @@
+import { getImgPosition, manageEvt } from "./utils.js";
+import { createMenu } from "./main-menu.js";
+import * as Room from "./room-api.js";
+
+const canvas = document.getElementById("gameArea");
+const ctx = canvas.getContext("2d");
+
 // preload the img
 let pongImg = null;
 export function getPongImg() {
@@ -34,7 +41,6 @@ const backBtnObj = {
 	textAlign: "center", textBaseline: "middle",
 	text: "Back", xPos: 90, yPos: 380
 };
-export const btns = {createBtn: createBtnObj, startBtn: startBtnObj, backBtn: backBtnObj};
 
 function handleCreateBtn(btnObj, event)
 {
@@ -42,6 +48,7 @@ function handleCreateBtn(btnObj, event)
 	const	x = event.clientX - rect.left;
 	const	y = event.clientY - rect.top;
 
+	const	{imageX, imageY} = getImgPosition();
 	const	btnX = imageX + btnObj.xPos;
 	const	btnY = imageY + btnObj.yPos;
 	const	btnWidth = btnObj.width;
@@ -49,14 +56,42 @@ function handleCreateBtn(btnObj, event)
 	
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
-		const newRoom = prompt("Enter room name:");
-		if (newRoom)
-			addRoom(newRoom);
+		console.log("clicked create btn");
+		Room.showForm();
+		// document.getElementById("room-name").style.display = "block";
+		// const newRoom = prompt("Enter room name:");
+		// if (newRoom)
+		// 	addRoom(newRoom);
 	}	
+}
+
+function handleBackBtn(btnObj, event)
+{
+	const rect = canvas.getBoundingClientRect();
+	const x = event.clientX - rect.left;
+	const y = event.clientY - rect.top;
+
+	const	{imageX, imageY} = getImgPosition();
+	const btnX = imageX + btnObj.xPos;
+	const btnY = imageY + btnObj.yPos;
+	const btnWidth = btnObj.width;
+	const btnHeight = btnObj.height;
+	
+	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
+	{
+		manageEvt(1, createBtn);
+		manageEvt(1, startBtn);
+		manageEvt(1, backBtn);
+		createMenu();
+		// manageEvt(1, handleAddPlayerBtn);
+		// console.log("Back");
+	}
 }
 
 // references for button events
 const createBtn = (event) => handleCreateBtn(createBtnObj, event);
 const startBtn = (event) => handleStartBtn(startBtnObj, event);
 const backBtn = (event) => handleBackBtn(backBtnObj, event);
+
+export const btns = {createBtn: createBtnObj, startBtn: startBtnObj, backBtn: backBtnObj};
 export const evtBtns = {createBtn: createBtn, startBtn: startBtn, backBtn: backBtn};

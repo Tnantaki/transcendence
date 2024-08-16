@@ -52,7 +52,7 @@ export function initCanvas(title, pongImg)
 	// console.log("canvas: " + imageX + " " + imageY)
 }
 
-function getImgPosition() { 
+export function getImgPosition() { 
 	return {imageX, imageY};
 }
 

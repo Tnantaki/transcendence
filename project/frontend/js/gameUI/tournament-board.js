@@ -55,27 +55,6 @@ function handleStartBtn(btnObj, event)
 		console.log("Start");
 }
 
-function handleBackBtn(btnObj, event)
-{
-	const rect = canvas.getBoundingClientRect();
-	const x = event.clientX - rect.left;
-	const y = event.clientY - rect.top;
-
-	const btnX = imageX + btnObj.xPos;
-	const btnY = imageY + btnObj.yPos;
-	const btnWidth = btnObj.width;
-	const btnHeight = btnObj.height;
-	
-	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
-	{
-		manageEvt(1, startBtn);
-		manageEvt(1, backBtn);
-		manageEvt(1, handleAddPlayerBtn);
-		createMenu();
-		// manageEvt(1, createBtn);
-		// console.log("Back");
-	}
-}
 
 function updateTour()
 {

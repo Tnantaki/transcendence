@@ -90,7 +90,7 @@ function handleMenu(event)
 	}
 }
 
-function createMenu()
+export function createMenu()
 {
 	drawCanvas();
 	drawBtn();

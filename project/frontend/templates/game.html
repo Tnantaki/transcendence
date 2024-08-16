@@ -1,30 +1,37 @@
 <style>
-  .game-home-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: var(--mg-md);
-    margin-right: var(--mg-md);
-  }
+	.game-home-btn {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin-top: var(--mg-md);
+		margin-right: var(--mg-md);
+	}
 </style>
 
 <div class="game-home-btn">
-  <a class="m-0 p-0" href="/">
-    <img class="ic-xl btn-hover p-0 mt-0 me-0" src="../static/svg/home.svg" alt="Home button">
-  </a>
+	<a class="m-0 p-0" href="/">
+		<img class="ic-xl btn-hover p-0 mt-0 me-0" src="../static/svg/home.svg" alt="Home button">
+	</a>
 </div>
 
 <div class="d-flex justify-content-center align-items-center h-100" id="game-page">
-  <div>
-    <center>
-      <canvas id="gameArea" width="1024" height="600"></canvas>
-      <script type="module" src="../js/gameUI/utils.js"></script>
-      <script type="module" src="../js/gameUI/main-menu.js"></script>
-      <script type="module" src="../js/gameUI/tournament-board.js"></script>
-      <script type="module" src="../js/gameUI/players-board.js"></script>
-      <script type="module" src="../js/gameUI/online-menu.js"></script>
-      <script type="module" src="../js/gameUI/online-board.js"></script>
-      <!-- <script src="../js/gamePlay/Main.js" type="module"></script> -->
-    </center>
-  </div>
-</div>
+	<!-- popup for creating a room -->
+	<div class="form-popup" id="room-name" style="display: none;">
+			<form id="room-form" action="../js/gameUI/shared-resources.js" class="form-container">
+				<h1>CREATE ROOM</h1>
+				<label for="room-name"><b>Room Name</b></label>
+				<input id="room-name-input" type="text" placeholder="Enter your room name" name="room-name" required>
+				<button type="submit" class="btn">Confirm</button>
+				<button type="button" class="btn cancle" onclick="closeForm()">Close</button>
+			</form>
+	</div>
+
+	<div>
+		<canvas id="gameArea" width="1024" height="600"></canvas>
+		<script type="module" src="../js/gameUI/utils.js"></script>
+		<script type="module" src="../js/gameUI/main-menu.js"></script>
+		<script type="module" src="../js/gameUI/tournament-board.js"></script>
+		<script type="module" src="../js/gameUI/players-board.js"></script>
+		<script type="module" src="../js/gameUI/online-menu.js"></script>
+		<script type="module" src="../js/gameUI/online-board.js"></script>
+	</div>
