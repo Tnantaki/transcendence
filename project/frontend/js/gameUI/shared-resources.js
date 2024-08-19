@@ -8,18 +8,14 @@ const ctx = canvas.getContext("2d");
 // preload the img
 let pongImg = null;
 export function getPongImg() {
-	console.log("here");
 	if (!pongImg) {
-		console.log("11111111");
 		pongImg = new Image();
 		pongImg.src = "js/gameUI/images/table-tennis.png";
 	}
 	return new Promise ((resolve, reject) => {
-		console.log("22222222");
 		if (pongImg.complete)
 			resolve(pongImg);
 		else {
-			console.log("333333");
 			pongImg.onload = () => resolve(pongImg);
 			pongImg.onerror = () => reject;
 		}
@@ -61,7 +57,7 @@ function handleCreateBtn(btnObj, event)
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		console.log("clicked create btn");
-		// Room.showModal();
+		Room.showModal();
 		// document.getElementById("room-name").style.display = "block";
 		// const newRoom = prompt("Enter room name:");
 		// if (newRoom)

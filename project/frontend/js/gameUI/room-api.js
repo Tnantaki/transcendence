@@ -1,20 +1,26 @@
 import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
 
+let modal;
 export function showModal() {
-	$('#createRoomModal').modal('show');
+	if (!modal)
+		modal = new bootstrap.Modal(document.getElementById('createRoomModal'));
+	modal.show();
 }
 
 export function closeModal() {
-	$('#createRoomModal').modal('hide');
+	if (modal)
+		modal.hide();
 }
 
-document.getElementById("room-form").addEventListener("submit", function (event) {
-	event.preventDefault();
-	const roomName = document.getElementById("room-name-input").value;
-	if (roomName) {
-		createRoomNameAPI(roomName);
-	}
+document.addEventListener('DOMContentLoaded', function () {
+	document.getElementById('createRoomModal').addEventListener('click', function() {
+		const roomName = document.getElementById("room-name-input").value;
+		if (roomName) {
+			createRoomNameAPI(roomName);
+		}
+		console.log("clicked");
+	})
 
 	// clear input when modal is hidden
 	$('#createRoomModal').on('hidden.bs.modal', function() {
@@ -34,6 +40,3 @@ async function createRoomNameAPI(roomName) {
 		console.error(error.message);
 	}
 }
-
-// make closeForm() global
-window.closeForm = closeForm;

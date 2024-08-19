@@ -15,8 +15,9 @@
 </div>
 
 <div class="d-flex justify-content-center align-items-center h-100" id="game-page">
+
 	<!-- popup for creating a room -->
-	<!-- <div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalLabel" aria-hidden="true">
+	<div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -32,22 +33,12 @@
 					</form>
 				</div>
 				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="createRoomBtn">Confirm</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="createRoomBtn">Close</button>
 				</div>
 			</div>
 		</div>
-	</div>	 -->
-
-	<div class="form-popup" id="room-name" style="display: none;">
-			<form id="room-form" action="../js/gameUI/shared-resources.js" class="form-container">
-				<h1>CREATE ROOM</h1>
-				<label for="room-name"><b>Room Name</b></label>
-				<input id="room-name-input" type="text" placeholder="Enter your room name" name="room-name" required>
-				<button type="submit" class="btn">Confirm</button>
-				<button type="button" class="btn cancle" onclick="closeForm()">Close</button>
-			</form>
-	</div>
+	</div>	
 
 	<!-- game UI -->
 	<div>
