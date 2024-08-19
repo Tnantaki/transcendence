@@ -1,12 +1,12 @@
 import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
 
-export function showForm() {
-	document.getElementById("room-name").style.display = "block";
+export function showModal() {
+	$('#createRoomModal').modal('show');
 }
 
-export function closeForm() {
-	document.getElementById("room-name").style.display = "none";
+export function closeModal() {
+	$('#createRoomModal').modal('hide');
 }
 
 document.getElementById("room-form").addEventListener("submit", function (event) {
@@ -14,8 +14,12 @@ document.getElementById("room-form").addEventListener("submit", function (event)
 	const roomName = document.getElementById("room-name-input").value;
 	if (roomName) {
 		createRoomNameAPI(roomName);
-		closeForm();
 	}
+
+	// clear input when modal is hidden
+	$('#createRoomModal').on('hidden.bs.modal', function() {
+		document.getElementById('room-name-input').value = '';
+	})
 })
 
 async function createRoomNameAPI(roomName) {

@@ -16,6 +16,29 @@
 
 <div class="d-flex justify-content-center align-items-center h-100" id="game-page">
 	<!-- popup for creating a room -->
+	<!-- <div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="createRoomModalLabel">CREATE ROOM</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form id="room-form">
+						<div class="form-group">
+							<label for="room-name">Room Name</label>
+							<input class="form-control" id="room-name-input" type="text" placeholder="Enter your room name" name="room-name" required>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="createRoomBtn">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>	 -->
+
 	<div class="form-popup" id="room-name" style="display: none;">
 			<form id="room-form" action="../js/gameUI/shared-resources.js" class="form-container">
 				<h1>CREATE ROOM</h1>
@@ -26,6 +49,7 @@
 			</form>
 	</div>
 
+	<!-- game UI -->
 	<div>
 		<canvas id="gameArea" width="1024" height="600"></canvas>
 		<script type="module" src="../js/gameUI/utils.js"></script>
@@ -35,3 +59,4 @@
 		<script type="module" src="../js/gameUI/online-menu.js"></script>
 		<script type="module" src="../js/gameUI/online-board.js"></script>
 	</div>
+</div>
