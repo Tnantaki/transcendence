@@ -2,7 +2,7 @@ import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
 
 export function showForm() {
-	document.getElementById("room-name").style.display = "none";
+	document.getElementById("room-name").style.display = "block";
 }
 
 export function closeForm() {
@@ -30,3 +30,6 @@ async function createRoomNameAPI(roomName) {
 		console.error(error.message);
 	}
 }
+
+// make closeForm() global
+window.closeForm = closeForm;
