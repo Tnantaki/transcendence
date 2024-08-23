@@ -23,24 +23,29 @@ createRoomBtn.addEventListener('click', function() {
 			createRoomNameAPI(roomName);
 			closeModal();
 		}
-document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
+		document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
 			document.getElementById('room-name-input').value = ' ';
 		})
 })
 
 async function createRoomNameAPI(roomName) {
-	console.log("In createRoomAPI");
+	console.log("send request: ", roomName);
 	try {
-		const response = await fetchAPI("POST", Constant.API_CREATE_ROOM, {auth: true,});
+		const response = await fetchAPI("POST", Constant.API_CREATE_ROOM, {
+			auth: true, 
+			body: {name: roomName},
+		});
 
 		if (!response.ok) {
+			const errorBody = await response.text();
+			console.log("error body res: ", errorBody);
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		else
-			console.log("suceess!");
+			console.log("suceess! ", response.status);
 
 	} catch (error) {
-		console.error(error.message);
+		console.error("Cannot create room: ", error.message);
 	}
 }
 

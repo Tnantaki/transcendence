@@ -53,7 +53,7 @@ function handleCreateBtn(btnObj, event)
 	const	btnY = imageY + btnObj.yPos;
 	const	btnWidth = btnObj.width;
 	const	btnHeight = btnObj.height;
-	
+
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		console.log("clicked create btn");
