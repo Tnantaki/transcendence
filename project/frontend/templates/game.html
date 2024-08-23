@@ -18,23 +18,23 @@
 
 	<!-- popup for creating a room -->
 	<div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="createRoomModalLabel">CREATE ROOM</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+					<h5 class="modal-title fs-1" id="createRoomModalLabel">CREATE ROOM</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form id="room-form">
-						<div class="form-group">
-							<label for="room-name">Room Name</label>
+					<form id="room-form" action="#" method="post">
+						<div class="mb-3">
+							<label for="room-name-input" class="form-label">Room Name</label>
 							<input class="form-control" id="room-name-input" type="text" placeholder="Enter your room name" name="room-name" required>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" id="createRoomBtn">Confirm</button>
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" id="createRoomBtn">Confirm</button>
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>

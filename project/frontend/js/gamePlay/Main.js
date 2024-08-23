@@ -17,8 +17,8 @@ leftScore = new Score(canvas.width / 2 - 40, canvas, ctx);
 rightScore = new Score(canvas.width / 2 + 40, canvas, ctx);
 ball = new Ball(canvas, ctx);
 
-document.addEventListener("keydown", (event) => { leftPaddle.keyPressed(event)} );
-document.addEventListener("keyup", (event) => { leftPaddle.keyReleased(event)} );
+// document.addEventListener("keydown", (event) => { leftPaddle.keyPressed(event)} );
+// document.addEventListener("keyup", (event) => { leftPaddle.keyReleased(event)} );
 
 export function drawGame() {
     clearScreen();

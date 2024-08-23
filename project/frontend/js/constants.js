@@ -7,10 +7,10 @@ export const API_LOGIN = BACKEND_URL + "i/uac/login/";
 export const API_LOGOUT = BACKEND_URL + "i/uac/logout/";
 export const API_MY_PROFILE = BACKEND_URL + "i/uac/me/";
 export const API_UPLOAD = FRONTEND_URL + "api/i/uac/me/profile/";
-export const API_USER_ID = FRONTEND_URL + "/i/uac/user/";
+export const API_USER_ID = FRONTEND_URL + "i/uac/user/";
 
 // API GAME
-export const API_CREATE_ROOM = BACKEND_URL + "/i/game/pong/room/";
+export const API_CREATE_ROOM = BACKEND_URL + "i/game/pong/room/";
 
 
 // MOCKUP API
