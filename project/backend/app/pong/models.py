@@ -35,6 +35,21 @@ class BaseAutoDate(models.Model):
         abstract = True
 
 
+class Room(BaseAutoDate):
+    """
+    """
+    name = models.CharField(default="", max_length=255)
+    number_of_player = models.IntegerField(default=0)
+    users = models.ManyToManyField(AUTH_USER_MODEL, related_name="room_user")
+    size = models.IntegerField(default=2)
+    
+    # user_player_register_affter_game_start
+    
+    def add_player(self, player):
+        self.number_of_player += 1
+        self.save()
+        return self
+
 class Game(BaseID, BaseAutoDate):
     """
     - param p1: player one
@@ -59,16 +74,4 @@ class Game(BaseID, BaseAutoDate):
     p1_score = models.IntegerField(default=0)
     p2_score = models.IntegerField(default=0)
     status = models.CharField(default="CLOSE", max_length=255)
-
-class Room(BaseAutoDate):
-    """
-    """
-    name = models.CharField(default="", max_length=255)
-    number_of_player = models.IntegerField(default=0)
-    users = models.ManyToManyField(AUTH_USER_MODEL, related_name="room_user")
-    size = models.IntegerField(default=2)
-    
-    def add_player(self, player):
-        self.number_of_player += 1
-        self.save()
-        return self
+    room = models.ForeignKey('Room', on_delete=models.CASCADE, null=True)
