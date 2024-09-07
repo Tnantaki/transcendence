@@ -403,9 +403,9 @@ export class PongGame {
 
   // clear screen
   getToken = async () => {
+    // TODO: Change from get from url to get from local storage
     this.user_token = new URLSearchParams(window.location.search).get("token");
     this.room_id = new URLSearchParams(window.location.search).get("room_id");
-    // this.room_id = TEMP_ROOM_ID;
   };
 
   gameloop = async () => {
@@ -550,8 +550,6 @@ export class PongGame {
           if (this.player === PLAYER.LEFT) {
             this.setLeftPaddleKeyEvent();
           }
-          break;
-
           break;
         default:
           break;
