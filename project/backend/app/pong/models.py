@@ -37,11 +37,14 @@ class BaseAutoDate(models.Model):
 
 class Room(BaseAutoDate):
     """
+    TYPE: VERSUS, TORNAMENT
     """
     name = models.CharField(default="", max_length=255)
     number_of_player = models.IntegerField(default=0)
     users = models.ManyToManyField(AUTH_USER_MODEL, related_name="room_user")
     size = models.IntegerField(default=2)
+    
+    game_type = models.CharField(default="VERSUS", max_length=255)
     
     # user_player_register_affter_game_start
     

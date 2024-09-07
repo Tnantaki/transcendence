@@ -66,7 +66,8 @@ Command
     "id": "ROOM ID",
     "size": 2,
     "number_of_player": 2,
-    "users": ["USER 1", "USER 2"]
+    "users": ["USER 1", "USER 2"],
+    "type": "VERSUS" | "TORNAMENT"
 }
 
 """
