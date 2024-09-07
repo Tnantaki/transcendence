@@ -11,8 +11,6 @@ var KEY = {
   S: 83,
 };
 
-const TEMP_ROOM_ID = "125";
-
 const PaddleEvent = {
   UP: "UP",
   DOWN: "DOWN",
@@ -535,7 +533,6 @@ export class PongGame {
 
   webSocketEventOnMessage = (event) => {
     let data = JSON.parse(event.data);
-    // console.log("on message : ", data);
     if (data.sender === "SERVER") {
       switch (data.command) {
         case "COUNTDOWN":
@@ -596,11 +593,10 @@ export class PongGame {
   };
 
   webSocketEventOnError = (event) => {
-    // console.log(event);
+    console.log("Error: ", event);
   };
 
   setWebSocketEvent = () => {
-    // console.log("Setting websocket event");
     this.webSocketSession.onopen = this.webSocketEventOnOpen;
     this.webSocketSession.onclose = this.webSocketEventOnClose;
     this.webSocketSession.onmessage = this.webSocketEventOnMessage;
