@@ -14,8 +14,6 @@ services:
       - '5439:5432'
     networks:
       - backend
-    depends_on:
-      - elasticsearch
 
   backend: 
     build: backend
@@ -25,6 +23,7 @@ services:
       - ./backend:/app
     depends_on:
       - db
+      # - logstash
     networks:
       - backend
     env_file:
