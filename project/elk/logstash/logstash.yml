@@ -1,0 +1,5 @@
+# Enable X-Pack monitoring
+xpack.monitoring.enabled: true
+
+# Set the Elasticsearch hosts where monitoring data will be sent
+xpack.monitoring.elasticsearch.hosts: ["https://elasticsearch:9200"]
