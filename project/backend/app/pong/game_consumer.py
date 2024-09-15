@@ -11,6 +11,7 @@ from channels.db import database_sync_to_async
 from asyncio import run
 from django.utils import timezone
 from datetime import timedelta
+from pong.game_engine import GameEngine
 import asyncio
 import threading
 
@@ -23,16 +24,6 @@ def get_token_from_scope(scope_headers):
         return token_text
     return None
 
-
-event_note = {}
-
-
-def log_stream_event(event, message):
-    if (event in event_note):
-        return
-    event_note[event] = message
-    print(f"[bold green]Event: {event}[/bold green]")
-    print(f"[bold green]Message: {message}[/bold green]")
 
 
 # Server Message
@@ -101,14 +92,13 @@ class GameConsumer(AsyncWebsocketConsumer):
     room = None
     player_number = 0
     room_group_name = None
-    is_join = False
-    is_start = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     async def connect(self):
         self.room_name = ""
+        self.is_join = None
 
         # Accept connection
         # if error send message to client and close connection
@@ -138,7 +128,8 @@ class GameConsumer(AsyncWebsocketConsumer):
         if not self.room:
             await self.set_exit_code(4003, f"Room is not exist: {room_id}")
             return
-        self.room_group_name = f"Game_{self.room_name}"
+        self.room_group_name = f"Game_Group_{room_id}"
+        self.game_engine = GameEngine(self.room_group_name)
 
         # Check token in query string
         token = self.query_param.get("token", None)
@@ -154,26 +145,24 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         # Add user to room
         # Check room is not full
-        if self.room.number_of_player >= self.room.size:
-            await self.set_exit_code(4004, "Room is full")
-            return
-
         self.room_id = room_id
         self.token = token
-        # Check User is Already join room
-        # if user in self.room.users.all():
         # Reconnection process mebey
+        
 
         if (await self.check_is_user_already_join(self.room, user)):
             await self.set_exit_code(4005, "User is already join")
             return
 
-        # User Join Room
         await self.user_join_room(self.room, user)
+        self.game_engine.add_user(self.token)
+        self.game_engine.set_player(self.token, self.player_number)
+
+
+        # User Join Room
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.send(**create_textdata({"code": 2000, "message": "Connected"}))
-
-        if self.room.number_of_player == self.room.size and not self.is_start and self.query_room(self.room_id):
+        if self.room.number_of_player == 2:
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -190,8 +179,6 @@ class GameConsumer(AsyncWebsocketConsumer):
                     "sender": "SERVER",
                 },
             )
-            self.is_start = True
-            await self.create_game(self.room_id)
             for i in range(4):
                 await self.channel_layer.group_send(
                     self.room_group_name,
@@ -201,30 +188,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                         "sender": "SERVER",
                     },
                 )
-
-    @database_sync_to_async
-    def create_game(self, room_id):
-        room = Room.objects.filter(id=room_id).first()
-        room_user = room.users.all()
-        
-        if (self.player_number == 2 and room_user.count == 2):
-            print("Create Game Criteria Pass")
-            u1 = [i for i in room_user if i.id == self.user.id][0]
-            u2 = [i for i in room_user if i.id != self.user.id][0]
-            game = Game.objects.create(
-                p1=u1,
-                p2=u2,
-                status="START",
-                room=room,
-            )
-            self.game = game
-
-    @database_sync_to_async
-    def query_check_room_is_ready(self, room_id):
-        room = self.query_room(room_id)
-        if room.users.count() == room.size:
-            return True
-        return False
+            if not self.game_engine.running:
+                await self.game_engine.check()
+                loop = asyncio.get_event_loop()
+                self.game_engine.run(loop)
 
     @database_sync_to_async
     def check_is_user_already_join(self, room, user):
@@ -269,27 +236,23 @@ class GameConsumer(AsyncWebsocketConsumer):
         # Leave room group
         print("Exit worker", self.exit_code)
         print("is join when disconnect ",self.is_join)
+        
+        
         if self.room_group_name:
             await self.channel_layer.group_discard(
                 self.room_group_name, self.channel_name
             )
         if self.is_join:
             await self.leave_room()
+        if hasattr(self, "game_engine"):
+            self.game_engine.stop()
 
     # Receive message from WebSocket
     async def receive(self, text_data):
         message = json.loads(text_data)
-        
         d = message['data']
-        key=f"{message['type']} {message['command']} FROM player {d['as_player']}"
-        log_stream_event(key, message)
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                "type": "client_message",
-                "data": message,
-            },
-        )
+        if message["type"] == "CLIENT_MESSAGE":
+            self.game_engine.handle_message(message)
 
     async def game_countdown(self, event):
         """
@@ -298,9 +261,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         t = int(event['command'].split("=")[1])
         await asyncio.sleep(t)
         await self.send(text_data=json.dumps({"code": 2000, "command": "COUNTDOWN", "data": {'time': 3 - t}, 'sender': "SERVER"}))
-
-    # Receive message from room group
-    # Handle for message type game.control WTF
 
     async def client_message(self, event):
         data = event['data']
@@ -325,14 +285,29 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def game_assign(self, event):
         message = event["command"]
+        
 
         # Send message to WebSocket
         await self.send(
             text_data=json.dumps(
                 {"code": 2000, "command": message, "sender": "SERVER", "data": {"player": self.player_number, }})
         )
+        
+    async def game_state(self, state):
+        await self.send(
+            text_data=json.dumps(
+                {"code": 2000, "command": "GAME_STATE", "sender": "SERVER", "data": state['game_state']}
+        ))
 
     async def set_exit_code(self, code, reason):
         self.exit_code = {"code": code, "reason": reason}
         await self.send(text_data=json.dumps(self.exit_code))
         await self.close()
+
+    async def game_score(self, event):
+        message = event["command"]
+        await self.send(
+            text_data=json.dumps(
+                {"code": 2000, "command": message, "sender": "SERVER", "data": event["data"], }
+            )
+        )    
