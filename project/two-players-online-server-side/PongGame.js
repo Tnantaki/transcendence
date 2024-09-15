@@ -134,24 +134,7 @@ export class PongGame {
     this.ctx.closePath();
   };
 
-  // move paddle
-  // movePaddle = () => {
-  //   if (this.leftPaddleEvent === "UP") {
-  //     this.leftPaddle.y -= this.leftPaddle.speed;
-  //   } else if (this.leftPaddleEvent === "DOWN") {
-  //     this.leftPaddle.y += this.leftPaddle.speed;
-  //   }
-
-  //   if (this.rightPaddleEvent === "UP") {
-  //     this.rightPaddle.y -= this.rightPaddle.speed;
-  //   } else if (this.rightPaddleEvent === "DOWN") {
-  //     this.rightPaddle.y += this.rightPaddle.speed;
-  //   }
-  //   this.leftPaddle.y = this.checkPaddleReachBoundary(this.leftPaddle);
-
-  //   this.rightPaddle.y = this.checkPaddleReachBoundary(this.rightPaddle);
-  // };
-
+  
   checkPaddleReachBoundary = (paddle) => {
     // Top
     if (paddle.y + 1 < 0) {
@@ -468,35 +451,6 @@ export class PongGame {
           this.leftScore.score = data.data.left;
           this.rightScore.score = data.data.right;
         default:
-          break;
-      }
-    }
-    if (data.sender == "PLAYER") {
-      switch (data.command) {
-        case "MOVE_PADDLE":
-          if (
-            data.data.as_player == PLAYER.LEFT &&
-            this.player == PLAYER.RIGHT
-          ) {
-            this.leftPaddle.speedy = data.data.paddle_speedy;
-            this.leftPaddleEvent = data.data.paddle_event;
-            if (data.data.paddle_eventthis == "IDLE") {
-              this.leftPaddle.y = data.data.paddle_position_y;
-            }
-          }
-          if (
-            data.data.as_player == PLAYER.RIGHT &&
-            this.player == PLAYER.LEFT
-          ) {
-            this.rightPaddle.speedy = data.data.paddle_speedy;
-            this.rightPaddleEvent = data.data.paddle_event;
-            if (data.data.paddle_event == "IDLE") {
-              this.rightPaddle.y = data.data.paddle_position_y;
-            }
-          }
-          break;
-        default:
-          console.log("Unknown command: ", data.command);
           break;
       }
     }
