@@ -45,9 +45,7 @@ export class PongGame {
 
     // Utility screen
     this.baseColor = "rgb(52, 49, 49)"; // Dark grey
-
     this.display_state = "CONNECTING";
-
     this.count_down_helper = 0;
 
     // Paddle Event utility
@@ -102,6 +100,11 @@ export class PongGame {
     };
   };
 
+  setPaddlePosition = (paddle, x, y) => {
+    paddle.x = x;
+    paddle.y = y;
+  };
+
   getPaddleCenter = (paddle) => {
     return paddle.y + paddle.height / 2;
   };
@@ -131,24 +134,7 @@ export class PongGame {
     this.ctx.closePath();
   };
 
-  // move paddle
-  movePaddle = () => {
-    if (this.leftPaddleEvent === "UP") {
-      this.leftPaddle.y -= this.leftPaddle.speed;
-    } else if (this.leftPaddleEvent === "DOWN") {
-      this.leftPaddle.y += this.leftPaddle.speed;
-    }
-
-    if (this.rightPaddleEvent === "UP") {
-      this.rightPaddle.y -= this.rightPaddle.speed;
-    } else if (this.rightPaddleEvent === "DOWN") {
-      this.rightPaddle.y += this.rightPaddle.speed;
-    }
-    this.leftPaddle.y = this.checkPaddleReachBoundary(this.leftPaddle);
-
-    this.rightPaddle.y = this.checkPaddleReachBoundary(this.rightPaddle);
-  };
-
+  
   checkPaddleReachBoundary = (paddle) => {
     // Top
     if (paddle.y + 1 < 0) {
@@ -165,8 +151,8 @@ export class PongGame {
   setKeyEvent = () => {
     this.leftPaddleEvent = "idle";
     this.rightPaddleEvent = "idle";
-    // this.setLeftPaddleKeyEvent();
-    // this.setRightPaddleKeyEvent();
+    this.setLeftPaddleKeyEvent();
+    this.setRightPaddleKeyEvent();
   };
 
   // set Paddle Event
@@ -174,23 +160,20 @@ export class PongGame {
     document.addEventListener("keydown", (event) => {
       if (event.keyCode === KEY.W) {
         event.preventDefault();
-        this.leftPaddleEvent = PaddleEvent.UP;
-        this.leftPaddle.speedy = 1;
-        this.sendPaddleSatate(1, this.leftPaddle);
+        this.sendKeyEvent("PRESS", KEY.W);
       } else if (event.keyCode === KEY.S) {
         event.preventDefault();
-        this.leftPaddleEvent = PaddleEvent.DOWN;
-        this.leftPaddle.speedy = -1;
-        this.sendPaddleSatate(-1, this.leftPaddle);
+        this.sendKeyEvent("PRESS", KEY.S);
       }
     });
     document.addEventListener("keyup", (event) => {
       event.preventDefault();
-      if (event.keyCode === KEY.W || event.keyCode === KEY.S) {
+      if (event.keyCode === KEY.W) {
         event.preventDefault();
-        this.leftPaddleEvent = PaddleEvent.IDLE;
-        this.leftPaddle.speedy = 0;
-        this.sendPaddleSatate(0, this.leftPaddle);
+        this.sendKeyEvent("RELEASE", KEY.W);
+      } else if (event.keyCode === KEY.S) {
+        event.preventDefault();
+        this.sendKeyEvent("RELEASE", KEY.S);
       }
     });
   };
@@ -199,39 +182,31 @@ export class PongGame {
     document.addEventListener("keydown", (event) => {
       if (event.keyCode === KEY.UP) {
         event.preventDefault();
-        this.rightPaddleEvent = PaddleEvent.UP;
-        this.rightPaddle.speedy = 1;
-        this.sendPaddleSatate(1, this.rightPaddle);
+        this.sendKeyEvent("PRESS", KEY.UP);
       } else if (event.keyCode === KEY.DOWN) {
         event.preventDefault();
-        this.rightPaddleEvent = PaddleEvent.DOWN;
-        this.rightPaddle.speedy = -1;
-        this.sendPaddleSatate(-1, this.rightPaddle);
+        this.sendKeyEvent("PRESS", KEY.DOWN);
       }
     });
     document.addEventListener("keyup", (event) => {
-      if (event.keyCode === KEY.UP || event.keyCode === KEY.DOWN) {
+      if (event.keyCode === KEY.UP) {
         event.preventDefault();
-        this.rightPaddleEvent = PaddleEvent.IDLE;
-        this.rightPaddle.speedy = 0;
-        this.sendPaddleSatate(0, this.rightPaddle);
+        this.sendKeyEvent("RELEASE", KEY.UP);
+      } else if (event.keyCode === KEY.DOWN) {
+        event.preventDefault();
+        this.sendKeyEvent("RELEASE", KEY.DOWN);
       }
     });
   };
 
-  sendPaddleSatate = (speedy, paddle) => {
-    let event = { "-1": "DOWN", "0": "IDLE", "1": "UP" };
-
+  sendKeyEvent = (key, key_code) => {
     this.sendMessage({
       type: "CLIENT_MESSAGE",
-      command: "MOVE_PADDLE",
+      command: key,
       sender: this.webSocketToken,
       data: {
-        paddle_speedy: speedy,
-        as_player: this.player,
-        paddle_event: event[speedy.toString()],
-        paddle_position_y: paddle.y,
-        paddle_posttion_x: paddle.x,
+        key: key,
+        key_code: key_code,
       },
     });
   };
@@ -292,6 +267,11 @@ export class PongGame {
     };
   };
 
+  setBallPosition = (x, y) => {
+    this.ball.x = x;
+    this.ball.y = y;
+  };
+
   // display ball
   displayBall = () => {
     this.ctx.beginPath();
@@ -299,90 +279,6 @@ export class PongGame {
     this.ctx.fillStyle = this.ball.color;
     this.ctx.fill();
     this.ctx.closePath();
-  };
-
-  calBallPos = () => {
-    this.ball.x += this.ball.xSpeed;
-    this.ball.y += this.ball.ySpeed;
-  };
-
-  checkBallHitPaddle = async () => {
-    // Hit Paddle Left
-    if (Date.now() - this.latestLeftPaddleHit > 10) {
-      this.hitLeftPaddle();
-      this.latestLeftPaddleHit = Date.now();
-    }
-
-    // Hit Paddle Right
-    if (Date.now() - this.latestRightPaddleHit > 10) {
-      this.hitRightPaddle();
-      this.latestRightPaddleHit = Date.now();
-    }
-  };
-
-  hitLeftPaddle = () => {
-    if (
-      this.ball.x - this.ball.radius <=
-        this.leftPaddle.x + this.leftPaddle.width &&
-      this.ball.y >= this.leftPaddle.y &&
-      this.ball.y <= this.leftPaddle.y + this.leftPaddle.height
-    ) {
-      this.ball.xSpeed = -this.ball.xSpeed;
-      this.ball.ySpeed +=
-        this.ball.ySpeed == 0
-          ? this.leftPaddle.speedy
-          : this.ball.ySpeed * this.leftPaddle.speedy;
-      this.hitInterval += 1;
-    }
-  };
-
-  hitRightPaddle = () => {
-    if (
-      this.ball.x + this.ball.radius >= this.rightPaddle.x &&
-      this.ball.y >= this.rightPaddle.y &&
-      this.ball.y <= this.rightPaddle.y + this.rightPaddle.height
-    ) {
-      this.ball.xSpeed = -this.ball.xSpeed;
-      this.ball.ySpeed +=
-        this.ball.ySpeed == 0
-          ? this.rightPaddle.speedy
-          : this.rightPaddle.speedy * this.ball.ySpeed;
-      this.hitInterval += 1;
-    }
-  };
-
-  checkHitInterval = () => {
-    if (this.hitInterval >= 6) {
-      //   this.ball.xSpeed = (Math.abs(this.ball.xSpeed) + 1) * (this.ball.xSpeed / Math.abs(this.ball.xSpeed));
-      this.ball.xSpeed = Math.ceil(this.ball.xSpeed);
-      this.hitInterval = 0;
-    }
-  };
-
-  checkBallHitBorder = () => {
-    if (
-      this.ball.y - this.ball.radius <= 0 ||
-      this.ball.y + this.ball.radius >= this.canvas.height
-    ) {
-      this.ball.ySpeed = -this.ball.ySpeed;
-    }
-  };
-
-  checkBallScore = () => {
-    if (this.ball.x - this.ball.radius <= 0) {
-      this.setRightScore();
-      this.setBall();
-    }
-
-    if (this.ball.x + this.ball.radius >= this.canvas.width) {
-      this.setLeftScore();
-      this.setBall();
-    }
-  };
-
-  ballHit = async () => {
-    this.checkBallHitBorder();
-    this.checkBallHitPaddle();
   };
 
   // display Background
@@ -403,9 +299,10 @@ export class PongGame {
 
   // clear screen
   getToken = async () => {
-    // TODO: Change from get from url to get from local storage
     this.user_token = new URLSearchParams(window.location.search).get("token");
     this.room_id = new URLSearchParams(window.location.search).get("room_id");
+    this.webSocketToken = this.user_token;
+    console.log("Token: ", this.user_token);
   };
 
   gameloop = async () => {
@@ -413,17 +310,7 @@ export class PongGame {
     this.displayScore();
     this.displayCenterLine();
     this.displayPaddle();
-    this.movePaddle();
-    // Ball
     this.displayBall();
-    // บอลชนกับ paddle
-    await this.ballHit();
-    // return ;
-    this.checkHitInterval();
-    // บอลเข้าประตู
-    this.checkBallScore();
-    // บอลเคลื่อนที่
-    this.calBallPos();
   };
 
   //   SCREEN UTILITY
@@ -551,36 +438,19 @@ export class PongGame {
             this.setLeftPaddleKeyEvent();
           }
           break;
-        default:
+        case "GAME_STATE":
+          this.setBallPosition(
+            data.data.ball_position.x,
+            data.data.ball_position.y
+          );
+          this.leftPaddle.y = data.data.left_paddle.y;
+          this.rightPaddle.y = data.data.right_paddle.y;
           break;
-      }
-    }
-    if (data.sender == "PLAYER") {
-      switch (data.command) {
-        case "MOVE_PADDLE":
-          if (
-            data.data.as_player == PLAYER.LEFT &&
-            this.player == PLAYER.RIGHT
-          ) {
-            this.leftPaddle.speedy = data.data.paddle_speedy;
-            this.leftPaddleEvent = data.data.paddle_event;
-            if (data.data.paddle_eventthis == "IDLE") {
-              this.leftPaddle.y = data.data.paddle_position_y;
-            }
-          }
-          if (
-            data.data.as_player == PLAYER.RIGHT &&
-            this.player == PLAYER.LEFT
-          ) {
-            this.rightPaddle.speedy = data.data.paddle_speedy;
-            this.rightPaddleEvent = data.data.paddle_event;
-            if (data.data.paddle_event == "IDLE") {
-              this.rightPaddle.y = data.data.paddle_position_y;
-            }
-          }
-          break;
+        case "UPDATE_SCORE":
+          console.log("Update score", data.data);
+          this.leftScore.score = data.data.left;
+          this.rightScore.score = data.data.right;
         default:
-          console.log("Unknown command: ", data.command);
           break;
       }
     }
@@ -607,9 +477,7 @@ export class PongGame {
 
   loop = async () => {
     await this.setup();
-
     this.setDisplay(this.display_state);
-
     requestAnimationFrame(this.loop.bind(this));
   };
 }
