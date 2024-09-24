@@ -1,5 +1,5 @@
 import { drawGame } from "../gamePlay/Main.js";
-import { createLobby } from "./online-menu.js";
+import { createLobby } from "./lobby-menu.js";
 import * as Utils from "./utils.js";
 
 const canvas = document.getElementById("gameArea");

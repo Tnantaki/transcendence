@@ -1,5 +1,6 @@
 import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
+import { addRoom } from "./lobby-menu.js";
 
 let modal;
 export function showModal() {
@@ -15,12 +16,11 @@ export function closeModal() {
 
 const createRoomBtn = document.getElementById("createRoomBtn");
 createRoomBtn.addEventListener('click', function() {
-		const modal = new bootstrap.Modal(document.getElementById('createRoomModal'));
 		const roomName = document.getElementById("room-name-input").value;
 
 		if (roomName) {
-			console.log(roomName);
-			createRoomNameAPI(roomName);
+			const res = createRoomAPI(roomName);
+			addRoom(res);
 			closeModal();
 		}
 		document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
@@ -28,7 +28,7 @@ createRoomBtn.addEventListener('click', function() {
 		})
 })
 
-async function createRoomNameAPI(roomName) {
+async function createRoomAPI(roomName) {
 	console.log("send request: ", roomName);
 	try {
 		const response = await fetchAPI("POST", Constant.API_CREATE_ROOM, {
@@ -42,10 +42,13 @@ async function createRoomNameAPI(roomName) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		else
+		{
 			console.log("suceess! ", response.status);
-
+			const res = await response.json();
+			console.log(res);
+			return res;
+		}
 	} catch (error) {
 		console.error("Cannot create room: ", error.message);
 	}
 }
-

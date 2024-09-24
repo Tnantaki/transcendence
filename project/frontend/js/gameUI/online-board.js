@@ -57,8 +57,8 @@ export function drawRoomDisplay()
 	ctx.closePath();
 }
 
-function addRoom(newRoom)
-{
-	rooms.push({name: newRoom});
-	updateLobby();
-}
+// function addRoom(newRoom)
+// {
+// 	rooms.push({name: newRoom});
+// 	updateLobby();
+// }
