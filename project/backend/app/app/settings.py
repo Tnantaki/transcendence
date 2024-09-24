@@ -152,3 +152,27 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# Logstash
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'logstash': {
+#             'level': 'INFO',
+#             'class': 'logstash.TCPLogstashHandler',
+#             'host': 'logstash',
+#             'port': 5044,
+#             'version': 1,
+#             'message_type': 'django',
+#             'fqdn': False,
+#             'tags': ['backend'],
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['logstash'],
+#             'level': 'INFO',
+#         },
+#     },
+# }

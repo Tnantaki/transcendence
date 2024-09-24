@@ -1,14 +1,28 @@
-from ninja import Router, Schema
+from ninja import Router, Schema, ModelSchema
+
+from appuac.models import User
 from .game_consumer import GameConsumer
 from .models import Room
 from appuac.service.auth import BearerTokenAuth
 
 pong_router = Router()
 
+class UserSchema(Schema):
+    id: str
+    username: str
+
 class RoomName(Schema):
     id: int
     name: str
     number_of_player: int
+    users: list[UserSchema]
+    
+    @staticmethod
+    def resolve_users(obj):
+        return obj.users.all()
+    
+    
+    
 
 class RoomPostIn(Schema):
     name: str
@@ -21,6 +35,7 @@ class RoomPostIn(Schema):
 )
 def get_all_room(request):
     qs = Room.objects.all()
+
     return 200, Room.objects.all()
 
 @pong_router.post(
