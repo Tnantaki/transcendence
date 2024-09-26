@@ -51,20 +51,3 @@ function updateLobby()
 // 		"number_of_player": 0,
 // 	},
 // ]
-// ! there should be 2 types of rooms. One for online and one for tournament
-let onlineRooms = [];
-let tourRooms = [];
-function setRoomData(data) {
-	rooms.push(data);
-	console.log(rooms);
-}
-
-export function getRoomData() {
-	return rooms;
-}
-
-export function addRoom(room) {
-	// console.log()
-	setRoomData(room);
-	updateLobby();
-}

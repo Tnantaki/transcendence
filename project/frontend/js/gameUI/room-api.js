@@ -1,6 +1,6 @@
 import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
-import { addRoom } from "./lobby-menu.js";
+// import { addRoom } from "./lobby-menu.js";
 
 let modal;
 export function showModal() {
@@ -14,13 +14,22 @@ export function closeModal() {
 		modal.hide();
 }
 
+let roomData = null;
+function storeRoomData(room) {
+	roomData = room;
+}
+
+export function getRoomData() {
+	return roomData;
+}
+
 const createRoomBtn = document.getElementById("createRoomBtn");
 createRoomBtn.addEventListener('click', function() {
 		const roomName = document.getElementById("room-name-input").value;
 
 		if (roomName) {
 			const res = createRoomAPI(roomName);
-			addRoom(res);
+			storeRoomData(res);
 			closeModal();
 		}
 		document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
