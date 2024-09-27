@@ -13,10 +13,14 @@ export function addEvent(evt) {
 export function manageEvt(status, evt)
 {
 	// 0 --> add event
-	if (!status)
+	if (!status) {
 		addEvent(evt);
-	else
+		console.log('Add Event')
+	}
+	else {
 		removeEvent(evt);
+		console.log('Remove Event')
+	}
 }
 
 // image position

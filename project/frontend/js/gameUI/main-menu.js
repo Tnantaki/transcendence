@@ -1,4 +1,4 @@
-import { drawGame } from "../gamePlay/Main.js";
+import { GameOffline } from "../gamePlay/Main.js";
 import { createLobby } from "./lobby-menu.js";
 import * as Utils from "./utils.js";
 
@@ -12,6 +12,7 @@ const btnHeight = 50;
 const btnSpace = 20;
 const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
 
+let gameOffline = null;
 
 function drawCanvas()
 {
@@ -19,7 +20,7 @@ function drawCanvas()
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	// draw game's screen
-	ctx.fillStyle = "black";
+	ctx.fillStyle = "#666";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	// write title
@@ -74,11 +75,16 @@ function handleMenu(event)
 		if (x >= startX && x <= startX + btnWidth && y >= btnY && y <= (btnY + btnHeight) - 20)
 		{
 			Utils.manageEvt(1, handleMenu);
-			if (btn == "Single Player")
-				console.log("Single Player");
-				// drawGame();
-			else if (btn == "Versus")
+			if (btn == "Single Player") {
+				// console.log("Single Player");
+				gameOffline = new GameOffline(canvas, ctx, 1);
+				gameOffline.startGame();
+			}
+			else if (btn == "Versus") {
+				gameOffline = new GameOffline(canvas, ctx, 2);
+				gameOffline.startGame();
 				console.log("Versus");
+			}
 			else if (btn == "Online")
 				createLobby("online");
 			else if (btn == "Tournament")
@@ -99,6 +105,12 @@ export function createMenu()
 }
 
 createMenu();
+
+const homeBtn = document.getElementById('game-home-btn')
+homeBtn.addEventListener('click', () => {
+	console.log('clear game')
+	if (gameOffline) gameOffline.clear()
+})
 
 // debugger for btn
 			// console.log(btn);

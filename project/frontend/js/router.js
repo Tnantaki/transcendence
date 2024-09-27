@@ -44,9 +44,7 @@ const urlRoute = {
   }, 
   "/game": {
     urlPath: template_dir + "game.html",
-    script: [
-      js_game_dir + "main-menu.js",
-    ],
+    script: js_game_dir + "main-menu.js",
     title: "Game" + " - " + title_extension,
   }, 
 };
@@ -96,21 +94,21 @@ export function loadPage(url) {
       contentDiv.innerHTML = data;
       document.title = route.title;
       if (route.script) {
-        if (url === '/game') {
-          // loadScriptInOrder(route.script, contentDiv);
-          route.script.forEach(e => {
-            const addScript = document.createElement('script');
-            addScript.src = e + "?v=" + new Date().getTime();
-            addScript.type = 'module';
-            contentDiv.appendChild(addScript);
-          })
-        } else {
+        // if (url === '/game') {
+        //   // loadScriptInOrder(route.script, contentDiv);
+        //   route.script.forEach(e => {
+        //     const addScript = document.createElement('script');
+        //     addScript.src = e + "?v=" + new Date().getTime();
+        //     addScript.type = 'module';
+        //     contentDiv.appendChild(addScript);
+        //   })
+        // } else {
           const addScript = document.createElement('script');
           // append query parameter timestamp to the script URL to prevent caching.
           addScript.src = route.script + "?v=" + new Date().getTime();
           addScript.type = 'module';
           contentDiv.appendChild(addScript);
-        }
+        // }
       }
       setATagDefault();
       setSelectLanguage();

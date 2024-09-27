@@ -26,7 +26,11 @@
 </button>
 
 <button class="btn btn-success btn-lg font-bs fs-xxl" data-bs-toggle="modal" data-bs-target="#2FA">
-  Success
+  2FA
+</button>
+
+<button class="btn btn-secondary btn-lg font-bs fs-xxl" data-bs-toggle="modal" data-bs-target="#winnerModal">
+  Win
 </button>
 
 <!-- Modal Logout -->
@@ -123,6 +127,31 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Winner Contact -->
+<div class="modal fade" id="winnerModal" tabindex="-1">
+  <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+    <div class="modal-content popup-content">
+      <div class="modal-body">
+        <div class="popup-frame">
+          <div class="popup-header-icon">
+            <h1 class="font-bs-bold fs-xxl" style="color: #fff;">Winner</h1>
+          </div>
+          <div class="d-flex justify-content-center popup-body">
+            <p id="winnerName" class="font-bs fs-xxl" style="color: #629DD2;"></p>
+          </div>
+          <div class="d-flex justify-content-around popup-footer w-100">
+            <button type="button" class="font-bs fs-lg btn btn-secondary flex-shrink-1 p-2 mx-2"
+              data-bs-dismiss="modal">Back to Home</button>
+            <button type="button" class="font-bs fs-lg btn btn-primary p-2 mx-2"
+              >Play agian</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- </body> -->
   <div id="addScript"></div>

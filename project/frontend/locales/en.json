@@ -39,5 +39,8 @@
   "error_confirm_password": "Password must be the same!",
   "error_display_name_same": "This name already taken!",
   "error_server": "Can't connect to the server!",
-  "france": "France"
+  "france": "France",
+  "back_to_home": "Back to Home",
+  "play_again": "Play again",
+  "winner": "The Winner"
 }
