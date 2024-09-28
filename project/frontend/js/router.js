@@ -39,7 +39,7 @@ const urlRoute = {
   }, 
   "/leaderboard": {
     urlPath: template_dir + "leaderboard.html",
-    script: "",
+    script: js_game_dir + "leaderboard.js",
     title: "Leaderboard" + " - " + title_extension,
   }, 
   "/game": {

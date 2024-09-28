@@ -42,5 +42,10 @@
   "france": "France",
   "back_to_home": "Back to Home",
   "play_again": "Play again",
-  "winner": "The Winner"
+  "winner": "The Winner",
+  "rank": "Rank",
+  "player": "Player",
+  "win": "Win",
+  "lose": "Lose",
+  "score": "Score"
 }

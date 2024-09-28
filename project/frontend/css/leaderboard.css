@@ -1,0 +1,100 @@
+.bk-main {
+  display: grid;
+  grid-template-rows: 2fr 3fr auto;
+  min-width: min(800px, max(calc(800px * 0.15) + calc(800vw * 0.038), calc(800px * 0.15) + calc(800vh * 0.038)));
+}
+
+.bk-leader {
+  margin: 0 var(--mg-lg);
+}
+
+.bk-picture-title {
+  margin: var(--mg-lg) 0;
+}
+
+.profile-image {
+  width: min(160px, max(calc(160px * 0.15) + calc(160vw * 0.038), calc(160px * 0.15) + calc(160vh * 0.038)));
+  aspect-ratio: 1 / 1;
+}
+
+.bk-ribbon {
+  display: flex;
+  position: relative;
+}
+
+.bk-ribbon > p {
+  position: absolute;
+  left: 50%;
+  bottom: 0%;
+  transform: translate(-50%, -20%);
+  white-space: nowrap;
+}
+
+.ribbon {
+  width: min(300px, max(calc(300px * 0.15) + calc(300vw * 0.055), calc(300px * 0.15) + calc(300vh * 0.055)));
+}
+
+.medal {
+  position: absolute;
+  left: 50%;
+  width: min(60px, max(calc(60px * 0.15) + calc(60vw * 0.050), calc(60px * 0.15) + calc(60vh * 0.050)));
+  transform: translate(-50%, -40%);
+}
+
+.crown {
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  transform: translate(-50%, -50%);
+}
+
+.crown > img {
+  width: min(80px, max(calc(80px * 0.15) + calc(80vw * 0.038), calc(80px * 0.15) + calc(80vh * 0.038)));
+}
+
+.headline {
+	font-family: 'Orbitron', 'system ui';
+	font-size: var(--fs-xl);
+	font-weight: bold;
+	color: #A2B1B5;
+	text-align: center;
+	background-color: #0946A6;
+	border: var(--bs-md) solid var(--clr-grey);
+	border-radius: min(5px, calc(5px * 0.20) + calc(5vw * 0.038));
+  margin-bottom: var(--mg-xl);
+  padding: var(--bs-md) 0;
+}
+
+.player-item {
+	background-color: #A2B1B5;
+	font-family: 'Orbitron', 'system ui';
+	font-size: var(--fs-xl);
+	font-weight: bold;
+	color: #0946A6;
+	border: var(--bs-md) solid #629DD2;
+	border-radius: min(5px, calc(5px * 0.20) + calc(5vw * 0.038));
+  margin-bottom: var(--mg-xxl);
+  padding: var(--bs-md) 0;
+}
+
+.row > div {
+  margin: var(--mg-sm);
+  display: flex;
+  justify-content: center;
+}
+
+.player-img {
+	border: var(--bs-md) solid var(--clr-border);
+	border-radius: 50%;
+	width: min(75px, max(calc(75px * 0.15) + calc(75vw * 0.038), calc(75px * 0.15) + calc(75vh * 0.038)));
+	aspect-ratio: 1 / 1;
+	position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+/* .profile-img-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */

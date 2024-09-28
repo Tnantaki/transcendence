@@ -13,6 +13,10 @@ const modalObj = document.getElementById('winnerOfflineModal')
 export class GameOffline {
   constructor(canvas, ctx, mode) {
     this.canvas = canvas;
+    this.canvas.width = 1280
+    this.canvas.height = 720
+    this.canvas.style.width = '70%';
+    this.canvas.style.objectFit = 'contain';
     this.ctx = ctx;
     this.raf = null
     this.keyUp = null
@@ -28,8 +32,6 @@ export class GameOffline {
   }
 
   setup() {
-    this.canvas.style.width = '70%';
-    this.canvas.style.objectFit = 'contain';
     if (this.mode === 2) {
       this.leftPaddle = new Paddle(26, this.canvas, this.ctx, 2);
       this.createTouchKey('player1')
@@ -136,7 +138,10 @@ export class GameOffline {
     const modal = new bootstrap.Modal(modalObj);
     modal.show();
     const winnerName = modalObj.querySelector('#winnerName');
-    modalObj.querySelector('#restart').onclick = () => this.restart()
+    modalObj.querySelector('#restart').onclick = () => { 
+      modal.hide()
+      this.restart() 
+    }
     if (this.leftScore.score > this.rightScore.score) {
       winnerName.innerHTML = 'Player1'
     } else {

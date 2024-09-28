@@ -136,6 +136,9 @@
   font-size: min(60px, max(calc(60px * 0.15) + calc(60vw * 0.038), calc(60px * 0.15) + calc(60vh * 0.038)));
 }
 
+img {
+  font-size: var(--fs-sm);
+}
 input {
   background-color: transparent;
 }
@@ -393,3 +396,13 @@ body {
     -ms-transform: rotate(90deg);
   }
 } */
+
+.icon-menu-container {
+	position: absolute;
+  display: flex;
+	top: var(--mg-lg);
+	right: var(--mg-lg);
+}
+.icon-menu { 
+	margin-left: var(--mg-lg);
+}
