@@ -16,6 +16,7 @@ class RoomName(Schema):
     name: str
     number_of_player: int
     users: list[UserSchema]
+    game_type: str
     
     @staticmethod
     def resolve_users(obj):
