@@ -13,13 +13,20 @@ export function addEvent(evt) {
 export function manageEvt(status, evt)
 {
 	// 0 --> add event
-	if (!status)
+	if (!status) {
 		addEvent(evt);
-	else
+		console.log('Add Event')
+	}
+	else {
 		removeEvent(evt);
+		console.log('Remove Event')
+	}
 }
 
-export function initCanvas(title)
+// image position
+let imageX = 0;
+let imageY = 0;
+export function initCanvas(title, pongImg)
 {
 	// clear canvas
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -49,9 +56,14 @@ export function initCanvas(title)
 	// console.log("canvas: " + imageX + " " + imageY)
 }
 
+export function getImgPosition() { 
+	return {imageX, imageY};
+}
+
 // draw buttons that are text-based
 export function drawTextBtn(btnObj)
 {
+	const {imageX, imageY} = getImgPosition();
 	const x = imageX + btnObj.xPos;
 	const y = imageY + btnObj.yPos;
 	const btnWidth = btnObj.width;

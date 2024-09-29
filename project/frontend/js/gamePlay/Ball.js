@@ -1,26 +1,32 @@
+const BALL_RADIUS = 15
+const BALL_COLOR = 'green'
+const BALL_SPEED = 7
+const BALL_SPEED_INCREASE = 2
+
 export class Ball {
     constructor(canvas, ctx) {
-        this.radius = 12;
+        this.radius = BALL_RADIUS;
         this.canvas = canvas;
         this.ctx = ctx;
-        this.color = "green";
+        this.color = BALL_COLOR;
+        this.hit_ball = new Audio('/sounds/hit_ball.wav')
         this.reset();
     }
 
     update(leftScore, rightScore) {
-        if (this.y < this.radius || this.y > this.canvas.height - this.radius) {
+        if (this.y - this.radius < 0 || this.y + this.radius > this.canvas.height) {
             this.ySpeed = -this.ySpeed;
         }
 
-        if (this.x < this.radius) {
-            leftScore.increment();
-            this.reset()
-        } else if (this.x > this.canvas.width + this.radius) {
+        if (this.x - this.radius < 0) {
             rightScore.increment();
+            this.reset()
+        } else if (this.x + this.radius > this.canvas.width) {
+            leftScore.increment();
             this.reset();
         }
 
-        console.log("x: ",this.x, "x_speed: ", this.xSpeed)
+        // console.log("x: ",this.x, "x_speed: ", this.xSpeed)
         this.x += this.xSpeed;
         this.y += this.ySpeed;
     }
@@ -28,15 +34,16 @@ export class Ball {
     reset() {
         this.x = this.canvas.width / 2;
         this.y = this.canvas.height / 2;
+        this.checkHasPassPaddle = true // add
 
-        this.xSpeed = 7;
+        this.xSpeed = BALL_SPEED;
 
         let isLeft = Math.random(1) > .5;
         if (isLeft) {
             this.xSpeed = -this.xSpeed;
         }
 
-        this.ySpeed = 7;
+        this.ySpeed = BALL_SPEED;
         
         let isTop = Math.random(1) > .5;
         if (isTop) {
@@ -53,33 +60,36 @@ export class Ball {
     }
 
     hitLeftPaddle(player) {
-
-        if (this.x - this.radius <= player.x + player.width && this.x > player.x) {
+        if (this.checkHasPassPaddle && this.x - this.radius <= player.x + player.width) {
             if (this.isSameHeight(player)) {
                 if (Math.sign(this.xSpeed) == 1)
-                    this.xSpeed++;
+                    this.xSpeed += BALL_SPEED_INCREASE;
                 else if (Math.sign(this.xSpeed) == -1)
-                    this.xSpeed--;
+                    this.xSpeed -= BALL_SPEED_INCREASE;
                 this.xSpeed = -this.xSpeed;
+                this.hit_ball.play()
+            } else {
+                this.checkHasPassPaddle = false    
             }
         }
     }
         
     hitRightPaddle(ai) {
-
-        if (this.x + this.radius >= ai.x && this.x <= ai.x + ai.width) {
+        if (this.checkHasPassPaddle && this.x + this.radius >= ai.x) {
             if (this.isSameHeight(ai)) {
                 if (Math.sign(this.xSpeed) == 1)
-                    this.xSpeed++;
+                    this.xSpeed += BALL_SPEED_INCREASE;
                 else if (Math.sign(this.xSpeed) == -1)
-                    this.xSpeed--;
+                    this.xSpeed -= BALL_SPEED_INCREASE;
                 this.xSpeed = -this.xSpeed;
+                this.hit_ball.play()
+            } else {
+                this.checkHasPassPaddle = false    
             }
         }
     }
             
     isSameHeight(player) {
-        return ((this.y >= player.y) && (this.y <= player.y + player.height));
+        return ((this.y + this.radius >= player.y) && (this.y - this.radius  <= player.y + player.height));
     }
-
 };
