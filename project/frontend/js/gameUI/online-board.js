@@ -1,13 +1,3 @@
-// function drawRoomStatus(maxWidth, yPos)
-// {
-// 	if (rooms.type == "online")
-// 	{
-		
-// 	}
-// 	// const onlineStatus = ["1/2", "2/2"];
-// 	// const tourStatus = ["1/8", ]
-// }
-
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
 

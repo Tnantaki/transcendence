@@ -12,21 +12,15 @@ const ctx = canvas.getContext("2d");
 
 function execLobby(mode, img)
 {
-	console.log("start");
 	if (mode == "online")
 		Utils.initCanvas("Online Match", img);
-	else
+	else if (mode == "tournament")
 		Utils.initCanvas("Tournament", img);
-	console.log("done created canvas");
 	Utils.drawTextBtn(btns.createBtn);
-	console.log("drawnCreateBtn");
 	Utils.drawTextBtn(btns.backBtn);
-	console.log("drawnBackBtn");
 	drawRoomDisplay();
-	console.log("drawnRoomDisplay");
 	Utils.manageEvt(0, evtBtns.createBtn);
 	Utils.manageEvt(0, evtBtns.backBtn);
-	console.log("end");
 }
 
 export function createLobby(mode)
@@ -41,13 +35,5 @@ export function createLobby(mode)
 function updateLobby()
 {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	createLobby(mode);
+	createLobby();
 }
-
-// let roomData = [
-// 	{
-// 		"id": -1,
-// 		"name": " ",
-// 		"number_of_player": 0,
-// 	},
-// ]

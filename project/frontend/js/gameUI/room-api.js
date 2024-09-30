@@ -16,29 +16,35 @@ export function closeModal() {
 
 let roomData = null;
 function storeRoomData(room) {
-	roomData = room;
+		roomData = room;
 }
 
 export function getRoomData() {
 	return roomData;
 }
 
+
 const createRoomBtn = document.getElementById("createRoomBtn");
 createRoomBtn.addEventListener('click', function() {
 		const roomName = document.getElementById("room-name-input").value;
 
 		if (roomName) {
-			const res = createRoomAPI(roomName);
-			storeRoomData(res);
-			closeModal();
+			createRoomAPI(roomName)
+			 .then(res => {
+				storeRoomData(res);
+				closeModal();
+			 })
+			 .catch(error => {
+				console.error("Error creating room: ", error);
+			 })
 		}
-		document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
-			document.getElementById('room-name-input').value = ' ';
-		})
+})
+
+document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
+	document.getElementById('room-name-input').value = '';
 })
 
 async function createRoomAPI(roomName) {
-	console.log("send request: ", roomName);
 	try {
 		const response = await fetchAPI("POST", Constant.API_CREATE_ROOM, {
 			auth: true, 
@@ -54,10 +60,10 @@ async function createRoomAPI(roomName) {
 		{
 			console.log("suceess! ", response.status);
 			const res = await response.json();
-			console.log(res);
 			return res;
 		}
 	} catch (error) {
 		console.error("Cannot create room: ", error.message);
+		throw error;
 	}
 }
