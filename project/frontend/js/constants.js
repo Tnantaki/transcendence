@@ -10,7 +10,7 @@ export const API_UPLOAD = FRONTEND_URL + "api/i/uac/me/profile/";
 export const API_USER_ID = FRONTEND_URL + "i/uac/user/";
 
 // API GAME
-export const API_CREATE_ROOM = BACKEND_URL + "i/game/pong/room/";
+export const API_ROOM = BACKEND_URL + "i/game/pong/room/";
 
 
 // MOCKUP API

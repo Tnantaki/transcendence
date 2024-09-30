@@ -46,7 +46,7 @@ document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', f
 
 async function createRoomAPI(roomName) {
 	try {
-		const response = await fetchAPI("POST", Constant.API_CREATE_ROOM, {
+		const response = await fetchAPI("POST", Constant.API_ROOM, {
 			auth: true, 
 			body: {name: roomName},
 		});
@@ -67,3 +67,24 @@ async function createRoomAPI(roomName) {
 		throw error;
 	}
 }
+
+
+export async function getRoomAPI() {
+	try {
+		const response = await fetchAPI("GET", Constant.API_ROOM, { auth: true, });
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		else
+		{
+			console.log("suceess! ", response.status);
+			const res = await response.json();
+			return res;
+		}
+	} catch (error) {
+		console.error("Cannot GET room: ", error.message);
+		throw error;
+	}
+}
+

@@ -1,5 +1,18 @@
+import { getRoomAPI } from "./room-api.js";
+
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
+
+// ! all the rooms created still in the database (40+ of them)
+// function getRooms() {
+// 	getRoomAPI()
+// 	 .then(res => {
+// 		console.log("here: ", res);
+// 	 })
+// 	 .catch(error => {
+// 		console.error("Error cannot get rooms: ", error);
+// 	 })
+// }
 
 const BOARD_PADDING = canvas.width - 950;
 export function drawRoomDisplay()
@@ -37,6 +50,7 @@ export function drawRoomDisplay()
 	ctx.fillStyle = "white";
 	ctx.textBaseline = "top";
 	ctx.textAlign = "center";
+	// getRooms();
 	// rooms.forEach((room, index) => {
 	// 	const yPos = startY + (padding + space)  * index;
 	// 	ctx.fillText(room.name, startX + textPadding * 2.2, yPos);
