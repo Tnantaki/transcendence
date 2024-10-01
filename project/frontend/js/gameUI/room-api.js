@@ -1,6 +1,7 @@
 import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
-// import { addRoom } from "./lobby-menu.js";
+import { updateLobby } from "./lobby-menu.js";
+// import { addRoom } from "./lobby-board.js";
 
 let modal;
 export function showModal() {
@@ -16,7 +17,7 @@ export function closeModal() {
 
 let roomData = null;
 function storeRoomData(room) {
-		roomData = room;
+	roomData = room;
 }
 
 export function getRoomData() {
@@ -25,19 +26,19 @@ export function getRoomData() {
 
 
 const createRoomBtn = document.getElementById("createRoomBtn");
-createRoomBtn.addEventListener('click', function() {
-		const roomName = document.getElementById("room-name-input").value;
+createRoomBtn.addEventListener('click', function () {
+	const roomName = document.getElementById("room-name-input").value;
 
-		if (roomName) {
-			createRoomAPI(roomName)
-			 .then(res => {
-				storeRoomData(res);
+	if (roomName) {
+		createRoomAPI(roomName)
+			.then(res => {
+				updateLobby(res.game_type);
 				closeModal();
-			 })
-			 .catch(error => {
+			})
+			.catch(error => {
 				console.error("Error creating room: ", error);
-			 })
-		}
+			})
+	}
 })
 
 document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
@@ -47,8 +48,8 @@ document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', f
 async function createRoomAPI(roomName) {
 	try {
 		const response = await fetchAPI("POST", Constant.API_ROOM, {
-			auth: true, 
-			body: {name: roomName},
+			auth: true,
+			body: { name: roomName },
 		});
 
 		if (!response.ok) {
@@ -56,8 +57,7 @@ async function createRoomAPI(roomName) {
 			console.log("error body res: ", errorBody);
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		else
-		{
+		else {
 			console.log("suceess! ", response.status);
 			const res = await response.json();
 			return res;
@@ -76,10 +76,10 @@ export async function getRoomAPI() {
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		else
-		{
+		else {
 			console.log("suceess! ", response.status);
 			const res = await response.json();
+			// console.log("here: ", res);
 			return res;
 		}
 	} catch (error) {
