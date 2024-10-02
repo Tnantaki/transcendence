@@ -18,14 +18,13 @@ async function initRooms(boardObj)
 {
 	const	rooms = await getAllRooms();
 	
+	// console.log(rooms);
 	if (rooms)
 	{
 		rooms.forEach((room, index) => {
-			const yPos = boardObj.startY + (boardObj.padding + boardObj.space)  * index;
+			const yPos = boardObj.startY + 20 + (boardObj.padding + boardObj.space)  * index;
 			ctx.fillText(room.name, boardObj.startX + boardObj.textPadding * 2.2, yPos);
-			if (index == 0)
-				return ;
-			ctx.fillText("1/2", boardObj.maxWidth - 10 , yPos); //! temporary --> will create specific function later
+			ctx.fillText(room.number_of_player + 1 + "/2", boardObj.maxWidth - 10 , yPos); //! temporary --> will create specific function later
 		});
 	}
 }

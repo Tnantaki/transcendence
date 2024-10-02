@@ -10,7 +10,7 @@ import * as Utils from "./utils.js";
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
 
-function execLobby(mode, img) {
+async function execLobby(mode, img) {
 	console.log("execLobby");
 	if (mode == "VERSUS" || mode == "online")
 	{
@@ -21,7 +21,7 @@ function execLobby(mode, img) {
 		Utils.initCanvas("Tournament", img);
 	Utils.drawTextBtn(btns.createBtn);
 	Utils.drawTextBtn(btns.backBtn);
-	drawRoomDisplay();
+	await drawRoomDisplay();
 	Utils.manageEvt(0, evtBtns.createBtn);
 	Utils.manageEvt(0, evtBtns.backBtn);
 }
