@@ -14,19 +14,74 @@ async function getAllRooms() {
 	}
 }
 
+
 async function initRooms(boardObj)
 {
-	const	rooms = await getAllRooms();
+	const	rooms = await getAllRooms(); //!change to getRoomAPI later
+
+	// Scroll state
+	let scrollY = 0;
+	const lineHeight = 20;
+	const visibleLines = 9;
+	// console.log("vis: ", visibleLines)
+
+	// Scrollbar properties 
+	const scrollbarWidth = 10;
+	const scrollbarPadding = 2;
+	const scrollbarThumbMinHeight = 20;
 	
 	// console.log(rooms);
-	if (rooms)
-	{
+	if (rooms) {
 		rooms.forEach((room, index) => {
-			const yPos = boardObj.startY + 20 + (boardObj.padding + boardObj.space)  * index;
-			ctx.fillText(room.name, boardObj.startX + boardObj.textPadding * 2.2, yPos);
-			ctx.fillText(room.number_of_player + 1 + "/2", boardObj.maxWidth - 10 , yPos); //! temporary --> will create specific function later
+			const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space)  * index;
+			const itemPos = Math.floor(scrollY / lineHeight) + index;
+			if (itemPos < rooms.length && itemPos < visibleLines) {
+				console.log(itemPos);
+				ctx.fillText(room.name, boardObj.startX + boardObj.textPadding * 2.2, yPos);
+				ctx.fillText(room.number_of_player + 1 + "/2", boardObj.maxWidth - 10 , yPos); //! temporary --> will create specific function later
+			}
 		});
 	}
+
+	// Draw scrollbar
+	const scrollbarHeight = boardObj.height - 2 * scrollbarPadding;
+	const scrollbarY = scrollbarPadding;
+	const thumbHeight = Math.max(
+		scrollbarThumbMinHeight, (visibleLines / rooms.length) * scrollbarHeight
+	);
+
+	// Calculate max scroll position
+	const maxScroll = (rooms.length - visibleLines) * lineHeight;
+
+	// Calculate thumb position ensureing it reaches the bottom
+	const thumbY = scrollbarY + (scrollY / maxScroll) * (scrollbarHeight - thumbHeight);
+
+	// console.log(boardObj.startX);
+	// Draw scrollbar background
+	ctx.beginPath();
+	ctx.fillStyle = "#f0f0f0";
+	ctx.roundRect((boardObj.startX + boardObj.maxWidth) - scrollbarWidth, 
+		boardObj.startY, scrollbarWidth, boardObj.height + boardObj.padding * 2, 10
+	);
+	ctx.fill();
+
+	// Draw scrollbar thumb
+	ctx.beginPath();
+	ctx.fillStyle = "#c0c0c0";
+	ctx.roundRect((boardObj.startX + boardObj.maxWidth) - scrollbarWidth, 
+		boardObj.startY, scrollbarWidth, thumbHeight, 10
+	);
+	ctx.fill();
+
+	// original
+	// if (rooms)
+	// {
+	// 	rooms.forEach((room, index) => {
+	// 		const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space)  * index;
+	// 		ctx.fillText(room.name, boardObj.startX + boardObj.textPadding * 2.2, yPos);
+	// 		ctx.fillText(room.number_of_player + 1 + "/2", boardObj.maxWidth - 10 , yPos); //! temporary --> will create specific function later
+	// 	});
+	// }
 }
 
 const BOARD_PADDING = canvas.width - 950;
@@ -34,7 +89,7 @@ export async function drawRoomDisplay()
 {
 	const	boardObj = {
 		startX: BOARD_PADDING, startY: 125, padding: 30,
-		lineHeight: 330, maxWidth: 450,
+		height: 330, maxWidth: 450,
 		headerPos: 77, textPadding: 40, space: 10,
 	}
 
@@ -43,7 +98,7 @@ export async function drawRoomDisplay()
 	ctx.beginPath();
 	ctx.fillStyle = boardColor;
 	ctx.roundRect(boardObj.startX, boardObj.startY, boardObj.maxWidth, 
-		boardObj.lineHeight + boardObj.padding * 2, 10);
+		boardObj.height + boardObj.padding * 2, 10);
 	ctx.fill();
 
 	ctx.font = "40px Irish Grover";
@@ -51,11 +106,6 @@ export async function drawRoomDisplay()
 	ctx.textBaseline = "top";
 	ctx.textAlign = "middle";
 	ctx.fillText("Room", boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
-
-	ctx.font = "40px Irish Grover";
-	ctx.fillStyle = "white";
-	ctx.textBaseline = "top";
-	ctx.textAlign = "middle";
 	ctx.fillText("Status", boardObj.maxWidth - 10, boardObj.headerPos);
 
 	// draw room on the board
@@ -69,9 +119,3 @@ export async function drawRoomDisplay()
 	ctx.closePath();
 }
 
-
-// export function addRoom(newRoom)
-// {
-// 	// console.log(newRoom);
-// 	updateLobby();
-// }
