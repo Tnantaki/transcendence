@@ -46,7 +46,15 @@ const urlRoute = {
     urlPath: template_dir + "game.html",
     script: js_game_dir + "main-menu.js",
     title: "Game" + " - " + title_extension,
-  }, 
+  },
+  "/online": {
+    urlPath: template_dir + "test/index.html",
+    script: [
+      js_dir + "test/PongOnline.js",
+      // js_dir + "test/pongOnlineScript.js"
+    ],
+    title: "Tests" + " - " + title_extension,
+  }
 };
 
 // Disable default a tag behavior of reload full page to make SPA
@@ -79,14 +87,18 @@ function loadScriptInOrder(scripts, contentDiv) {
 // Load content from route
 export function loadPage(url) {
   const token = localStorage.getItem('token');
+  let endPoint = url.split("?")[0];
 
-  if (!token && url !== "/signup") {
-    url = "/login"
-  } else if (token && url === '/login') {
-    url = "/"
+  if (!token && endPoint !== "/signup") {
+    endPoint = "/login";
+  } else if (token && endPoint === '/login') {
+    endPoint = "/";
   }
-  const route = urlRoute[url];
+  const route = urlRoute[endPoint];
   const contentDiv = document.getElementById('content');
+  const searchParams = window.location.search;
+
+
 
   fetch(route.urlPath)
     .then(response => response.text())
@@ -112,7 +124,8 @@ export function loadPage(url) {
       }
       setATagDefault();
       setSelectLanguage();
-      history.pushState({url: url}, null, url);
+      const newUrl = endPoint + searchParams;
+      history.pushState({endPoint: newUrl}, null, newUrl);
     })
     .catch(error => {
       contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;
@@ -120,9 +133,10 @@ export function loadPage(url) {
     });
 }
 
+
 // Triggering index.html to load content page from url input
 document.addEventListener('DOMContentLoaded', () => {
-  loadPage(location.pathname);
+  loadPage(location.pathname + location.search);
 });
 
 // Popstate will trigger on back and forward buttom
