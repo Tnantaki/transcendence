@@ -1,0 +1,28 @@
+#roomListContainer {
+  position: absolute;
+  font-family: 'Irish Grover', cursive;
+  color: white;
+  background-color: transparent;
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent; /* For Firefox */
+}
+
+#roomListContainer::-webkit-scrollbar {
+  width: 6px; /* Width of the scrollbar */
+}
+
+#roomListContainer::-webkit-scrollbar-track {
+  background: transparent; /* Track background */
+}
+
+#roomListContainer::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5); /* Scroll thumb color */
+  border-radius: 3px; /* Rounded corners on the thumb */
+}
+
+.room-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+}

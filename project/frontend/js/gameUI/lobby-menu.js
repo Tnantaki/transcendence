@@ -1,6 +1,6 @@
 import { getPongImg } from "./shared-resources.js";
 import { btns, evtBtns } from "./shared-resources.js";
-import { drawRoomDisplay } from "./online-board.js";
+import { drawRoomDisplay } from "./lobby-board.js";
 import * as Utils from "./utils.js";
 
 // ########################################################
@@ -10,27 +10,23 @@ import * as Utils from "./utils.js";
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
 
-function execLobby(mode, img)
-{
-	console.log("start");
-	if (mode == "online")
+async function execLobby(mode, img) {
+	console.log("execLobby");
+	if (mode == "VERSUS" || mode == "online")
+	{
+		console.log("isLobbyOnline");
 		Utils.initCanvas("Online Match", img);
-	else
+	}
+	else if (mode == "tournament")
 		Utils.initCanvas("Tournament", img);
-	console.log("done created canvas");
 	Utils.drawTextBtn(btns.createBtn);
-	console.log("drawnCreateBtn");
 	Utils.drawTextBtn(btns.backBtn);
-	console.log("drawnBackBtn");
-	drawRoomDisplay();
-	console.log("drawnRoomDisplay");
+	await drawRoomDisplay();
 	Utils.manageEvt(0, evtBtns.createBtn);
 	Utils.manageEvt(0, evtBtns.backBtn);
-	console.log("end");
 }
 
-export function createLobby(mode)
-{
+export function createLobby(mode) {
 	getPongImg().then(img => {
 		execLobby(mode, img);
 	}).catch(error => {
@@ -38,16 +34,8 @@ export function createLobby(mode)
 	})
 }
 
-function updateLobby()
-{
+export function updateLobby(mode) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	console.log("mode: ", mode);
 	createLobby(mode);
 }
-
-// let roomData = [
-// 	{
-// 		"id": -1,
-// 		"name": " ",
-// 		"number_of_player": 0,
-// 	},
-// ]
