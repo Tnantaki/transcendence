@@ -181,6 +181,12 @@ input:-webkit-autofill:focus {
   font-style: normal;
   color: white;
 }
+.font-irish {
+  color: white;
+  font-family: 'Irish Grover', cursive;
+  font-weight: 400;
+  font-style: normal;
+}
 .font-bs-bold {
   font-weight: 700;
   font-family: "Orbitron", sans-serif;
@@ -348,9 +354,9 @@ body {
 .modal-dialog {
   width: auto;
 }
-.modal-body {
+/* .modal-body {
   max-width: fit-content;
-}
+} */
 .popup-content {
   border: var(--bs-lg) solid var(--clr-white);
   display: flex;

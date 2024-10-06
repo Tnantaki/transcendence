@@ -33,23 +33,27 @@
 
 	<!-- popup for creating a room -->
 	<div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title fs-1" id="createRoomModalLabel">CREATE ROOM</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<div class="modal-header d-flex justify-content-center">
+					<h5 class="modal-title fs-1 font-irish" id="createRoomModalLabel"
+						data-i18n="create_room">CREATE ROOM</h5>
 				</div>
-				<div class="modal-body">
-					<form id="room-form" action="#" method="post">
-						<div class="mb-3">
-							<label for="room-name-input" class="form-label">Room Name</label>
-							<input class="form-control" id="room-name-input" type="text" placeholder="Enter your room name" name="room-name" required>
+				<div class="modal-body d-flex w-100">
+					<form id="room-form" class="w-100" action="#" method="post">
+						<div class="mb-3 d-flex flex-column align-items-center">
+							<label for="room-name-input" class="form-label font-irish fs-3"
+								data-i18n="room_name">Room Name</label>
+							<input class="form-control fs-5 w-90" id="room-name-input" type="text"
+								placeholder="Enter your room name" name="room-name" required>
 						</div>
 					</form>
 				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary" id="createRoomBtn">Confirm</button>
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+				<div class="modal-footer d-flex justify-content-around">
+					<button type="submit" class="btn btn-primary font-bs-bold col-4 mb-0" id="createRoomBtn"
+						data-i18n="confirm">Confirm</button>
+					<button type="button" class="btn btn-danger font-bs-bold col-4 mb-0"
+						data-i18n="close" data-bs-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>

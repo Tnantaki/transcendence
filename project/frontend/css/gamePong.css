@@ -34,3 +34,7 @@ p {
   height: min(140px, 30px + 5vw);
   border-radius: min(20px, 10px + 4vw);
 }
+
+.modal-content {
+  width: 150%;
+}

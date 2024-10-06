@@ -60,7 +60,7 @@ export class GameOffline {
   }
 
   setup() {
-    this.count_down_helper = 3
+    console.log(this.rightScore.score)
     if (this.mode === 2) {
       this.leftPaddle = new Paddle(26, this.canvas, this.ctx, 2);
       this.createTouchKey('player1')
@@ -83,6 +83,7 @@ export class GameOffline {
     this.drawGame()
     this.raf = requestAnimationFrame(this.gameLoop);
     if (Score.isGameOver) {
+      Score.isGameOver = false
       this.annouceWinner()
     }
   }
@@ -219,20 +220,9 @@ gameOffline.startGame();
 
 // Exit button
 const homeBtn = document.getElementById('game-home-btn')
-homeBtn.style.display = 'none'
 
-function handleExit(event) {
-  if (event.key === 'Escape') {
-    if (gameOffline) {
-      gameOffline.stopGame()
-    } 
-    modalExit.show();
-  }
-}
-
-document.addEventListener('keydown', handleExit)
-
-// homeBtn.addEventListener('click', () => {
-// 	if (gameOffline) gameOffline.clear()
-// 	console.log('clear game')
-// })
+homeBtn.addEventListener('click', () => {
+	if (gameOffline) gameOffline.clear()
+  gameOffline = null
+	console.log('clear game')
+})

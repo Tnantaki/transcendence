@@ -110,5 +110,4 @@ createMenu();
 			// console.log("btnY + btnHeight: " + (btnHeight + btnY));
 
 // for load game online page
-	// import { loadPage } from "../router.js";
   // loadPage("/online?room_id=" + <id>);
