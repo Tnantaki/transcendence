@@ -54,6 +54,7 @@ export class GameOffline {
     this.leftScore = new Score(canvas.width / 2 - 40, canvas, ctx);
     this.rightScore = new Score(canvas.width / 2 + 40, canvas, ctx);
     this.ball = new Ball(canvas, ctx);
+    this.countdownInterval = null
 
     this.mode = mode
     this.setup()
@@ -101,6 +102,7 @@ export class GameOffline {
 
   clear = () => {
     cancelAnimationFrame(this.raf);
+    if (this.countdownInterval) clearInterval(this.countdownInterval)
     this.leftPaddle.delete()
     this.rightPaddle.delete()
     this.deleteTouchKey()
@@ -172,12 +174,12 @@ export class GameOffline {
     let countdownValue = 2
 
     this.showMessageMiddleScreen(countdownValue.toString());
-    let countdownInterval = setInterval(() => {
+    this.countdownInterval = setInterval(() => {
       countdownValue--
       let msg = countdownValue === 0 ? "Start!" : countdownValue.toString();
       this.showMessageMiddleScreen(msg);
       if (countdownValue === -1) {
-        clearInterval(countdownInterval)
+        clearInterval(this.countdownInterval)
         this.gameLoop()
       }
     }, 1000)

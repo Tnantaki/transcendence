@@ -353,6 +353,7 @@ body {
 }
 .modal-dialog {
   width: auto;
+  height: 100%;
 }
 /* .modal-body {
   max-width: fit-content;
@@ -367,10 +368,11 @@ body {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  width: min(450px, max(calc(450px * 0.15) + calc(450vw * 0.038), calc(450px * 0.15) + calc(450vh * 0.038)));
-  height: min(600px, max(calc(600px * 0.15) + calc(600vw * 0.038), calc(600px * 0.15) + calc(600vh * 0.038)));
+  /* width: min(450px, max(calc(450px * 0.15) + calc(450vw * 0.038), calc(450px * 0.15) + calc(450vh * 0.038)));
+  height: min(600px, max(calc(600px * 0.15) + calc(600vw * 0.038), calc(600px * 0.15) + calc(600vh * 0.038))); */
   border: var(--bs-lg) solid var(--clr-border);
   border-radius: 15px;
+  padding: 5%;
 }
 .popup-header-icon img {
   width: min(150px, max(calc(150px * 0.15) + calc(150vw * 0.038), calc(150px * 0.15) + calc(150vh * 0.038)));
