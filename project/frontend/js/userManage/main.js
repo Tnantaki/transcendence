@@ -47,3 +47,10 @@ btnLogout.addEventListener('click', () => {
 });
 
 getProfile();
+
+// for debug game
+const btn = document.getElementById('gameoffline')
+btn.addEventListener('click', () => {
+  loadPage('/game-single')
+  // loadPage("/online?room_id=" + '123');
+})

@@ -80,4 +80,32 @@
 			</div>
 		</div>
 	</div>
+
+<!-- < Modal Exit Game -->
+  <div class="modal fade" id="exitGameModal" tabindex="-1">
+    <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+      <div class="modal-content popup-content">
+        <div class="modal-body">
+          <div class="popup-frame">
+            <div class="popup-header-icon">
+              <img src="../static/svg/alert.svg" alt="alert picture">
+            </div>
+            <h2 class="font-bs-bold fs-xl" style="color: #B63A3A;" data-i18n="confirm_exit">CONFIRM EXIT</h2>
+            <div class="d-flex justify-content-center popup-body">
+              <p class="font-bs fs-lg" style="color: #ffffff;" data-i18n="confirm_exit_content">
+                Are you sure you want to exit from game ?
+              </p>
+            </div>
+            <div class="d-flex justify-content-evenly popup-footer w-100">
+              <button type="button" class="font-bs-bold btn btn-secondary"
+                data-i18n="no" id="resume">No !!</button>
+							<button type="button" class="font-bs-bold btn btn-danger"
+								data-i18n="yes" id="submitExit">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

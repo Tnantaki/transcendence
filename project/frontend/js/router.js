@@ -47,6 +47,16 @@ const urlRoute = {
     script: js_game_dir + "main-menu.js",
     title: "Game" + " - " + title_extension,
   },
+  "/game-single": {
+    urlPath: template_dir + "game.html",
+    script: js_dir + "gamePlay/Main.js",
+    title: "Single Player" + " - " + title_extension,
+  },
+  "/game-versus": {
+    urlPath: template_dir + "game.html",
+    script: js_dir + "gamePlay/Main.js",
+    title: "Versus" + " - " + title_extension,
+  },
   "/online": {
     urlPath: template_dir + "test/index.html",
     script: js_dir + "test/PongOnline.js",

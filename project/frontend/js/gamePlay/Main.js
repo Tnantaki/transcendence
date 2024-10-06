@@ -1,14 +1,42 @@
 import { Paddle } from "./Paddle.js";
 import { Ball } from "./Ball.js";
 import { Score } from "./Score.js";
+import { loadPage } from "../router.js";
 
-const modalObj = document.getElementById('winnerOfflineModal')
-// const canvas = document.getElementById("gameArea");
-// canvas.style.backgroundColor = "#a3a3a3";
+const canvas = document.getElementById("gameArea");
+canvas.style.backgroundColor = "#a3a3a3";
 // canvas.width = 1280;
 // canvas.height = 720;
+let gameOffline = null;
 
-// const ctx = canvas.getContext("2d");
+// Handle Modal Winner
+const modalWinnerObj = document.getElementById('winnerOfflineModal')
+const modalWinner = new bootstrap.Modal(modalWinnerObj);
+modalWinnerObj.querySelector('#restart').onclick = () => { 
+  modalWinner.hide()
+  if (gameOffline)
+    gameOffline.restart() 
+}
+
+// Handle Modal Exit
+const modalExitGameObj = document.getElementById('exitGameModal')
+const modalExit = new bootstrap.Modal(modalExitGameObj);
+modalExitGameObj.querySelector('#resume').onclick = () => { 
+  modalExit.hide()
+  if (gameOffline)
+    gameOffline.startGame()
+}
+modalExitGameObj.querySelector('#submitExit').onclick = () => { 
+  modalExit.hide()
+  if (gameOffline) {
+    gameOffline.clear()
+  } 
+  // removeEventListener('keydown', handleExit)
+  console.log('clear game')
+  loadPage('/')
+}
+
+const ctx = canvas.getContext("2d");
 
 export class GameOffline {
   constructor(canvas, ctx, mode) {
@@ -135,13 +163,8 @@ export class GameOffline {
 
   annouceWinner = () => {
     this.stopGame()
-    const modal = new bootstrap.Modal(modalObj);
-    modal.show();
-    const winnerName = modalObj.querySelector('#winnerName');
-    modalObj.querySelector('#restart').onclick = () => { 
-      modal.hide()
-      this.restart() 
-    }
+    modalWinner.show();
+    const winnerName = modalWinnerObj.querySelector('#winnerName');
     if (this.leftScore.score > this.rightScore.score) {
       winnerName.innerHTML = 'Player1'
     } else {
@@ -154,10 +177,33 @@ export class GameOffline {
   }
 }
 
-// const gameOffline = new GameOffline(canvas, ctx, 1);
-// gameOffline.startGame();
+let mode = window.location.pathname
 
-// setTimeout(()=> {
-//   console.log('stop game')
-//   gameOffline.stopGame()
-// }, 5000)
+console.log('mode: ', mode)
+if (mode === '/game/versus') {
+  gameOffline = new GameOffline(canvas, ctx, 2);
+} else {
+  gameOffline = new GameOffline(canvas, ctx, 1);
+}
+
+gameOffline.startGame();
+
+// Exit button
+const homeBtn = document.getElementById('game-home-btn')
+homeBtn.style.display = 'none'
+
+function handleExit(event) {
+  if (event.key === 'Escape') {
+    if (gameOffline) {
+      gameOffline.stopGame()
+    } 
+    modalExit.show();
+  }
+}
+
+document.addEventListener('keydown', handleExit)
+
+// homeBtn.addEventListener('click', () => {
+// 	if (gameOffline) gameOffline.clear()
+// 	console.log('clear game')
+// })
