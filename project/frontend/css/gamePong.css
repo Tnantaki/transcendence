@@ -2,6 +2,14 @@ p {
   margin: 0;
 }
 
+#game-home-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: var(--mg-xl);
+  margin-right: var(--mg-xl);
+}
+
 /* canvas {
   width: 70%;
   object-fit: contain;
@@ -34,3 +42,7 @@ p {
   height: min(140px, 30px + 5vw);
   border-radius: min(20px, 10px + 4vw);
 }
+
+/* .modal-content {
+  width: 150%;
+} */

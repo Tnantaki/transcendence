@@ -1,14 +1,42 @@
 import { Paddle } from "./Paddle.js";
 import { Ball } from "./Ball.js";
 import { Score } from "./Score.js";
+import { loadPage } from "../router.js";
 
-const modalObj = document.getElementById('winnerOfflineModal')
-// const canvas = document.getElementById("gameArea");
-// canvas.style.backgroundColor = "#a3a3a3";
+const canvas = document.getElementById("gameArea");
+canvas.style.backgroundColor = "#a3a3a3";
 // canvas.width = 1280;
 // canvas.height = 720;
+let gameOffline = null;
 
-// const ctx = canvas.getContext("2d");
+// Handle Modal Winner
+const modalWinnerObj = document.getElementById('winnerOfflineModal')
+const modalWinner = new bootstrap.Modal(modalWinnerObj);
+modalWinnerObj.querySelector('#restart').onclick = () => { 
+  modalWinner.hide()
+  if (gameOffline)
+    gameOffline.restart() 
+}
+
+// Handle Modal Exit
+const modalExitGameObj = document.getElementById('exitGameModal')
+const modalExit = new bootstrap.Modal(modalExitGameObj);
+modalExitGameObj.querySelector('#resume').onclick = () => { 
+  modalExit.hide()
+  if (gameOffline)
+    gameOffline.startGame()
+}
+modalExitGameObj.querySelector('#submitExit').onclick = () => { 
+  modalExit.hide()
+  if (gameOffline) {
+    gameOffline.clear()
+  } 
+  // removeEventListener('keydown', handleExit)
+  console.log('clear game')
+  loadPage('/')
+}
+
+const ctx = canvas.getContext("2d");
 
 export class GameOffline {
   constructor(canvas, ctx, mode) {
@@ -26,12 +54,14 @@ export class GameOffline {
     this.leftScore = new Score(canvas.width / 2 - 40, canvas, ctx);
     this.rightScore = new Score(canvas.width / 2 + 40, canvas, ctx);
     this.ball = new Ball(canvas, ctx);
+    this.countdownInterval = null
 
     this.mode = mode
     this.setup()
   }
 
   setup() {
+    console.log(this.rightScore.score)
     if (this.mode === 2) {
       this.leftPaddle = new Paddle(26, this.canvas, this.ctx, 2);
       this.createTouchKey('player1')
@@ -47,9 +77,14 @@ export class GameOffline {
   }
 
   startGame = () => {
+    this.screenCountDown()
+  }
+
+  gameLoop = () => {
     this.drawGame()
-    this.raf = requestAnimationFrame(this.startGame);
+    this.raf = requestAnimationFrame(this.gameLoop);
     if (Score.isGameOver) {
+      Score.isGameOver = false
       this.annouceWinner()
     }
   }
@@ -67,6 +102,7 @@ export class GameOffline {
 
   clear = () => {
     cancelAnimationFrame(this.raf);
+    if (this.countdownInterval) clearInterval(this.countdownInterval)
     this.leftPaddle.delete()
     this.rightPaddle.delete()
     this.deleteTouchKey()
@@ -125,6 +161,30 @@ export class GameOffline {
     }
   }
 
+  showMessageMiddleScreen = (message) => {
+    this.clearScreen();
+    this.ctx.font = "60px Arial";
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillStyle = "white";
+    this.ctx.fillText(message, this.canvas.width / 2, this.canvas.height / 2);
+  };
+
+  screenCountDown = () => {
+    let countdownValue = 2
+
+    this.showMessageMiddleScreen(countdownValue.toString());
+    this.countdownInterval = setInterval(() => {
+      countdownValue--
+      let msg = countdownValue === 0 ? "Start!" : countdownValue.toString();
+      this.showMessageMiddleScreen(msg);
+      if (countdownValue === -1) {
+        clearInterval(this.countdownInterval)
+        this.gameLoop()
+      }
+    }, 1000)
+  }
+
   deleteTouchKey = () => {
     const btnPlayer1 = document.getElementById('btn-player1');
     const btnPlayer2 = document.getElementById('btn-player2');
@@ -135,13 +195,8 @@ export class GameOffline {
 
   annouceWinner = () => {
     this.stopGame()
-    const modal = new bootstrap.Modal(modalObj);
-    modal.show();
-    const winnerName = modalObj.querySelector('#winnerName');
-    modalObj.querySelector('#restart').onclick = () => { 
-      modal.hide()
-      this.restart() 
-    }
+    modalWinner.show();
+    const winnerName = modalWinnerObj.querySelector('#winnerName');
     if (this.leftScore.score > this.rightScore.score) {
       winnerName.innerHTML = 'Player1'
     } else {
@@ -154,10 +209,22 @@ export class GameOffline {
   }
 }
 
-// const gameOffline = new GameOffline(canvas, ctx, 1);
-// gameOffline.startGame();
+let mode = window.location.pathname
 
-// setTimeout(()=> {
-//   console.log('stop game')
-//   gameOffline.stopGame()
-// }, 5000)
+console.log('mode: ', mode)
+if (mode === '/game/versus') {
+  gameOffline = new GameOffline(canvas, ctx, 2);
+} else {
+  gameOffline = new GameOffline(canvas, ctx, 1);
+}
+
+gameOffline.startGame();
+
+// Exit button
+const homeBtn = document.getElementById('game-home-btn')
+
+homeBtn.addEventListener('click', () => {
+	if (gameOffline) gameOffline.clear()
+  gameOffline = null
+	console.log('clear game')
+})

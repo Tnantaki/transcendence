@@ -47,5 +47,11 @@
   "player": "Player",
   "win": "Win",
   "lose": "Lose",
-  "score": "Score"
+  "score": "Score",
+  "confirm_exit": "CONFIRM EXIT",
+  "confirm_exit_content": "Are you sure you want to exit from game ?",
+  "create_room": "CREATE ROOM",
+  "room_name": "Room Name",
+  "confirm": "Confirm",
+  "close": "Close"
 }
