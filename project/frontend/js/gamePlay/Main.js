@@ -60,6 +60,7 @@ export class GameOffline {
   }
 
   setup() {
+    this.count_down_helper = 3
     if (this.mode === 2) {
       this.leftPaddle = new Paddle(26, this.canvas, this.ctx, 2);
       this.createTouchKey('player1')
@@ -75,8 +76,12 @@ export class GameOffline {
   }
 
   startGame = () => {
+    this.screenCountDown()
+  }
+
+  gameLoop = () => {
     this.drawGame()
-    this.raf = requestAnimationFrame(this.startGame);
+    this.raf = requestAnimationFrame(this.gameLoop);
     if (Score.isGameOver) {
       this.annouceWinner()
     }
@@ -151,6 +156,30 @@ export class GameOffline {
         this.rightPaddle.setTouchKey(player)
       }
     }
+  }
+
+  showMessageMiddleScreen = (message) => {
+    this.clearScreen();
+    this.ctx.font = "60px Arial";
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillStyle = "white";
+    this.ctx.fillText(message, this.canvas.width / 2, this.canvas.height / 2);
+  };
+
+  screenCountDown = () => {
+    let countdownValue = 2
+
+    this.showMessageMiddleScreen(countdownValue.toString());
+    let countdownInterval = setInterval(() => {
+      countdownValue--
+      let msg = countdownValue === 0 ? "Start!" : countdownValue.toString();
+      this.showMessageMiddleScreen(msg);
+      if (countdownValue === -1) {
+        clearInterval(countdownInterval)
+        this.gameLoop()
+      }
+    }, 1000)
   }
 
   deleteTouchKey = () => {
