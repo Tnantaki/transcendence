@@ -49,10 +49,8 @@ const urlRoute = {
   },
   "/online": {
     urlPath: template_dir + "test/index.html",
-    script: [
-      js_dir + "test/PongOnline.js",
-      // js_dir + "test/pongOnlineScript.js"
-    ],
+    script: js_dir + "test/PongOnline.js",
+      // js_dir + "test/pongOnlineScript.js" ,
     title: "Tests" + " - " + title_extension,
   }
 };
@@ -96,9 +94,8 @@ export function loadPage(url) {
   }
   const route = urlRoute[endPoint];
   const contentDiv = document.getElementById('content');
-  const searchParams = window.location.search;
-
-
+  // const searchParams = window.location.search;
+  const searchParams = url.includes('?') ? url.slice(url.indexOf('?')) : ""
 
   fetch(route.urlPath)
     .then(response => response.text())
@@ -106,21 +103,11 @@ export function loadPage(url) {
       contentDiv.innerHTML = data;
       document.title = route.title;
       if (route.script) {
-        // if (url === '/game') {
-        //   // loadScriptInOrder(route.script, contentDiv);
-        //   route.script.forEach(e => {
-        //     const addScript = document.createElement('script');
-        //     addScript.src = e + "?v=" + new Date().getTime();
-        //     addScript.type = 'module';
-        //     contentDiv.appendChild(addScript);
-        //   })
-        // } else {
-          const addScript = document.createElement('script');
-          // append query parameter timestamp to the script URL to prevent caching.
-          addScript.src = route.script + "?v=" + new Date().getTime();
-          addScript.type = 'module';
-          contentDiv.appendChild(addScript);
-        // }
+        const addScript = document.createElement('script');
+        // append query parameter timestamp to the script URL to prevent caching.
+        addScript.src = route.script + "?v=" + new Date().getTime();
+        addScript.type = 'module';
+        contentDiv.appendChild(addScript);
       }
       setATagDefault();
       setSelectLanguage();

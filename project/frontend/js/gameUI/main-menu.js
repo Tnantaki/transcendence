@@ -121,3 +121,7 @@ homeBtn.addEventListener('click', () => {
 			// console.log("y: " + y);
 			// console.log("btnY: " + btnY);
 			// console.log("btnY + btnHeight: " + (btnHeight + btnY));
+
+// for load game online page
+	// import { loadPage } from "../router.js";
+  // loadPage("/online?room_id=" + <id>);
