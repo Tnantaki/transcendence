@@ -69,11 +69,6 @@ const scrollbarThumbMinHeight = 20;
 let hasEvent = false;
 const   roomBtns = [];
 async function initRooms(rooms) {
-	let tmpObj = {
-		"width": 0,
-		"height": 0,
-		"yPos": 0,
-	};
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
@@ -85,14 +80,18 @@ async function initRooms(rooms) {
 				const room = rooms[roomIndex];
 				const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space) * i;
 				fillRoomName(room, xPos, yPos);
-				// tmpObj.width = getBtnWidth(rooms.name);
-				// tmpObj.height = getBtnHeight(rooms.name);
-				// tmpObj.yPos = yPos;
+				let tmpObj = {
+					"name" : room.name,
+					"width": getBtnWidth(room.name),
+					"height": getBtnHeight(room.name),
+					"yPos": yPos,
+				};
+				if (roomBtns.length < visibleLines)
+					roomBtns.push(tmpObj);
+				else
+					roomBtns[i] = tmpObj
 			}
-				// if (roomBtns.length != visibleLines) {
-			// console.log("index: ", roomIndex);
 		}
-		// console.log("end");
 		if (!hasEvent) {
 			
 		}
