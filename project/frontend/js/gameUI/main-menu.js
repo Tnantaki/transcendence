@@ -65,7 +65,7 @@ function handleMenu(event)
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	// Check if the click was inside the button
+	// Check if the click was inside the butto
 	let startX = (canvas.width - btnWidth) / 2;
 	let startY = (menuPos + (btnArray.length * btnHeight + (btnArray.length - 1) * btnSpace)) / 2;
 	let btnY = startY + 10;
