@@ -1,4 +1,5 @@
 import { getRoomAPI } from "./room-api.js";
+import { manageEvt } from "./utils.js";
 
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
@@ -32,29 +33,39 @@ function fillRoomName(room, xPos, yPos) {
 }
 
 function getBtnWidth(roomName) { 
+	ctx.font = "25px Irish Grover"
 	const txtWidth = ctx.measureText(roomName).width;
 	const finalWidth =  Math.ceil(txtWidth);
 	return finalWidth;
 }
 
 function getBtnHeight(roomName) {
-	const font = "25px Irish Grover"
+	ctx.font = "25px Irish Grover"
 	const refFont = ctx.measureText(roomName);
 	const txtHeight = refFont.actualBoundingBoxAscent + refFont.actualBoundingBoxDescent;
 	const finalHeight = Math.ceil(txtHeight);
 	return finalHeight;
 }
 
-function handleRoomBtn(xPos, yPos, event) {
+function handleRoomBtn(xPos, roomBtns, event) {
 	
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	const btnX = xPos;
-	const btnY = yPos;
-
+	// console.log("clicked x: ", x);
+	for (let i = 0; i < visibleLines; i++) { 
+		const btnX = xPos - roomBtns[i].width / 2; // delete the left margin from the drawing function
+		if (x >= btnX && x <= btnX + roomBtns[i].width && 
+			y >= roomBtns[i].yPos && y <= (roomBtns[i].yPos + roomBtns[i].height)) {
+			console.log(roomBtns[i].name);
+			console.log(roomBtns[i].id);
+		}
+	}
 }
+			// console.log("valid x: ", x);
+			// console.log("valid btnX: ", btnX);
+			// console.log("valid btnX + width: ", btnX + roomBtns[i].width);
 
 // Scroll state
 let scrollY = 0;
@@ -82,6 +93,7 @@ async function initRooms(rooms) {
 				fillRoomName(room, xPos, yPos);
 				let tmpObj = {
 					"name" : room.name,
+					"id" : room.id,
 					"width": getBtnWidth(room.name),
 					"height": getBtnHeight(room.name),
 					"yPos": yPos,
@@ -92,8 +104,10 @@ async function initRooms(rooms) {
 					roomBtns[i] = tmpObj
 			}
 		}
+		console.log(roomBtns);
 		if (!hasEvent) {
-			
+			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event);
+			manageEvt(0, roomBtn);
 		}
 	}
 
