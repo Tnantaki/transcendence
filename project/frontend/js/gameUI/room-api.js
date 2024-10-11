@@ -15,16 +15,6 @@ export function closeModal() {
 		modal.hide();
 }
 
-let roomData = null;
-function storeRoomData(room) {
-	roomData = room;
-}
-
-export function getRoomData() {
-	return roomData;
-}
-
-
 const createRoomBtn = document.getElementById("createRoomBtn");
 createRoomBtn.addEventListener('click', function () {
 	const roomName = document.getElementById("room-name-input").value;

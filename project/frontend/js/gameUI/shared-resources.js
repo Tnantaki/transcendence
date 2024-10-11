@@ -59,12 +59,6 @@ function handleCreateBtn(btnObj, event)
 	{
 		console.log("clicked create btn");
 		Room.showModal();
-		// const newRoom = getRoomData();
-		// console.log("here: " + newRoom);
-		// document.getElementById("room-name").style.display = "block";
-		// const newRoom = prompt("Enter room name:");
-		// if (newRoom)
-		// 	addRoom(newRoom);
 	}	
 }
 
