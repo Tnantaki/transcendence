@@ -54,6 +54,7 @@ function handleRoomBtn(xPos, roomBtns, event) {
 	const y = event.clientY - rect.top;
 
 	// console.log("clicked x: ", x);
+	console.log("triggered event");
 	console.log("clicked y: ", y);
 	for (let i = 0; i < visibleLines; i++) { 
 		// console.log(visibleLines);
@@ -61,8 +62,8 @@ function handleRoomBtn(xPos, roomBtns, event) {
 		const btnY = roomBtns[i].yPos + roomBtns[i].height / 2; // delete the top margin
 		if (x >= btnX && x <= btnX + roomBtns[i].width && 
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
-			console.log("room yPos: ", btnY);
-			console.log("valid room yPos + height: ", btnY + roomBtns[i].height);
+			// console.log("room yPos: ", btnY);
+			// console.log("valid room yPos + height: ", btnY + roomBtns[i].height);
 			console.log(roomBtns[i].name);
 			console.log(roomBtns[i].id);
 			break;
@@ -120,6 +121,7 @@ async function initRooms(rooms) {
 		if (!hasEvent) {
 			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event);
 			manageEvt(0, roomBtn);
+			hasEvent = true;
 		}
 	}
 
