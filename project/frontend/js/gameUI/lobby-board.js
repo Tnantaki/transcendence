@@ -47,37 +47,34 @@ function getBtnHeight(roomName) {
 	return finalHeight;
 }
 
-function handleRoomBtn(xPos, roomBtns, event) {
+let roomId = null;
+function setRoomId(id) {
+	roomId = id;
+}
+
+function getRoomId() {
+	if (!roomId)
+		return null;
+	return roomId;
+}
+
+async function handleRoomBtn(xPos, roomBtns, event) {
 	
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	// console.log("clicked x: ", x);
-	console.log("triggered event");
-	console.log("clicked y: ", y);
+	roomId = null;
 	for (let i = 0; i < visibleLines; i++) { 
-		// console.log(visibleLines);
 		const btnX = xPos - roomBtns[i].width / 2; // delete the left margin from the drawing function
 		const btnY = roomBtns[i].yPos + roomBtns[i].height / 2; // delete the top margin
 		if (x >= btnX && x <= btnX + roomBtns[i].width && 
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
-			// console.log("room yPos: ", btnY);
-			// console.log("valid room yPos + height: ", btnY + roomBtns[i].height);
-			console.log(roomBtns[i].name);
-			console.log(roomBtns[i].id);
+			setRoomId(roomBtns[i].id);
 			break;
 		}
-
-		// v1.
-		// if (x >= btnX && x <= btnX + roomBtns[i].width && 
-		// 	y >= roomBtns[i].yPos && y <= (roomBtns[i].yPos + roomBtns[i].height)) {
-		// 	console.log("room yPos: ", roomBtns[i].yPos);
-		// 	console.log("valid room yPos + height: ", roomBtns[i].yPos + roomBtns[i].height);
-		// 	console.log(roomBtns[i].name);
-		// 	console.log(roomBtns[i].id);
-		// }
 	}
+	console.log(getRoomId());
 }
 
 // Scroll state
@@ -117,7 +114,6 @@ async function initRooms(rooms) {
 					roomBtns[i] = tmpObj
 			}
 		}
-		// console.log(roomBtns);
 		if (!hasEvent) {
 			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event);
 			manageEvt(0, roomBtn);
