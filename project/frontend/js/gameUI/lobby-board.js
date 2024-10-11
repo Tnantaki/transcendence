@@ -54,18 +54,30 @@ function handleRoomBtn(xPos, roomBtns, event) {
 	const y = event.clientY - rect.top;
 
 	// console.log("clicked x: ", x);
+	console.log("clicked y: ", y);
 	for (let i = 0; i < visibleLines; i++) { 
+		// console.log(visibleLines);
 		const btnX = xPos - roomBtns[i].width / 2; // delete the left margin from the drawing function
+		const btnY = roomBtns[i].yPos + roomBtns[i].height / 2; // delete the top margin
 		if (x >= btnX && x <= btnX + roomBtns[i].width && 
-			y >= roomBtns[i].yPos && y <= (roomBtns[i].yPos + roomBtns[i].height)) {
+			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
+			console.log("room yPos: ", btnY);
+			console.log("valid room yPos + height: ", btnY + roomBtns[i].height);
 			console.log(roomBtns[i].name);
 			console.log(roomBtns[i].id);
+			break;
 		}
+
+		// v1.
+		// if (x >= btnX && x <= btnX + roomBtns[i].width && 
+		// 	y >= roomBtns[i].yPos && y <= (roomBtns[i].yPos + roomBtns[i].height)) {
+		// 	console.log("room yPos: ", roomBtns[i].yPos);
+		// 	console.log("valid room yPos + height: ", roomBtns[i].yPos + roomBtns[i].height);
+		// 	console.log(roomBtns[i].name);
+		// 	console.log(roomBtns[i].id);
+		// }
 	}
 }
-			// console.log("valid x: ", x);
-			// console.log("valid btnX: ", btnX);
-			// console.log("valid btnX + width: ", btnX + roomBtns[i].width);
 
 // Scroll state
 let scrollY = 0;
@@ -90,7 +102,7 @@ async function initRooms(rooms) {
 			if (roomIndex < rooms.length) {
 				const room = rooms[roomIndex];
 				const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space) * i;
-				fillRoomName(room, xPos, yPos);
+				fillRoomName(room, xPos, yPos + 8);
 				let tmpObj = {
 					"name" : room.name,
 					"id" : room.id,
@@ -104,7 +116,7 @@ async function initRooms(rooms) {
 					roomBtns[i] = tmpObj
 			}
 		}
-		console.log(roomBtns);
+		// console.log(roomBtns);
 		if (!hasEvent) {
 			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event);
 			manageEvt(0, roomBtn);
@@ -169,7 +181,7 @@ export async function drawRoomDisplay() {
 	// Draw room on the board
 	ctx.font = "25px Irish Grover";
 	ctx.fillStyle = "white";
-	ctx.textBaseline = "top";
+	ctx.textBaseline = "middle";
 	ctx.textAlign = "center";
 
 	const rooms = await getAllRooms();
