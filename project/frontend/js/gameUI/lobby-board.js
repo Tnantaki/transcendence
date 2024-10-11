@@ -1,5 +1,6 @@
 import { getRoomAPI } from "./room-api.js";
 import { manageEvt } from "./utils.js";
+import { loadPage } from "../router.js";
 
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
@@ -52,7 +53,7 @@ function setRoomId(id) {
 	roomId = id;
 }
 
-function getRoomId() {
+export function getRoomId() {
 	if (!roomId)
 		return null;
 	return roomId;
@@ -71,10 +72,13 @@ async function handleRoomBtn(xPos, roomBtns, event) {
 		if (x >= btnX && x <= btnX + roomBtns[i].width && 
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
 			setRoomId(roomBtns[i].id);
+
+			// for load game online page
+			loadPage("/online?room_id=" + getRoomId());
 			break;
 		}
 	}
-	console.log(getRoomId());
+	// console.log(getRoomId());
 }
 
 // Scroll state

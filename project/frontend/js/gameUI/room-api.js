@@ -1,6 +1,7 @@
 import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
 import { updateLobby } from "./lobby-menu.js";
+import { loadPage } from "../router.js";
 // import { addRoom } from "./lobby-board.js";
 
 let modal;
@@ -24,6 +25,7 @@ createRoomBtn.addEventListener('click', function () {
 			.then(res => {
 				updateLobby(res.game_type);
 				closeModal();
+				loadPage("/online?room_id=" + res.id);
 			})
 			.catch(error => {
 				console.error("Error creating room: ", error);
