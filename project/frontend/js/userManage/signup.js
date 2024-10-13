@@ -2,8 +2,6 @@ import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
 import { fetchAPI } from "./api.js";
 
-console.log("Signup Page");
-
 const signupForm = document.getElementById("signupForm");
 
 function validateInput(input) {
@@ -57,10 +55,9 @@ signupForm.addEventListener("submit", async (event) => {
       }
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const data = await response.json();
+    await response.json();
 
     console.log("Signup Success");
-    console.log(data);
     popupSuccess();
   } catch (error) {
     if (error.message === "Failed to fetch")

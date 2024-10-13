@@ -119,9 +119,37 @@
             <div class="d-flex justify-content-evenly">
               <button type="button" class="font-bs-bold btn btn-secondary bk-friend-button"
                 data-bs-dismiss="modal" data-i18n="back">Back</button>
-              <a href="/#" class="font-bs-bold btn btn-danger bk-friend-button" data-i18n="delete_friend">Delete friend</a>
+              <button type="button" class="font-bs-bold btn btn-danger bk-friend-button"
+                data-i18n="delete_friend" data-bs-toggle="modal"
+                data-bs-target="#deleteContactModal">Delete friend</button>
             </div>
             <div class="d-flex justify-content-evenly align-item">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Delete Friend -->
+  <div class="modal fade" id="deleteContactModal" tabindex="-1">
+    <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+      <div class="modal-content popup-content">
+        <div class="modal-body">
+          <div class="popup-frame">
+            <div class="popup-header-icon">
+              <img src="../static/svg/delContact.svg" alt="alert picture">
+            </div>
+            <div class="d-flex justify-content-center popup-body">
+              <p class="font-bs fs-lg" style="color: #ffffff;" data-i18n="delete_friend_content">
+                Are you sure you want to delete this contact ?
+              </p>
+            </div>
+            <div class="d-flex justify-content-evenly w-100">
+              <button type="button" class="font-bs-bold btn btn-secondary px-4"
+                data-bs-dismiss="modal" data-i18n="no">No !!</button>
+              <button type="button" class="font-bs-bold btn btn-danger px-4"
+                data-bs-dismiss="modal" data-i18n="yes" onclick="deleteFriendById()">Yes</button>
             </div>
           </div>
         </div>

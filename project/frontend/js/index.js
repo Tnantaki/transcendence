@@ -3,6 +3,8 @@ import { setSelectLanguage } from "./i18n.js";
 import { loadPage } from "./router.js";
 import { fetchAPI } from "./userManage/api.js";
 
+let friend_id_delete_target = ""
+
 // Button - Hide & Visible Password
 function togglePassword(inputPassword) {
   const type = inputPassword.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -18,7 +20,7 @@ document.getElementById('notificationModal').addEventListener('shown.bs.modal', 
 async function responseFriendRequest(reqId, isAccept) {
   const status = isAccept ? 'ACCEPT' : 'REJECT'
   try {
-    const response = await fetchAPI("POST", constant.API_FRIEND_RES_REQ + reqId + "/", {
+    const response = await fetchAPI("POST", constant.API_FRIEND_RES_REQ_BY_ID + reqId + "/", {
       auth: true,
       body: { status: status }
     });
@@ -28,7 +30,24 @@ async function responseFriendRequest(reqId, isAccept) {
     }
     await response.json();
     getFriendRequest()
-    loadPage('/profile')
+    loadPage(location.pathname)
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+// Delete friend
+async function deleteFriendById() {
+  try {
+    console.log("fetch api to delete id:", friend_id_delete_target)
+    // const response = await fetchAPI("DELETE", constant.API_FRIEND_DEL_BY_ID + id, {
+    //   auth: true,
+    // });
+
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error! status: ${response.status}`);
+    // }
+    // await response.json();
   } catch (error) {
     console.error(error.message);
   }
@@ -37,6 +56,7 @@ async function responseFriendRequest(reqId, isAccept) {
 window.togglePassword = togglePassword;
 window.getProfileById = getProfileById;
 window.responseFriendRequest = responseFriendRequest;
+window.deleteFriendById = deleteFriendById;
 
 // For 2FA Popup
 document.addEventListener("DOMContentLoaded", () => {
@@ -45,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   inputs.forEach((input, index) => {
     input.addEventListener("input", () => {
       if (input.value.length === 1) {
-        if (index < inputs.length -1) {
+        if (index < inputs.length - 1) {
           inputs[index + 1].focus();
         }
       }
@@ -64,13 +84,14 @@ document.addEventListener("DOMContentLoaded", () => {
 async function getProfileById(id) {
   try {
     const profile = document.getElementById("modal-friend-profile");
-    const response = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id + "/", {auth: true});
+    const response = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id + "/", { auth: true });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const profileValue = await response.json();
 
+    friend_id_delete_target = profileValue["id"]
     const total = profileValue["wins"] + profileValue["losses"]
     profile.querySelector("#friendDisplayName").innerHTML = profileValue["display_name"] || "";
     profile.querySelector("#friendBio").innerHTML = profileValue["bio"] || "";
@@ -92,7 +113,7 @@ async function getFriendRequest() {
     const notiList = document.getElementById("notiList");
     // to reset friend request when close modal
     notiList.innerHTML = ''
-    const response = await fetchAPI("GET", constant.API_FRIEND_REQ, {
+    const response = await fetchAPI("GET", constant.API_FRIEND_GET_REQ, {
       auth: true,
     });
 
