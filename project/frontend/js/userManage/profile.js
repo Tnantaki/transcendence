@@ -10,7 +10,6 @@ async function getProfile() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const profileValue = await response.json();
-    console.log("fetch profile success");
 
     profile.querySelector("#displayName").innerHTML = profileValue["display_name"] || "";
     profile.querySelector("#bio").innerHTML = profileValue["bio"] || "";
@@ -28,9 +27,9 @@ async function getProfile() {
 async function getFriendList() {
   try {
     const friendList = document.getElementById("friendList");
-    const response = await fetchAPI("GET", constant.MOCKUP_FRIENDLIST, {
-      auth: false,
-    }); // TODO: auth must be true
+    const response = await fetchAPI("GET", constant.API_FRIEND_LIST, {
+      auth: true,
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -42,12 +41,12 @@ async function getFriendList() {
       item.classList.add("friend-list-item");
       item.innerHTML = `
         <div class="d-flex justify-content-center friend-item-picture ">
-          <img src="${friend.image}" alt="profile picture">
+          <img src="/api${friend.profile}" alt="profile picture">
         </div>
         <div class="d-flex align-items-center friend-item-name">
           <div class="online-status ms-0"></div>
           <p class="font-bs-bold fs-xl friend-name" data-bs-toggle="modal" data-bs-target="#profileModal" 
-            onclick="getProfileById(${friend.id})">
+            onclick="getProfileById('${friend.id}')">
             ${friend.display_name}
           </p>
         </div>

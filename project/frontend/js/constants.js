@@ -1,4 +1,4 @@
-export const BACKEND_URL = "http://localhost:8132/";
+export const BACKEND_URL = "http://localhost:8001/api/";
 export const FRONTEND_URL = "http://localhost:8001/";
 
 // API backend
@@ -6,8 +6,15 @@ export const API_SIGNUP = BACKEND_URL + "i/uac/register/";
 export const API_LOGIN = BACKEND_URL + "i/uac/login/";
 export const API_LOGOUT = BACKEND_URL + "i/uac/logout/";
 export const API_MY_PROFILE = BACKEND_URL + "i/uac/me/";
-export const API_UPLOAD = FRONTEND_URL + "api/i/uac/me/profile/";
-export const API_USER_ID = FRONTEND_URL + "i/uac/user/";
+export const API_UPLOAD = BACKEND_URL + "i/uac/me/profile/";
+export const API_PROFILE_BY_ID = BACKEND_URL + "i/uac/user/";
+
+// API FRIEND
+export const API_FRIEND_SENT_REQ = BACKEND_URL + "i/uac/friend-request/";
+export const API_FRIEND_GET_REQ = BACKEND_URL + "i/uac/my-friend-request/";
+export const API_FRIEND_LIST = BACKEND_URL + "i/uac/friend/";
+export const API_FRIEND_RES_REQ_BY_ID = BACKEND_URL + "i/uac/accept-request/";
+export const API_FRIEND_DEL_BY_ID = BACKEND_URL + "/i/uac/friend/";
 
 // API GAME
 export const API_ROOM = BACKEND_URL + "i/game/pong/room/";
@@ -17,7 +24,6 @@ export const API_ROOM = BACKEND_URL + "i/game/pong/room/";
 export const MOCKUP_PROFILE = "./js/mock/mockProfile.json";
 export const MOCKUP_FRIENDLIST = "./js/mock/mockFriendList.json";
 
-export const API_PROFILE_BY_ID = "api/user/";
 // export const API_GET_USER_PROFILE = "../js/mock/mockProfiles.json";
 
 

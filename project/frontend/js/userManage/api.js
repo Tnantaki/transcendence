@@ -1,5 +1,3 @@
-import { loadPage } from "../router.js";
-
 export async function fetchAPI(method, url, options = {}) {
   const {
     auth = false,

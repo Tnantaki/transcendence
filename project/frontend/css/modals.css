@@ -1,5 +1,6 @@
 /* Notification Modal */
 .bk-noti {
+  position: relative;
   border: var(--bs-md) solid var(--clr-border);
   border-radius: 15px;
   display: grid;
@@ -110,3 +111,7 @@ p {
 .btn {
   margin: var(--mg-md) 0;
 }
+
+/* .modal-custom-width {
+  min-width: 400px;
+} */

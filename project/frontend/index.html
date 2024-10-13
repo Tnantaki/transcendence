@@ -59,32 +59,13 @@
   <!-- Modal Notification -->
   <div class="modal fade" id="notificationModal" tabindex="-1">
     <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered modal-xl">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div id="modal-friend-profile" class="bk-noti">
-            <div class="d-flex justify-content-center align-items-center bk-noti-title">
-              <h2 class="font-bs-bold h-md" data-i18n="friend_requests">Friend Requests</h2>
+      <div class="modal-content" style="height: 75%;">
+        <div class="modal-body d-flex h-100">
+          <div class="bk-noti">
+            <div class="d-flex justify-content-center align-items-center bk-noti-title modal-custom-width">
+              <h2 class="font-bs-bold h-md my-2 px-4" data-i18n="friend_requests">Friend Requests</h2>
             </div>
             <ol class="d-flex flex-column align-items-center overflow-auto bk-noti-list scroll-custom" id="notiList">
-
-              <li class="noti-list-item">
-                <div class="d-flex align-items-center">
-                  <div class="noti-item-picture">
-                    <img id="friendProfileImage" alt="profile-picture" src="../static/svg/default-user-picture.svg">
-                  </div>
-                  <div class="d-flex flex-column">
-                    <p class="font-bs fs-lg" style="color: #A2B1B5;">SSSSSSSSSSSSSSSSSSSS</p>
-                    <p class="font-bs fs-md" style="color: #0946A6;">Wants to be your friend</p>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-evenly align-items-center">
-                  <button type="button" class="font-bs-bold btn btn-secondary m-0 fs-md"
-                    data-i18n="decline"></button>
-                  <button type="button" class="font-bs-bold btn btn-primary m-0 fs-md"
-                    data-i18n="accept"></button>
-                </div>
-              </li>
-
             </ol>
             <div class="d-flex justify-content-evenly">
               <button type="button" class="font-bs-bold fs-lg btn btn-primary"
@@ -109,7 +90,7 @@
                 </div>
               </div>
               <div class="d-flex flex-column align-items-center font-bs">
-                <h2 class="h-md" id="friendAvatarName"></h2>
+                <h2 class="h-md" id="friendDisplayName"></h2>
                 <div>
                   <img class="ic-md" src="../static/svg/email_icon.svg" alt="email icon">
                   <p class="d-inline-block fs-lg" id="friendEmail"></p>
@@ -138,9 +119,37 @@
             <div class="d-flex justify-content-evenly">
               <button type="button" class="font-bs-bold btn btn-secondary bk-friend-button"
                 data-bs-dismiss="modal" data-i18n="back">Back</button>
-              <a href="/#" class="font-bs-bold btn btn-danger bk-friend-button" data-i18n="delete_friend">Delete friend</a>
+              <button type="button" class="font-bs-bold btn btn-danger bk-friend-button"
+                data-i18n="delete_friend" data-bs-toggle="modal"
+                data-bs-target="#deleteContactModal">Delete friend</button>
             </div>
             <div class="d-flex justify-content-evenly align-item">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Delete Friend -->
+  <div class="modal fade" id="deleteContactModal" tabindex="-1">
+    <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+      <div class="modal-content popup-content">
+        <div class="modal-body">
+          <div class="popup-frame">
+            <div class="popup-header-icon">
+              <img src="../static/svg/delContact.svg" alt="alert picture">
+            </div>
+            <div class="d-flex justify-content-center popup-body">
+              <p class="font-bs fs-lg" style="color: #ffffff;" data-i18n="delete_friend_content">
+                Are you sure you want to delete this contact ?
+              </p>
+            </div>
+            <div class="d-flex justify-content-evenly w-100">
+              <button type="button" class="font-bs-bold btn btn-secondary px-4"
+                data-bs-dismiss="modal" data-i18n="no">No !!</button>
+              <button type="button" class="font-bs-bold btn btn-danger px-4"
+                data-bs-dismiss="modal" data-i18n="yes" onclick="deleteFriendById()">Yes</button>
             </div>
           </div>
         </div>
