@@ -39,15 +39,14 @@ async function responseFriendRequest(reqId, isAccept) {
 // Delete friend
 async function deleteFriendById() {
   try {
-    console.log("fetch api to delete id:", friend_id_delete_target)
-    // const response = await fetchAPI("DELETE", constant.API_FRIEND_DEL_BY_ID + id, {
-    //   auth: true,
-    // });
+    const response = await fetchAPI("DELETE", constant.API_FRIEND_DEL_BY_ID + friend_id_delete_target + "/", {
+      auth: true,
+    });
 
-    // if (!response.ok) {
-    //   throw new Error(`HTTP error! status: ${response.status}`);
-    // }
-    // await response.json();
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    loadPage(location.pathname)
   } catch (error) {
     console.error(error.message);
   }
