@@ -64,24 +64,22 @@ document.addEventListener("DOMContentLoaded", () => {
 async function getProfileById(id) {
   try {
     const profile = document.getElementById("modal-friend-profile");
-    const response = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id);
+    const response = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id + "/", {auth: true});
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const profileValue = await response.json();
 
+    const total = profileValue["wins"] + profileValue["losses"]
     profile.querySelector("#friendDisplayName").innerHTML = profileValue["display_name"] || "";
     profile.querySelector("#friendBio").innerHTML = profileValue["bio"] || "";
     profile.querySelector("#friendEmail").innerHTML = profileValue["email"] || "";
-    if (!profileValue["wins"] || !profileValue["losses"])
-      profile.querySelector("#friendWinLose").innerHTML = "";
-    else
-      profile.querySelector("#friendWinLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
-    profile.querySelector("#friendTotalPlay").innerHTML = profileValue["total_games_play"] || "";
-    profile.querySelector("#friendTourWon").innerHTML = profileValue["tour_won"] || "";
-    profile.querySelector("#friendTourPlay").innerHTML = profileValue["tour_play"] || "";
-    profile.querySelector("#friendProfileImage").src = profileValue["image"]
+    profile.querySelector("#friendWinLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
+    profile.querySelector("#friendTotalPlay").innerHTML = profileValue["total_games_play"] || total.toString();
+    profile.querySelector("#friendTourWon").innerHTML = profileValue["tour_won"];
+    profile.querySelector("#friendTourPlay").innerHTML = profileValue["tour_play"];
+    profile.querySelector("#friendProfileImage").src = "/api" + profileValue["profile"]
       || "./static/svg/default-user-picture.svg";
   } catch (error) {
     console.error(error.message);

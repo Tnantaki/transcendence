@@ -46,7 +46,7 @@ async function getFriendList() {
         <div class="d-flex align-items-center friend-item-name">
           <div class="online-status ms-0"></div>
           <p class="font-bs-bold fs-xl friend-name" data-bs-toggle="modal" data-bs-target="#profileModal" 
-            onclick="getProfileById(${friend.id})">
+            onclick="getProfileById('${friend.id}')">
             ${friend.display_name}
           </p>
         </div>
