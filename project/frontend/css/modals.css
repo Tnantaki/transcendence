@@ -110,3 +110,7 @@ p {
 .btn {
   margin: var(--mg-md) 0;
 }
+
+/* .modal-custom-width {
+  min-width: 400px;
+} */

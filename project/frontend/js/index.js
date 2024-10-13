@@ -1,4 +1,7 @@
 import * as constant from "./constants.js";
+import { setSelectLanguage } from "./i18n.js";
+import { loadPage } from "./router.js";
+import { fetchAPI } from "./userManage/api.js";
 
 // Button - Hide & Visible Password
 function togglePassword(inputPassword) {
@@ -6,34 +9,34 @@ function togglePassword(inputPassword) {
   inputPassword.setAttribute('type', type);
 }
 
-// function checkPassword() {
-//   const password = document.getElementById("inputPassword");
-//   const errMsg = document.getElementById("inputPasswordError");
+// Notification Friends
+document.getElementById('notificationModal').addEventListener('shown.bs.modal', function () {
+  getFriendRequest()
+});
 
-//   errMsg.style.display = "block";
-//   if (password.value.length < 8) {
-//     errMsg.innerHTML = "Password must have at least 8 character";
-//   } else {
-//     errMsg.style.display = "none";
-//   }
-// }
+// Friends accect & decline button
+async function responseFriendRequest(reqId, isAccept) {
+  const status = isAccept ? 'ACCEPT' : 'REJECT'
+  try {
+    const response = await fetchAPI("POST", constant.API_FRIEND_RES_REQ + reqId + "/", {
+      auth: true,
+      body: { status: status }
+    });
 
-// function checkConfirmPassword() {
-//   const password = document.getElementById("inputPassword");
-//   const confirmPassword = document.getElementById("inputConfirmPassword");
-//   const errMsg = document.getElementById("inputConfirmPasswordError");
-
-//   errMsg.style.display = "block";
-//   if (password.value.length < 8) {
-//     errMsg.innerHTML = "Password must have at least 8 character";
-//   } else {
-//     errMsg.style.display = "none";
-//   }
-// }
-// Password must be the same!
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    await response.json();
+    getFriendRequest()
+    loadPage('/profile')
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 
 window.togglePassword = togglePassword;
-// window.checkPassword = checkPassword;
+window.getProfileById = getProfileById;
+window.responseFriendRequest = responseFriendRequest;
 
 // For 2FA Popup
 document.addEventListener("DOMContentLoaded", () => {
@@ -85,4 +88,47 @@ async function getProfileById(id) {
   }
 }
 
-window.getProfileById = getProfileById;
+
+async function getFriendRequest() {
+  try {
+    const notiList = document.getElementById("notiList");
+    // to reset friend request when close modal
+    notiList.innerHTML = ''
+    const response = await fetchAPI("GET", constant.API_FRIEND_REQ, {
+      auth: true,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const friendReqValue = await response.json();
+
+    friendReqValue.forEach(req => {
+      if (req.status === 'PENDING') {
+        const item = document.createElement("li");
+        item.classList.add("noti-list-item");
+        item.innerHTML = `
+          <div class="d-flex align-items-center">
+            <div class="noti-item-picture">
+              <img alt="profile-picture" src="api/${req.user.profile}">
+            </div>
+            <div class="d-flex flex-column">
+              <p class="font-bs fs-lg" style="color: #A2B1B5;">${req.user.display_name}</p>
+              <p class="font-bs fs-md" style="color: #0946A6;">Wants to be your friend</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-evenly align-items-center">
+            <button type="button" class="font-bs-bold btn btn-secondary m-0 fs-md"
+              data-i18n="decline" onclick="responseFriendRequest('${req.id}', false)"></button>
+            <button type="button" class="font-bs-bold btn btn-primary m-0 fs-md"
+              data-i18n="accept" onclick="responseFriendRequest('${req.id}', true)"></button>
+          </div>
+        `
+        notiList.appendChild(item);
+      }
+    })
+    setSelectLanguage()
+  } catch (error) {
+    console.error(error.message);
+  }
+}
