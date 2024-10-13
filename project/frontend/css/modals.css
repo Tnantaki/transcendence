@@ -1,5 +1,6 @@
 /* Notification Modal */
 .bk-noti {
+  position: relative;
   border: var(--bs-md) solid var(--clr-border);
   border-radius: 15px;
   display: grid;
