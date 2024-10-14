@@ -110,6 +110,7 @@ async function getProfileById(id) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const profileValue = await response.json();
+    console.log(profileValue)
 
     friend_id_delete_target = profileValue["id"]
     const total = profileValue["wins"] + profileValue["losses"]

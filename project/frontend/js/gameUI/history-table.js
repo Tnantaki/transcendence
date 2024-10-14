@@ -79,22 +79,21 @@ const matchHistoryTable = document.getElementById('match-history-table');
 
 
 // sample
-const matchRow = `
-	<div class="row align-items-center mb-5">
-		<div id="my-profile" class="col-1">
-			<img id=profileImage alt="profile-picture" class="player-img profile-img-overlay">
-		</div>
-		<div class="col-2">player_name</div>
-		<div class="col">0 : 0</div>
-		<div id="friend-profile" class="col-1">
-			<img id="friendProfileImage alt="profile-picture" class="player-img profile-img-overlay">
-		</div>
-		<div class="col-2">player2_name</div>
-		<div class="col-3">11/07/2024</div>
-		<div class="col">01:01</div>
-	</div>
-	`;
-matchHistoryTable.innerHTML += matchRow;
+// const matchRow = `
+// 	<div class="row align-items-center mb-5">
+// 		<div id="my-profile" class="col-1">
+// 			<img id=profileImage alt="profile-picture" class="player-img profile-img-overlay">
+// 		</div>
+// 		<div class="col-2">player_name</div>
+// 		<div class="col">0 : 0</div>
+// 		<div id="friend-profile" class="col-1">
+// 			<img id="friendProfileImage alt="profile-picture" class="player-img profile-img-overlay">
+// 		</div>
+// 		<div class="col-2">player2_name</div>
+// 		<div class="col-3">11/07/2024</div>
+// 	</div>
+// 	`;
+// matchHistoryTable.innerHTML += matchRow;
 
 getProfile();
 // window.getProfileById = getProfileById("asd");
