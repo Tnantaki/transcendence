@@ -13,14 +13,22 @@ async function registerUser(name) {
     if (res.status >= 300) {
       throw new Error(`Error status: ${res.status}`)
     }
-    console.log("register success")
-    console.log(await res.json())
+    const data = await res.json()
+    return {username: data.username, id: data.id}
   } catch (error) {
     console.log(error.message) 
   }
 }
 
 
-for (let i = 1; i <= 10; i++) {
-  await registerUser("test" + i)
+
+async function test() {
+  const res1 = await registerUser("test3")
+  console.log("Create", res1)
+  for (let i = 1; i <= 10; i++) {
+    const result = await registerUser("test" + i)
+    console.log("Create", result)
+  }
 }
+
+test()

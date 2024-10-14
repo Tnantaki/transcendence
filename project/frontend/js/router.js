@@ -1,4 +1,5 @@
 import { setSelectLanguage } from "./i18n.js";
+import { checkNoti } from "./index.js";
 
 const title_extension = "Transcendence";
 const template_dir = "/templates/";
@@ -77,20 +78,6 @@ function setATagDefault() {
   });
 }
 
-// Sequential Script Loading
-function loadScriptInOrder(scripts, contentDiv) {
-  return scripts.reduce((promise, script) => {
-    return promise.then(() => {
-      return new Promise((resolve, reject) => {
-        const addScript = document.createElement('script');
-        addScript.src = script + "?v=" + new Date().getTime();
-        addScript.onload = resolve;
-        addScript.onerror = reject;
-        contentDiv.appendChild(addScript);
-      });
-    });
-  }, Promise.resolve());
-}
 
 // Load content from route
 export function loadPage(url) {
@@ -121,6 +108,7 @@ export function loadPage(url) {
       }
       setATagDefault();
       setSelectLanguage();
+      checkNoti();
       const newUrl = endPoint + searchParams;
       history.pushState({endPoint: newUrl}, null, newUrl);
     })

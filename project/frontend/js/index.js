@@ -15,6 +15,27 @@ function togglePassword(inputPassword) {
 document.getElementById('notificationModal').addEventListener('shown.bs.modal', function () {
   getFriendRequest()
 });
+// Check noti
+export async function checkNoti() {
+  const notiBtn = document.getElementById("notiBtn");
+  if (!notiBtn) return
+  try {
+    const response = await fetchAPI("GET", constant.API_FRIEND_GET_REQ, {
+      auth: true,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const friendReqValue = await response.json();
+
+    if (friendReqValue.length) {
+      notiBtn.src = "../static/svg/notification-have.svg"
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 
 // Friends accect & decline button
 async function responseFriendRequest(reqId, isAccept) {
@@ -120,6 +141,7 @@ async function getFriendRequest() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const friendReqValue = await response.json();
+
 
     friendReqValue.forEach(req => {
       if (req.status === 'PENDING') {

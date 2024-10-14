@@ -18,7 +18,7 @@ async function getMe(username) {
       throw new Error(`Error status: ${res.status}`)
     }
     const data = await res.json()
-    return data.id
+    return data
   } catch (error) {
     console.log(error.message) 
   }
@@ -72,11 +72,13 @@ async function sendFriendRequest(username, id) {
 }
 
 async function test() {
-  const id = await getMe("mos123")
-  for (let i = 1; i <= 10; i++) {
-    const result = await sendFriendRequest("test" + i, id)
-    console.log(result)
-  }
+  // const data = await getMe("mos123")
+  // for (let i = 1; i <= 10; i++) {
+  //   const result = await sendFriendRequest("test" + i, data.id)
+  //   console.log(result)
+  // }
+  const data = await getMe("test1")
+  console.log(data)
 }
 
 test()
