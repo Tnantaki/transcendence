@@ -66,6 +66,16 @@ const urlRoute = {
   }
 };
 
+export function loadPage(url) {
+  const newUrl = loadContent(url)
+  // pushState will save state and update browser url without full page reload
+  // 1st arg: state use for store obj in histor stack
+  // 2nd arg: not use anymore pass empty string for safe
+  // 3rd arg: url string that will display on browser url
+  history.pushState({page: newUrl}, "", newUrl);
+  console.log("push one state", newUrl)
+}
+
 // Disable default a tag behavior of reload full page to make SPA
 function setATagDefault() {
   const linkTags = document.querySelectorAll('a');
@@ -79,9 +89,8 @@ function setATagDefault() {
 }
 
 // Load content from route
-export function loadPage(url) {
+function loadContent(url) {
   const token = localStorage.getItem('token');
-  console.log(url)
   let endPoint = url.split("?")[0];
 
   if (!token && endPoint !== "/signup") {
@@ -91,7 +100,6 @@ export function loadPage(url) {
   }
   const route = urlRoute[endPoint];
   const contentDiv = document.getElementById('content');
-  // const searchParams = window.location.search;
   const searchParams = url.includes('?') ? url.slice(url.indexOf('?')) : ""
 
   fetch(route.urlPath)
@@ -109,30 +117,21 @@ export function loadPage(url) {
       setATagDefault();
       setSelectLanguage();
       checkNoti();
-      const newUrl = endPoint + searchParams;
-
-      // pushState will save state and update browser url without full page reload
-      // 1st arg: state use for store obj in histor stack
-      // 2nd arg: not use anymore pass empty string for safe
-      // 3rd arg: url string that will display on browser url
-      history.pushState({page: newUrl}, "", newUrl);
-      console.log("push one state", newUrl)
     })
     .catch(error => {
       contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;
-      console.error('Error loading page:', error);
     });
+  const newUrl = endPoint + searchParams;
+  return newUrl
 }
-
 
 // Triggering index.html to load content page from url input
 document.addEventListener('DOMContentLoaded', () => {
-  loadPage(location.pathname + location.search);
+  loadContent(location.pathname + location.search);
 });
 
 // Popstate will trigger on back and forward buttom
 window.addEventListener('popstate', (event) => {
-  console.log("Pop")
   if (event.state && event.state.page)
-    loadPage(event.state.page);
+    loadContent(event.state.page);
 });
