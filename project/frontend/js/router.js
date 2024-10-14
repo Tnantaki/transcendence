@@ -120,6 +120,7 @@ function loadContent(url) {
     })
     .catch(error => {
       contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;
+      console.error('Error loading page:', error);
     });
   const newUrl = endPoint + searchParams;
   return newUrl
