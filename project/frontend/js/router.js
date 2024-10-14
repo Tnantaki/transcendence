@@ -1,4 +1,5 @@
 import { setSelectLanguage } from "./i18n.js";
+import { checkNoti } from "./index.js";
 
 const title_extension = "Transcendence";
 const template_dir = "/templates/";
@@ -65,6 +66,16 @@ const urlRoute = {
   }
 };
 
+export function loadPage(url) {
+  const newUrl = loadContent(url)
+  // pushState will save state and update browser url without full page reload
+  // 1st arg: state use for store obj in histor stack
+  // 2nd arg: not use anymore pass empty string for safe
+  // 3rd arg: url string that will display on browser url
+  history.pushState({page: newUrl}, "", newUrl);
+  console.log("push one state", newUrl)
+}
+
 // Disable default a tag behavior of reload full page to make SPA
 function setATagDefault() {
   const linkTags = document.querySelectorAll('a');
@@ -77,23 +88,8 @@ function setATagDefault() {
   });
 }
 
-// Sequential Script Loading
-function loadScriptInOrder(scripts, contentDiv) {
-  return scripts.reduce((promise, script) => {
-    return promise.then(() => {
-      return new Promise((resolve, reject) => {
-        const addScript = document.createElement('script');
-        addScript.src = script + "?v=" + new Date().getTime();
-        addScript.onload = resolve;
-        addScript.onerror = reject;
-        contentDiv.appendChild(addScript);
-      });
-    });
-  }, Promise.resolve());
-}
-
 // Load content from route
-export function loadPage(url) {
+function loadContent(url) {
   const token = localStorage.getItem('token');
   let endPoint = url.split("?")[0];
 
@@ -104,7 +100,6 @@ export function loadPage(url) {
   }
   const route = urlRoute[endPoint];
   const contentDiv = document.getElementById('content');
-  // const searchParams = window.location.search;
   const searchParams = url.includes('?') ? url.slice(url.indexOf('?')) : ""
 
   fetch(route.urlPath)
@@ -121,23 +116,23 @@ export function loadPage(url) {
       }
       setATagDefault();
       setSelectLanguage();
-      const newUrl = endPoint + searchParams;
-      history.pushState({endPoint: newUrl}, null, newUrl);
+      checkNoti();
     })
     .catch(error => {
       contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;
       console.error('Error loading page:', error);
     });
+  const newUrl = endPoint + searchParams;
+  return newUrl
 }
-
 
 // Triggering index.html to load content page from url input
 document.addEventListener('DOMContentLoaded', () => {
-  loadPage(location.pathname + location.search);
+  loadContent(location.pathname + location.search);
 });
 
 // Popstate will trigger on back and forward buttom
 window.addEventListener('popstate', (event) => {
-  if (event.state)
-    loadPage(event.state.url);
+  if (event.state && event.state.page)
+    loadContent(event.state.page);
 });

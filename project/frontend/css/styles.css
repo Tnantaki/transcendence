@@ -208,22 +208,12 @@ body {
   align-items: center;
 }
 
-.white-frame {
-  border: 5px solid #FFFFFF;
-  width: 70%;
-  height: 90%;
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .border-line {
   position: relative;
   border: var(--bs-lg) solid var(--clr-border);
   width: 90%;
   height: 90%;
-  border-radius: 20px;
+  border-radius: var(--fs-lg);
 }
 
 .btn-eye {
@@ -232,6 +222,15 @@ body {
 .btn-hover:hover {
   cursor: pointer;
   transform: scale(1.2);
+}
+
+.friend-name {
+  color: var(--clr-bg-btn);
+  text-decoration: none;
+}
+.friend-name:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .input-group-custom {
@@ -410,7 +409,22 @@ body {
   display: flex;
 	top: var(--mg-lg);
 	right: var(--mg-lg);
+  z-index: 99;
 }
 .icon-menu { 
 	margin-left: var(--mg-lg);
+}
+
+.scroll-custom::-webkit-scrollbar {
+  width: var(--ic-sm);
+  background-color: var(--clr-text);
+  border-radius: 10px;
+  border: var(--bs-md) solid var(--clr-border);
+}
+.scroll-custom::-webkit-scrollbar-thumb {
+  background: var(--clr-bg-btn); 
+  border-radius: 10px;
+}
+.scroll-custom::-webkit-scrollbar-thumb:hover {
+  background: var(--clr-shadow); 
 }

@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="../css/match-history.css">
-	<link rel="stylesheet" href="../css/profile.css">
-</head>
-<body>
+<link rel="stylesheet" href="../css/match-history.css">
+
+<div class="d-flex flex-column p-0 h-100">
 	<!-- icon menu -->
 	<div class="icon-menu-container">
-		<img class="icon-menu ic-xl btn-hover" data-bs-toggle="modal" data-bs-target="#notificationModal"
-			src="../static/svg/notification.svg" alt="notification button"
-		>
+		<img id="notiBtn" class="icon-menu ic-xl btn-hover" data-bs-toggle="modal" data-bs-target="#notificationModal"
+			src="../static/svg/notification.svg" alt="notification button">
 		<a class="m-0 p-0" href="/">
 			<img class="icon-menu ic-xl btn-hover p-0 mt-0" src="../static/svg/home.svg" alt="Home button">
 		</a>
@@ -19,55 +13,36 @@
 		</a>
 	</div>
 
-	<h1 class="h-lg">MATCH HISTORY</h1>
-
-	<!-- <div id="my-profile">
-		<div class="profile-image">
-			<img id="profileImage" alt="profile-picture">
-		</div>
-	</div> -->
+	<h1 class="h-lg title" data-i18n="match_history">MATCH HISTORY</h1>
 
 	<!-- table headline -->
-	<div id="headline" class="container-fluid ">
+	<div class="container-fluid table-headline">
 		<div class="row">
-			<div class="col-3">
-				Player 1
+			<div class="col-3" data-i18n="player1">
+				player 1
 			</div>
-			<div class="col">
-				Score
+			<div class="col" data-i18n="score">
+				score
 			</div>
-			<div class="col-3">
-				Player 2
+			<div class="col-3" data-i18n="player2">
+				player 2
 			</div>
-			<div class="col-3">
-				Date
-			</div>
-			<div class="col">
-				Time
+			<div class="col-3" data-i18n="date">
+				date
 			</div>
 		</div>
-	  </div>
+	</div>
 
-	<!-- tables -->
-	<div id="match-history-table" class="container-fluid"></div>
-	<!-- <div id="my-profile">
-		<div class="col">
-			<img id="profileImage" alt="profile-picture">
-		</div>
-	</div> -->
-	<!-- <script src="../js/gameUI/history-table.js"></script> -->
+	<!-- table body -->
+	<div id="match-history-table" class="container-fluid flex-grow-1 table-list overflow-auto scroll-custom"></div>
 
 	<!-- button -->
-	<div class="wrapper">
-		<!-- ! the buttton is not working yet -->
-		<a href="game.html"> 
-			<button class="font-bs-bold btn btn-primary bk-profile-button fs-lg" data-i18n="GAME MENU">GAME MENU &gt;&gt;</button>
+	<div class="text-center">
+		<a href="/game"> 
+			<button class="font-bs-bold btn btn-primary fs-lg" data-i18n="game_menu">
+				GAME MENU
+			</button>
 		</a>
 	</div>
 
-
-	<!-- Test Modal Profile (Must be remove) -->
-  <ol class="d-flex flex-column align-items-center overflow-auto bk-friend-list scroll-custom" id="friendList"></ol>
-
-</body>
-</html>
+</div>
