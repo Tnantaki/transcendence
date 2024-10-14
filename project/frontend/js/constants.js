@@ -18,6 +18,7 @@ export const API_FRIEND_DEL_BY_ID = BACKEND_URL + "/i/uac/friend/";
 
 // API HISTORY & LEADERBOARD
 export const API_GET_LEADERBOARD = BACKEND_URL + "/i/game/leaderboard/";
+export const API_GET_MATCH_HISTORY = BACKEND_URL + "/i/game/me/match-history/";
 
 // API GAME
 export const API_ROOM = BACKEND_URL + "i/game/pong/room/";

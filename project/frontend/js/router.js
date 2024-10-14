@@ -78,10 +78,10 @@ function setATagDefault() {
   });
 }
 
-
 // Load content from route
 export function loadPage(url) {
   const token = localStorage.getItem('token');
+  console.log(url)
   let endPoint = url.split("?")[0];
 
   if (!token && endPoint !== "/signup") {
@@ -110,8 +110,13 @@ export function loadPage(url) {
       setSelectLanguage();
       checkNoti();
       const newUrl = endPoint + searchParams;
-      console.log(endPoint)
-      history.pushState({endPoint: newUrl}, null, newUrl);
+
+      // pushState will save state and update browser url without full page reload
+      // 1st arg: state use for store obj in histor stack
+      // 2nd arg: not use anymore pass empty string for safe
+      // 3rd arg: url string that will display on browser url
+      history.pushState({page: newUrl}, "", newUrl);
+      console.log("push one state", newUrl)
     })
     .catch(error => {
       contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;
@@ -127,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Popstate will trigger on back and forward buttom
 window.addEventListener('popstate', (event) => {
-  if (event.state)
-    loadPage(event.state.url);
+  console.log("Pop")
+  if (event.state && event.state.page)
+    loadPage(event.state.page);
 });
