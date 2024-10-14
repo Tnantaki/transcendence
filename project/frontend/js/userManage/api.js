@@ -1,3 +1,5 @@
+import { loadPage } from "../router.js";
+
 export async function fetchAPI(method, url, options = {}) {
   const {
     auth = false,
@@ -31,6 +33,7 @@ export async function fetchAPI(method, url, options = {}) {
     if (response.status === 401) {
       console.log("Token has expired");
       localStorage.removeItem("token");
+      loadPage("/login")
     }
     return response;
   } catch (error) {

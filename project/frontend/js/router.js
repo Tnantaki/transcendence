@@ -110,6 +110,7 @@ export function loadPage(url) {
       setSelectLanguage();
       checkNoti();
       const newUrl = endPoint + searchParams;
+      console.log(endPoint)
       history.pushState({endPoint: newUrl}, null, newUrl);
     })
     .catch(error => {

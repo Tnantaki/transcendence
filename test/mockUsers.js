@@ -23,7 +23,7 @@ async function registerUser(name) {
 
 
 async function test() {
-  const res1 = await registerUser("test3")
+  const res1 = await registerUser("mos123")
   console.log("Create", res1)
   for (let i = 1; i <= 10; i++) {
     const result = await registerUser("test" + i)

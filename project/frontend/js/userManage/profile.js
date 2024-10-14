@@ -45,7 +45,7 @@ async function getFriendList() {
       item.classList.add("friend-list-item");
       const clr = friend.is_online ? GREEN_CLR : RED_CLR
       item.innerHTML = `
-        <div class="d-flex justify-content-center friend-item-picture ">
+        <div class="friend-item-picture">
           <img src="/api${friend.profile}" alt="profile picture">
         </div>
         <div class="d-flex align-items-center friend-item-name">
