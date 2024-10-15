@@ -59,14 +59,14 @@ export function getRoomId() {
 	return roomId;
 }
 
-async function handleRoomBtn(xPos, roomBtns, event) {
+function handleRoomBtn(xPos, roomBtns, event) {
 	
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
 	roomId = null;
-	for (let i = 0; i < visibleLines; i++) { 
+	for (let i = 0; i < roomBtns.length ; i++) { 
 		const btnX = xPos - roomBtns[i].width / 2; // delete the left margin from the drawing function
 		const btnY = roomBtns[i].yPos + roomBtns[i].height / 2; // delete the top margin
 		if (x >= btnX && x <= btnX + roomBtns[i].width && 
@@ -78,7 +78,6 @@ async function handleRoomBtn(xPos, roomBtns, event) {
 			break;
 		}
 	}
-	// console.log(getRoomId());
 }
 
 // Scroll state
@@ -118,7 +117,7 @@ async function initRooms(rooms) {
 					roomBtns[i] = tmpObj
 			}
 		}
-		if (!hasEvent && roomBtns.length > 0) {
+		if (!hasEvent) {
 			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event);
 			manageEvt(0, roomBtn);
 			hasEvent = true;
