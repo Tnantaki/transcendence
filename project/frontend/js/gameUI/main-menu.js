@@ -75,7 +75,8 @@ function handleMenu(event)
 		{
 			Utils.manageEvt(1, handleMenu);
 			if (btn == "Single Player")
-				loadPage('/game-single')
+				console.log("single player");
+				// loadPage('/game-single')
 			else if (btn == "Versus")
 				loadPage('/game-versus')
 			else if (btn == "Online")
@@ -111,3 +112,5 @@ createMenu();
 
 // for load game online page
   // loadPage("/online?room_id=" + <id>);
+
+//! to get the localStorage.currentLanguage

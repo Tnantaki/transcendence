@@ -118,7 +118,7 @@ async function initRooms(rooms) {
 					roomBtns[i] = tmpObj
 			}
 		}
-		if (!hasEvent) {
+		if (!hasEvent && roomBtns.length > 0) {
 			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event);
 			manageEvt(0, roomBtn);
 			hasEvent = true;
