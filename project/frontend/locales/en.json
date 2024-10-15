@@ -10,8 +10,9 @@
   "tour_won": "TOURNAMENT WON",
   "tour_join": "TOURNAMENT JOIN",
   "friends": "Friends",
-  "match_history": "MATCH HISTORY >>",
-  "leaderboard": "LEADERBOARD >>",
+  "match_history": "MATCH HISTORY",
+  "match_history_btn": "MATCH HISTORY >>",
+  "leaderboard_btn": "LEADERBOARD >>",
   "back": "Back",
   "delete_friend": "Delete friend",
   "save": "Save",
@@ -53,5 +54,9 @@
   "create_room": "CREATE ROOM",
   "room_name": "Room Name",
   "confirm": "Confirm",
-  "close": "Close"
+  "close": "Close",
+  "game_menu": "GAME MENU >>",
+  "player1": "Player1",
+  "player2": "Player2",
+  "date": "Date"
 }

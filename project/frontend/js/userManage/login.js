@@ -23,9 +23,19 @@ loginForm.addEventListener("submit", async (event) => {
     }
 
     const data = await response.json();
+
+    // Save token in browser cache
     localStorage.setItem("token", data.token);
+
+    // Save my_id in browser cache
+    const responseProfile = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true, });
+    if (!responseProfile.ok) {
+      throw new Error(`HTTP error! status: ${responseProfile.status}`);
+    }
+    const profileValue = await responseProfile.json();
+    localStorage.setItem("my_id", profileValue.id);
+
     loadPage("/");
-    console.log("Success:", data);
   } catch (error) {
     console.error(error.message);
     if (error.message === "Failed to fetch")

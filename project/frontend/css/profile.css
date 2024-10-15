@@ -41,21 +41,15 @@
   width: 85%;
   margin: var(--mg-md);
 }
-
+.friend-item-picture {
+  display: flex;
+  justify-content: center;
+}
 .friend-item-picture img {
   border: var(--bs-md) solid var(--clr-border);
   border-radius: 50%;
   width: min(100px, max(calc(100px * 0.15) + calc(100vw * 0.038), calc(100px * 0.15) + calc(100vh * 0.038)));
   aspect-ratio: 1 / 1;
-}
-
-.friend-name {
-  color: var(--clr-bg-btn);
-  text-decoration: none;
-}
-
-.friend-name:hover {
-  text-decoration: underline;
 }
 
 .friend-item-background {
@@ -75,23 +69,6 @@
   margin-bottom: 0;
   padding: 0;
   padding-top: var(--mg-xl);
-  overflow: visible;
-}
-
-.scroll-custom::-webkit-scrollbar {
-  width: var(--ic-sm);
-  background-color: var(--clr-text);
-  border-radius: 10px;
-  border: var(--bs-md) solid var(--clr-border);
-}
-
-.scroll-custom::-webkit-scrollbar-thumb {
-  background: var(--clr-bg-btn); 
-  border-radius: 10px;
-}
-
-.scroll-custom::-webkit-scrollbar-thumb:hover {
-  background: var(--clr-shadow); 
 }
 
 .bk-friend-list-title {

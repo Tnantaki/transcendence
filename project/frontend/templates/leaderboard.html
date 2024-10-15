@@ -2,9 +2,8 @@
 
 <!-- icon menu -->
 <div class="icon-menu-container">
-  <img class="icon-menu ic-xl btn-hover" data-bs-toggle="modal" data-bs-target="#notificationModal"
-    src="../static/svg/notification.svg" alt="notification button"
-  >
+  <img id="notiBtn" class="icon-menu ic-xl btn-hover" data-bs-toggle="modal" data-bs-target="#notificationModal"
+    src="../static/svg/notification.svg" alt="notification button">
   <a class="m-0 p-0" href="/">
     <img class="icon-menu ic-xl btn-hover p-0 mt-0" src="../static/svg/home.svg" alt="Home button">
   </a>
@@ -13,13 +12,13 @@
   </a>
 </div>
 
-<div class="bk-main w-100 h-100">
+<div class="bk-main">
 
   <!-- leaderboard -->
   <div id="leaderboard" class="d-flex justify-content-center bk-picture-title">
     <div id="number2" class="d-flex flex-column align-items-center align-self-end bk-leader">
       <div class=" profile-image">
-        <img id="picture" alt="profile-picture">
+        <img src="/static/svg/default-user-picture.svg" id="picture" alt="profile-picture">
       </div>
       <div class="bk-ribbon">
         <img class="ribbon" src="/static/svg/ribbon.svg" alt="ribbon">
@@ -29,7 +28,7 @@
     </div>
     <div id="number1" class="d-flex flex-column align-items-center align-self-center bk-leader">
       <div class="profile-image position-relative">
-        <img id="picture" alt="profile-picture">
+        <img src="/static/svg/default-user-picture.svg" id="picture" alt="profile-picture">
         <div class="crown">
           <img src="/static/svg/crown.svg" alt="ribbon">
         </div>
@@ -42,7 +41,7 @@
     </div>
     <div id="number3" class="d-flex flex-column align-items-center align-self-end bk-leader">
       <div class=" profile-image">
-        <img id="picture" alt="profile-picture">
+        <img src="/static/svg/default-user-picture.svg" id="picture" alt="profile-picture">
       </div>
       <div class="bk-ribbon">
         <img class="ribbon" src="/static/svg/ribbon.svg" alt="ribbon">
@@ -53,9 +52,9 @@
   </div>
 
   <!-- table -->
-  <div>
+  <div class="bk-table">
     <!-- table headline -->
-    <div class="headline container-fluid ">
+    <div class="table-headline container-fluid ">
       <div class="row d-flex m-0">
         <div class="col-2">
           <p data-i18n="rank">rank</p>
@@ -76,7 +75,8 @@
     </div>
 
     <!-- table data -->
-    <ol id="player-list" class="d-flex flex-column align-items-center w-100 p-0"> </ol>
-
+    <div class="bk-table">
+      <ol id="player-list" class="overflow-auto scroll-custom player-list"> </ol>
+    </div>
   </div>
 </div>

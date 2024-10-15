@@ -30,8 +30,9 @@ async function submitLogout() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    // Remove token and my_id in browser cache
     localStorage.removeItem("token");
-    console.log("Remove Token, Logout success");
+    localStorage.removeItem("my_id");
   } catch (error) {
     console.error(error.message);
   }
