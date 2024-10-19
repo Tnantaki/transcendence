@@ -2,8 +2,6 @@ import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
 import { fetchAPI, fetchUploadFile } from "./api.js";
 
-console.log("Edit Profile page")
-
 const profileForm = document.getElementById("profileForm");
 const profilePicture = document.getElementById("profile-picture");
 
@@ -65,6 +63,7 @@ function removeEmptyFields(obj) {
 }
 
 profileForm.addEventListener("submit", async (event) => {
+  console.log("GET it")
   event.preventDefault();
   const formData = new FormData(event.target);
   const input = {
