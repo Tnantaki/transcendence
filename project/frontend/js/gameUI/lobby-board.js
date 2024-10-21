@@ -13,14 +13,9 @@ const	boardObj = {
 }
 
 // ! all the rooms created still in the database (40+ of them)
-let cachedRooms = null;
 async function getAllRooms() {
-	if (cachedRooms)
-		return cachedRooms;
-
 	try {
 		const res = await getRoomAPI();
-		cachedRooms = res;
 		return res;
 	} catch (error) {
 		console.error("Error cannot get rooms: ", error);
@@ -48,33 +43,21 @@ function getBtnHeight(roomName) {
 	return finalHeight;
 }
 
-let roomId = null;
-function setRoomId(id) {
-	roomId = id;
-}
-
-export function getRoomId() {
-	if (!roomId)
-		return null;
-	return roomId;
-}
-
-function handleRoomBtn(xPos, roomBtns, event) {
+export async function handleRoomBtn(xPos, roomBtns, event) {
 	
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	roomId = null;
+	// console.log(roomBtns);
 	for (let i = 0; i < roomBtns.length ; i++) { 
 		const btnX = xPos - roomBtns[i].width / 2; // delete the left margin from the drawing function
 		const btnY = roomBtns[i].yPos + roomBtns[i].height / 2; // delete the top margin
 		if (x >= btnX && x <= btnX + roomBtns[i].width && 
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
-			setRoomId(roomBtns[i].id);
 
 			// for load game online page
-			loadPage("/online?room_id=" + getRoomId());
+			loadPage("/online?room_id=" + roomBtns[i].id);
 			break;
 		}
 	}
@@ -91,7 +74,7 @@ const scrollbarThumbMinHeight = 20;
 
 // Room buttons
 let hasEvent = false;
-const   roomBtns = [];
+export const   roomBtns = [];
 async function initRooms(rooms) {
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
@@ -122,6 +105,7 @@ async function initRooms(rooms) {
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}
+		// console.log(rooms);
 	}
 
 	const scrollbarHeight = boardObj.height + boardObj.padding * 2 - 2 * scrollbarPadding;
@@ -188,6 +172,12 @@ export async function drawRoomDisplay() {
 	const rooms = await getAllRooms();
 	await initRooms(rooms);
 
+	// remove btn from the rooms that are not on the board
+	// if (hasEvent && roomBtns.length > 0) {
+	// 	manageEvt(1, handleRoomBtn);
+	// 	hasEvent = false;
+	// }
+
 	// Add event listeners for scrolling (only if they haven't been added before)
 	if (!canvas.hasScrollListeners) {
 		canvas.addEventListener('wheel', handleWheel);
@@ -244,3 +234,5 @@ function handleMouseMove(event) {
 function handleMouseUp() {
 	isDragging = false;
 }
+
+export const scrollEvt = {handleWheel, handleMouseDown, handleMouseMove, handleMouseUp};

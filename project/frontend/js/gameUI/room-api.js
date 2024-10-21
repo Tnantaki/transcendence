@@ -25,7 +25,7 @@ createRoomBtn.addEventListener('click', function () {
 			.then(res => {
 				updateLobby(res.game_type);
 				closeModal();
-				loadPage("/online?room_id=" + res.id);
+				// loadPage("/online?room_id=" + res.id);
 			})
 			.catch(error => {
 				console.error("Error creating room: ", error);
@@ -34,7 +34,7 @@ createRoomBtn.addEventListener('click', function () {
 })
 
 document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
-	document.getElementById('room-name-input').value = '';
+	document.getElementById('room-name-input').value = ' ';
 })
 
 async function createRoomAPI(roomName) {

@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 
 export function removeEvent(evt){
 	canvas.removeEventListener("click", evt);
-	// console.log("remove main menu button");
+	console.log("remove main room button");
 }
 
 export function addEvent(evt) {
@@ -15,11 +15,11 @@ export function manageEvt(status, evt)
 	// 0 --> add event
 	if (!status) {
 		addEvent(evt);
-		console.log('Add Event')
+		// console.log('Add Event')
 	}
 	else {
 		removeEvent(evt);
-		console.log('Remove Event')
+		// console.log('Remove Event')
 	}
 }
 
