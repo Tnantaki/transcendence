@@ -96,10 +96,12 @@ export function createMenu()
 	drawCanvas();
 	drawBtn();
 	Utils.manageEvt(0, handleMenu);
+	// console.log("create menu");
 }
 
 createMenu();
 
+// console.log("main-menu file");
 // debugger for btn
 			// console.log(btn);
 			// console.log("x: " + x);

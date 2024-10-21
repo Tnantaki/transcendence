@@ -73,7 +73,7 @@ export function loadPage(url) {
   // 2nd arg: not use anymore pass empty string for safe
   // 3rd arg: url string that will display on browser url
   history.pushState({page: newUrl}, "", newUrl);
-  console.log("push one state", newUrl)
+  // console.log("push one state", newUrl)
 }
 
 // Disable default a tag behavior of reload full page to make SPA

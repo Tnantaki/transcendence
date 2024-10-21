@@ -4,6 +4,8 @@ import { updateLobby } from "./lobby-menu.js";
 import { loadPage } from "../router.js";
 // import { addRoom } from "./lobby-board.js";
 
+let cachedRooms = [];
+
 let modal;
 export function showModal() {
 	if (!modal)
@@ -23,7 +25,8 @@ createRoomBtn.addEventListener('click', function () {
 	if (roomName) {
 		createRoomAPI(roomName)
 			.then(res => {
-				updateLobby(res.game_type);
+				cachedRooms.length = 0;
+				updateLobby(res.game_type); // no need to update, just go the game. The update will take place after the player leave the match
 				closeModal();
 				// loadPage("/online?room_id=" + res.id);
 			})
@@ -80,3 +83,22 @@ export async function getRoomAPI() {
 	}
 }
 
+
+// ! all the rooms created still in the database (40+ of them)
+export async function getAllRooms() {
+	if (cachedRooms.length > 0)
+		return cachedRooms;
+	console.log("not a cached room");
+	try {
+		const res = await getRoomAPI();
+		cachedRooms = res;
+		return res;
+	} catch (error) {
+		console.error("Error cannot get rooms: ", error);
+		return null;
+	}
+}
+
+export function getRoomlength() {
+	return cachedRooms.length;
+}

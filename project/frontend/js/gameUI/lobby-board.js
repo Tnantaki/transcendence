@@ -1,4 +1,4 @@
-import { getRoomAPI } from "./room-api.js";
+import { getAllRooms, getRoomlength} from "./room-api.js";
 import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
 
@@ -10,17 +10,6 @@ const	boardObj = {
 	startX: BOARD_PADDING, startY: 125, padding: 30,
 	height: 330, width: 450,
 	headerPos: 77, textPadding: 40, space: 10,
-}
-
-// ! all the rooms created still in the database (40+ of them)
-async function getAllRooms() {
-	try {
-		const res = await getRoomAPI();
-		return res;
-	} catch (error) {
-		console.error("Error cannot get rooms: ", error);
-		return null;
-	}
 }
 
 function fillRoomName(room, xPos, yPos) {
@@ -105,7 +94,7 @@ async function initRooms(rooms) {
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}
-		// console.log(rooms);
+		console.log(rooms);
 	}
 
 	const scrollbarHeight = boardObj.height + boardObj.padding * 2 - 2 * scrollbarPadding;
@@ -191,8 +180,7 @@ export async function drawRoomDisplay() {
 
 function handleWheel(event) {
 	event.preventDefault();
-	const rooms = cachedRooms;
-	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
+	const maxScroll = Math.max(0, (getRoomlength() - visibleLines) * lineHeight);
 	scrollY += event.deltaY;
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
 	drawRoomDisplay();
