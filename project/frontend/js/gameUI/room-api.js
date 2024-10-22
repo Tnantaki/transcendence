@@ -4,7 +4,7 @@ import { updateLobby } from "./lobby-menu.js";
 import { loadPage } from "../router.js";
 // import { addRoom } from "./lobby-board.js";
 
-let cachedRooms = [];
+export let cachedRooms = [];
 
 let modal;
 export function showModal() {
@@ -13,7 +13,7 @@ export function showModal() {
 	modal.show();
 }
 
-export function closeModal() {
+function closeModal() {
 	if (modal)
 		modal.hide();
 }

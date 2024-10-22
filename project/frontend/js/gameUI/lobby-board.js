@@ -13,6 +13,7 @@ const	boardObj = {
 }
 
 function fillRoomName(room, xPos, yPos) {
+	console.log(room.id);
 	ctx.fillText(room.name, xPos, yPos);
 	ctx.fillText(room.number_of_player + 1 + "/2", boardObj.width - 10, yPos);
 }
@@ -73,7 +74,9 @@ async function initRooms(rooms) {
 		for (let i = 0; i < visibleLines; i++) {
 			const roomIndex = startIndex + i;
 			if (roomIndex < rooms.length) {
+				console.log("index: ", roomIndex);
 				const room = rooms[roomIndex];
+				console.log(room.name);
 				const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space) * i;
 				fillRoomName(room, xPos, yPos + 8);
 				let tmpObj = {
@@ -159,13 +162,8 @@ export async function drawRoomDisplay() {
 	ctx.textAlign = "center";
 
 	const rooms = await getAllRooms();
+	rooms.sort((a,b) => a.id - b.id);
 	await initRooms(rooms);
-
-	// remove btn from the rooms that are not on the board
-	// if (hasEvent && roomBtns.length > 0) {
-	// 	manageEvt(1, handleRoomBtn);
-	// 	hasEvent = false;
-	// }
 
 	// Add event listeners for scrolling (only if they haven't been added before)
 	if (!canvas.hasScrollListeners) {

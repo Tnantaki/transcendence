@@ -1,7 +1,7 @@
 import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn } from "./lobby-board.js";
-import * as Room from "./room-api.js";
+import {showModal, cachedRooms} from "./room-api.js";
 
 // need to be here due to the importation of the function
 createMenu();
@@ -62,7 +62,7 @@ function handleCreateBtn(btnObj, event)
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		console.log("clicked create btn");
-		Room.showModal();
+		showModal();
 	}	
 }
 
@@ -83,6 +83,11 @@ function handleBackBtn(btnObj, event)
 		manageEvt(1, createBtn);
 		manageEvt(1, startBtn);
 		manageEvt(1, backBtn);
+		if (roomBtns.length > 0) {
+			roomBtns.length = 0;
+			cachedRooms.length = 0;
+			manageEvt(1, handleRoomBtn)
+		}
 		if (canvas.hasScrollListeners) {
 			canvas.removeEventListener('wheel', scrollEvt.handleWheel);
 			canvas.removeEventListener('mousedown', scrollEvt.handleMouseDown);
@@ -90,11 +95,6 @@ function handleBackBtn(btnObj, event)
 			canvas.removeEventListener('mouseup', scrollEvt.handleMouseUp);
 			canvas.removeEventListener('mouseleave', scrollEvt.handleMouseUp);
 			canvas.hasScrollListeners = false;
-		}
-		if (roomBtns.length > 0)
-		{
-			console.log("remove roomBtns");
-			manageEvt(1, handleRoomBtn)
 		}
 		createMenu();
 		// manageEvt(1, handleAddPlayerBtn);
