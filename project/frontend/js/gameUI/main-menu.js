@@ -99,8 +99,6 @@ export function createMenu()
 	// console.log("create menu");
 }
 
-createMenu();
-
 // console.log("main-menu file");
 // debugger for btn
 			// console.log(btn);

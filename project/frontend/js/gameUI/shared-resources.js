@@ -3,6 +3,9 @@ import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn } from "./lobby-board.js";
 import * as Room from "./room-api.js";
 
+// need to be here due to the importation of the function
+createMenu();
+
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
 
