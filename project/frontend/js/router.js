@@ -107,11 +107,20 @@ function loadContent(url) {
       contentDiv.innerHTML = data;
       document.title = route.title;
       if (route.script) {
-        const addScript = document.createElement('script');
-        // append query parameter timestamp to the script URL to prevent caching.
-        addScript.src = route.script + "?v=" + new Date().getTime();
-        addScript.type = 'module';
-        contentDiv.appendChild(addScript);
+        if (url === '/game') {
+          route.script.forEach(e => {
+            const addScript = document.createElement('script')
+            addScript.src = e + "?v=" + new Date().getTime();
+            addScript.type = 'module';
+            contentDiv.appendChild(addScript);
+          })
+        } else {
+          const addScript = document.createElement('script');
+          // append query parameter timestamp to the script URL to prevent caching.
+          addScript.src = route.script + "?v=" + new Date().getTime();
+          addScript.type = 'module';
+          contentDiv.appendChild(addScript);
+        }
       }
       setATagDefault();
       setSelectLanguage();
