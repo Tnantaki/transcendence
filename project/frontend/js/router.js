@@ -45,8 +45,8 @@ const urlRoute = {
   }, 
   "/game": {
     urlPath: template_dir + "game.html",
-    // script: js_game_dir + "main-menu.js",
-    script: js_game_dir + "init-menu.js",
+    script: [js_game_dir + "main-menu.js"], 
+      // js_game_dir +  "init-menu.js"],
     title: "Game" + " - " + title_extension,
   },
   "/game-single": {
@@ -74,7 +74,6 @@ export function loadPage(url) {
   // 2nd arg: not use anymore pass empty string for safe
   // 3rd arg: url string that will display on browser url
   history.pushState({page: newUrl}, "", newUrl);
-  // console.log("push one state", newUrl)
 }
 
 // Disable default a tag behavior of reload full page to make SPA
@@ -109,11 +108,20 @@ function loadContent(url) {
       contentDiv.innerHTML = data;
       document.title = route.title;
       if (route.script) {
-        const addScript = document.createElement('script');
-        // append query parameter timestamp to the script URL to prevent caching.
-        addScript.src = route.script + "?v=" + new Date().getTime();
-        addScript.type = 'module';
-        contentDiv.appendChild(addScript);
+        if (url === '/game') {
+          route.script.forEach(e => {
+            const addScript = document.createElement('script')
+            addScript.src = e + "?v=" + new Date().getTime();
+            addScript.type = 'module';
+            contentDiv.appendChild(addScript);
+          })
+        } else {
+          const addScript = document.createElement('script');
+          // append query parameter timestamp to the script URL to prevent caching.
+          addScript.src = route.script + "?v=" + new Date().getTime();
+          addScript.type = 'module';
+          contentDiv.appendChild(addScript);
+        }
       }
       setATagDefault();
       setSelectLanguage();
