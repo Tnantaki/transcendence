@@ -12,7 +12,6 @@ const btnHeight = 50;
 const btnSpace = 20;
 const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
 
-
 function drawCanvas()
 {
 	// clear canvas
