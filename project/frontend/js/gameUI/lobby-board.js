@@ -74,9 +74,7 @@ async function initRooms(rooms) {
 		for (let i = 0; i < visibleLines; i++) {
 			const roomIndex = startIndex + i;
 			if (roomIndex < rooms.length) {
-				console.log("index: ", roomIndex);
 				const room = rooms[roomIndex];
-				console.log(room.name);
 				const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space) * i;
 				fillRoomName(room, xPos, yPos + 8);
 				let tmpObj = {
@@ -97,7 +95,7 @@ async function initRooms(rooms) {
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}
-		console.log(rooms);
+		// console.log(rooms);
 	}
 
 	const scrollbarHeight = boardObj.height + boardObj.padding * 2 - 2 * scrollbarPadding;

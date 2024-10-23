@@ -29,6 +29,7 @@ function drawCanvas()
 	ctx.textBaseline = "top";
 	ctx.fillStyle = "white";
 	ctx.fillText("Pong", (canvas.width / 2), titlePos);
+	console.log("out drawCanvas");
 }
 
 function drawBtn()
@@ -57,6 +58,7 @@ function drawBtn()
 
 		y += btnHeight + btnSpace;
 	}
+	console.log("out drawBtn");
 }
 
 function handleMenu(event) 
@@ -91,12 +93,14 @@ function handleMenu(event)
 	}
 }
 
+
 export function createMenu()
 {
+	console.log("in createMenu");
 	drawCanvas();
-	drawBtn();
-	Utils.manageEvt(0, handleMenu);
-	// console.log("create menu");
+	// drawBtn();
+	// Utils.manageEvt(0, handleMenu);
+	console.log("out createMenu");
 }
 
 // console.log("main-menu file");

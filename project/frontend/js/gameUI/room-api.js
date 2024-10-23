@@ -88,7 +88,7 @@ export async function getRoomAPI() {
 export async function getAllRooms() {
 	if (cachedRooms.length > 0)
 		return cachedRooms;
-	console.log("not a cached room");
+// console.log("not a cached room");
 	try {
 		const res = await getRoomAPI();
 		cachedRooms = res;
