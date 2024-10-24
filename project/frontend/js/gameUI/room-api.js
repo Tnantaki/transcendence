@@ -2,43 +2,65 @@ import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
 import { updateLobby } from "./lobby-menu.js";
 import { loadPage } from "../router.js";
-// import { addRoom } from "./lobby-board.js";
 
 export let cachedRooms = [];
 
+let roomModal;
+function initRoomModal() {
+	roomModal = document.getElementById("createRoomModal");
+}
+
+function eraseInput() {
+	if (!roomModal)
+		initRoomModal();
+	roomModal.addEventListener('hidden.bs.modal', function () {
+		document.getElementById('room-name-input').value = ' ';
+	})
+}
+
 let modal;
-export function showModal() {
+function closeModal() {
+	if (modal)
+		modal.hide();
+	eraseInput();
+}
+
+function showModal() {
 	if (!modal)
 		modal = new bootstrap.Modal(document.getElementById('createRoomModal'));
 	modal.show();
 }
 
-function closeModal() {
-	if (modal)
-		modal.hide();
+let createRoomBtn;
+function initCreateRoomBtn() {
+	createRoomBtn = document.getElementById("createRoomBtn");
 }
 
-const createRoomBtn = document.getElementById("createRoomBtn");
-createRoomBtn.addEventListener('click', function () {
-	const roomName = document.getElementById("room-name-input").value;
+function execCreateRoomBtn() {
+	createRoomBtn.addEventListener('click', function () {
+		const roomName = document.getElementById("room-name-input").value;
+		if (roomName) {
+			createRoomAPI(roomName)
+				.then(res => {
+					cachedRooms.length = 0;
+					updateLobby(res.game_type); // no need to update, just go the game. The update will take place after the player leave the match
+					closeModal();
+					// loadPage("/online?room_id=" + res.id);
+				})
+				.catch(error => {
+					console.error("Error creating room: ", error);
+				})
+		}
+	})
+}
 
-	if (roomName) {
-		createRoomAPI(roomName)
-			.then(res => {
-				cachedRooms.length = 0;
-				updateLobby(res.game_type); // no need to update, just go the game. The update will take place after the player leave the match
-				closeModal();
-				// loadPage("/online?room_id=" + res.id);
-			})
-			.catch(error => {
-				console.error("Error creating room: ", error);
-			})
-	}
-})
 
-document.getElementById('createRoomModal').addEventListener('hidden.bs.modal', function () {
-	document.getElementById('room-name-input').value = ' ';
-})
+export function createRoom() {
+	showModal();
+	if (!createRoomBtn)
+		initCreateRoomBtn();
+	execCreateRoomBtn();
+}
 
 async function createRoomAPI(roomName) {
 	try {

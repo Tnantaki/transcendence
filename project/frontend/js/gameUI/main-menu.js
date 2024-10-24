@@ -2,8 +2,6 @@ import { loadPage } from "../router.js";
 import { createLobby } from "./lobby-menu.js";
 import * as Utils from "./utils.js";
 
-// const canvas = document.getElementById("gameArea");
-// const ctx = canvas.getContext("2d");
 let canvas;
 let ctx;
 function setCanvas() {
@@ -77,6 +75,7 @@ function handleMenu(event)
 	let startX = (canvas.width - btnWidth) / 2;
 	let startY = (menuPos + (btnArray.length * btnHeight + (btnArray.length - 1) * btnSpace)) / 2;
 	let btnY = startY + 10;
+	console.log("clicked");
 	for (const btn of btnArray)
 	{
 		if (x >= startX && x <= startX + btnWidth && y >= btnY && y <= (btnY + btnHeight) - 20)
@@ -91,8 +90,8 @@ function handleMenu(event)
 				createLobby("online");
 			else if (btn == "Tournament")
 				createTournament(players);
-			else if (btn == "Setting")
-				console.log("Setting");
+			else if (btn == "Return To Home")
+				loadPage("/");
 			break;
 		}
 		btnY += btnHeight + btnSpace;

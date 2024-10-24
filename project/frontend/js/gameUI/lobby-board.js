@@ -2,18 +2,26 @@ import { getAllRooms, getRoomlength} from "./room-api.js";
 import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
 
-const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
+let canvas;
+let ctx;
+function setCanvas() {
+	canvas = document.getElementById("gameArea");
+	if (canvas)
+		ctx = canvas.getContext("2d");
+}
 
-const	BOARD_PADDING = canvas.width - 950;
+function getBoardStartX() {
+	setCanvas();
+	return canvas.width - 950;
+}
+
 const	boardObj = {
-	startX: BOARD_PADDING, startY: 125, padding: 30,
+	startX: getBoardStartX(), startY: 125, padding: 30,
 	height: 330, width: 450,
 	headerPos: 77, textPadding: 40, space: 10,
 }
 
 function fillRoomName(room, xPos, yPos) {
-	console.log(room.id);
 	ctx.fillText(room.name, xPos, yPos);
 	ctx.fillText(room.number_of_player + 1 + "/2", boardObj.width - 10, yPos);
 }
@@ -34,7 +42,6 @@ function getBtnHeight(roomName) {
 }
 
 export async function handleRoomBtn(xPos, roomBtns, event) {
-	
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
@@ -135,6 +142,8 @@ async function initRooms(rooms) {
 
 
 export async function drawRoomDisplay() {
+	setCanvas();
+
 	// Clear the entire board area
 	ctx.clearRect(boardObj.startX, boardObj.startY, boardObj.width, boardObj.height + boardObj.padding * 2);
 

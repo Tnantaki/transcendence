@@ -1,5 +1,10 @@
-const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
+let canvas;
+let ctx;
+function setCanvas() {
+	canvas = document.getElementById("gameArea");
+	if (canvas)
+		ctx = canvas.getContext("2d");
+}
 
 export function removeEvent(evt){
 	canvas.removeEventListener("click", evt);
@@ -7,20 +12,17 @@ export function removeEvent(evt){
 
 export function addEvent(evt) {
 	canvas.addEventListener("click", evt);
-	console.log("add event");
 }
 
 export function manageEvt(status, evt)
 {
+	setCanvas();
+
 	// 0 --> add event
-	if (!status) {
+	if (!status)
 		addEvent(evt);
-		// console.log('Add Event')
-	}
-	else {
+	else
 		removeEvent(evt);
-		// console.log('Remove Event')
-	}
 }
 
 // image position

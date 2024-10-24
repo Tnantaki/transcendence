@@ -1,10 +1,15 @@
 import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn } from "./lobby-board.js";
-import {showModal, cachedRooms} from "./room-api.js";
+import {cachedRooms, createRoom} from "./room-api.js";
 
-const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
+let canvas;
+let ctx;
+function setCanvas() {
+	canvas = document.getElementById("gameArea");
+	if (canvas)
+		ctx = canvas.getContext("2d");
+}
 
 // preload the img
 let pongImg = null;
@@ -45,6 +50,8 @@ const backBtnObj = {
 
 function handleCreateBtn(btnObj, event)
 {
+	setCanvas();
+
 	const	rect = canvas.getBoundingClientRect();
 	const	x = event.clientX - rect.left;
 	const	y = event.clientY - rect.top;
@@ -58,12 +65,14 @@ function handleCreateBtn(btnObj, event)
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		console.log("clicked create btn");
-		showModal();
+		createRoom();
 	}	
 }
 
 function handleBackBtn(btnObj, event)
 {
+	setCanvas();
+
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
