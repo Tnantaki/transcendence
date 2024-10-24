@@ -1,4 +1,4 @@
-// import { createMenu } from "./main-menu.js";
+import { createMenu } from "./main-menu.js";
 
-// createMenu();
-// console.log("init-menu.js");
+createMenu();
+console.log("init-menu.js");

@@ -2,15 +2,24 @@ import { loadPage } from "../router.js";
 import { createLobby } from "./lobby-menu.js";
 import * as Utils from "./utils.js";
 
-const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
+// const canvas = document.getElementById("gameArea");
+// const ctx = canvas.getContext("2d");
+let canvas;
+let ctx;
+function setCanvas() {
+	canvas = document.getElementById("gameArea");
+	if (canvas)
+		ctx = canvas.getContext("2d");
+}
+
+// console.log("canvas: ", canvas);
 
 // menu properties
 const menuPos = 100;
 const btnWidth = 200;
 const btnHeight = 50;
 const btnSpace = 20;
-const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
+const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Return To Home"]
 
 function drawCanvas()
 {
@@ -28,7 +37,6 @@ function drawCanvas()
 	ctx.textBaseline = "top";
 	ctx.fillStyle = "white";
 	ctx.fillText("Pong", (canvas.width / 2), titlePos);
-	console.log("out drawCanvas");
 }
 
 function drawBtn()
@@ -57,7 +65,6 @@ function drawBtn()
 
 		y += btnHeight + btnSpace;
 	}
-	console.log("out drawBtn");
 }
 
 function handleMenu(event) 
@@ -92,13 +99,13 @@ function handleMenu(event)
 	}
 }
 
-
 export function createMenu()
 {
-	console.log("in createMenu");
+	// console.log("in createMenu");
+	setCanvas();
 	drawCanvas();
-	// drawBtn();
-	// Utils.manageEvt(0, handleMenu);
+	drawBtn();
+	Utils.manageEvt(0, handleMenu);
 	// console.log("out createMenu");
 }
 
