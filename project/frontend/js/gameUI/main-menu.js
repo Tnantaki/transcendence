@@ -75,7 +75,6 @@ function handleMenu(event)
 	let startX = (canvas.width - btnWidth) / 2;
 	let startY = (menuPos + (btnArray.length * btnHeight + (btnArray.length - 1) * btnSpace)) / 2;
 	let btnY = startY + 10;
-	console.log("clicked");
 	for (const btn of btnArray)
 	{
 		if (x >= startX && x <= startX + btnWidth && y >= btnY && y <= (btnY + btnHeight) - 20)
@@ -100,12 +99,19 @@ function handleMenu(event)
 
 export function createMenu()
 {
-	// console.log("in createMenu");
-	setCanvas();
-	drawCanvas();
-	drawBtn();
-	Utils.manageEvt(0, handleMenu);
-	// console.log("out createMenu");
+	let gameFont = new Promise((resolve, reject) => {
+		document.fonts.load('1em "Irish Grover"')
+			.then(() => {
+				resolve();
+		})
+		.catch(reject);
+	});
+	gameFont.then(() => {
+		setCanvas();
+		drawCanvas();
+		drawBtn();
+		Utils.manageEvt(0, handleMenu);
+	});
 }
 
 // createMenu();
