@@ -39,6 +39,9 @@ class UserSchema(ModelSchema):
             return obj.username
         return obj.display_name
 
+class UserAddIsFriend(UserSchema):
+    is_friend: bool
+
 class UserPatchIn(ModelSchema):
     
     class Meta:
