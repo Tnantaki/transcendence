@@ -9,6 +9,7 @@ from ninja import UploadedFile
 from appuac.schema.user import (
     SimpleRespond,
     UserSchema,
+    UserAddIsFriend,
     UserPatchIn,
     UserPathParam,
     RegisterPostIn,
@@ -18,6 +19,7 @@ from appuac.schema.user import (
     FriendReceiveBaseOut,
     FriendRequestorBaseOut,
 )
+from django.db.models import Q
 
 debug_router = Router()
 
@@ -40,11 +42,19 @@ def get_me(request):
 @router.get(
     "/user/{user_id}/",
     response={
-        200: UserSchema,
+        200: UserAddIsFriend,
     },
 )
 def get_user_by_id(request, path_param: UserPathParam = Path(...)):
-    return path_param.user
+    requestor = request.auth.user
+    res_user = path_param.user
+    
+    ask = Q(requestor=requestor)
+    ans = Q(receiver=requestor)
+    is_friend = FriendRequest.objects.filter(ask | ans , status="ACCEPT").exists()
+    res = res_user
+    res.is_friend = is_friend
+    return 200, res
 
 
 @open_router.post(
