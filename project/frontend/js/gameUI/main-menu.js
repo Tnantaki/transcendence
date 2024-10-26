@@ -2,16 +2,22 @@ import { loadPage } from "../router.js";
 import { createLobby } from "./lobby-menu.js";
 import * as Utils from "./utils.js";
 
-const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
+let canvas;
+let ctx;
+function setCanvas() {
+	canvas = document.getElementById("gameArea");
+	if (canvas)
+		ctx = canvas.getContext("2d");
+}
+
+// console.log("canvas: ", canvas);
 
 // menu properties
 const menuPos = 100;
 const btnWidth = 200;
 const btnHeight = 50;
 const btnSpace = 20;
-const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Setting"]
-
+const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Return To Home"]
 
 function drawCanvas()
 {
@@ -75,15 +81,16 @@ function handleMenu(event)
 		{
 			Utils.manageEvt(1, handleMenu);
 			if (btn == "Single Player")
-				loadPage('/game-single')
+				console.log("single player");
+				// loadPage('/game-single')
 			else if (btn == "Versus")
 				loadPage('/game-versus')
 			else if (btn == "Online")
 				createLobby("online");
 			else if (btn == "Tournament")
 				createTournament(players);
-			else if (btn == "Setting")
-				console.log("Setting");
+			else if (btn == "Return To Home")
+				loadPage("/");
 			break;
 		}
 		btnY += btnHeight + btnSpace;
@@ -92,13 +99,24 @@ function handleMenu(event)
 
 export function createMenu()
 {
-	drawCanvas();
-	drawBtn();
-	Utils.manageEvt(0, handleMenu);
+	let gameFont = new Promise((resolve, reject) => {
+		document.fonts.load('1em "Irish Grover"')
+			.then(() => {
+				resolve();
+		})
+		.catch(reject);
+	});
+	gameFont.then(() => {
+		setCanvas();
+		drawCanvas();
+		drawBtn();
+		Utils.manageEvt(0, handleMenu);
+	});
 }
 
-createMenu();
+// createMenu();
 
+// console.log("main-menu file");
 // debugger for btn
 			// console.log(btn);
 			// console.log("x: " + x);
@@ -111,3 +129,5 @@ createMenu();
 
 // for load game online page
   // loadPage("/online?room_id=" + <id>);
+
+//! to get the localStorage.currentLanguage

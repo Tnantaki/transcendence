@@ -45,7 +45,9 @@ const urlRoute = {
   }, 
   "/game": {
     urlPath: template_dir + "game.html",
-    script: js_game_dir + "main-menu.js",
+    script: js_game_dir + "init-menu.js",
+    // script: [js_game_dir + "main-menu.js"], 
+      // js_game_dir +  "init-menu.js"],
     title: "Game" + " - " + title_extension,
   },
   "/game-single": {

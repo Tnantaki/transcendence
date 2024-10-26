@@ -1,9 +1,15 @@
 import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
-import * as Room from "./room-api.js";
+import { scrollEvt, roomBtns, handleRoomBtn } from "./lobby-board.js";
+import {cachedRooms, createRoom} from "./room-api.js";
 
-const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
+let canvas;
+let ctx;
+function setCanvas() {
+	canvas = document.getElementById("gameArea");
+	if (canvas)
+		ctx = canvas.getContext("2d");
+}
 
 // preload the img
 let pongImg = null;
@@ -21,7 +27,6 @@ export function getPongImg() {
 		}
 	})
 }
-
 
 // button settings
 const createBtnObj = {
@@ -45,6 +50,8 @@ const backBtnObj = {
 
 function handleCreateBtn(btnObj, event)
 {
+	setCanvas();
+
 	const	rect = canvas.getBoundingClientRect();
 	const	x = event.clientX - rect.left;
 	const	y = event.clientY - rect.top;
@@ -58,12 +65,14 @@ function handleCreateBtn(btnObj, event)
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		console.log("clicked create btn");
-		Room.showModal();
+		createRoom();
 	}	
 }
 
 function handleBackBtn(btnObj, event)
 {
+	setCanvas();
+
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
@@ -79,6 +88,19 @@ function handleBackBtn(btnObj, event)
 		manageEvt(1, createBtn);
 		manageEvt(1, startBtn);
 		manageEvt(1, backBtn);
+		if (roomBtns.length > 0) {
+			roomBtns.length = 0;
+			cachedRooms.length = 0;
+			manageEvt(1, handleRoomBtn)
+		}
+		if (canvas.hasScrollListeners) {
+			canvas.removeEventListener('wheel', scrollEvt.handleWheel);
+			canvas.removeEventListener('mousedown', scrollEvt.handleMouseDown);
+			canvas.removeEventListener('mousemove', scrollEvt.handleMouseMove);
+			canvas.removeEventListener('mouseup', scrollEvt.handleMouseUp);
+			canvas.removeEventListener('mouseleave', scrollEvt.handleMouseUp);
+			canvas.hasScrollListeners = false;
+		}
 		createMenu();
 		// manageEvt(1, handleAddPlayerBtn);
 		// console.log("Back");

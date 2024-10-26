@@ -1,31 +1,24 @@
-import { getRoomAPI } from "./room-api.js";
+import { getAllRooms, getRoomlength} from "./room-api.js";
 import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
 
-const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
-
-const	BOARD_PADDING = canvas.width - 950;
-const	boardObj = {
-	startX: BOARD_PADDING, startY: 125, padding: 30,
-	height: 330, width: 450,
-	headerPos: 77, textPadding: 40, space: 10,
+let canvas;
+let ctx;
+function setCanvas() {
+	canvas = document.getElementById("gameArea");
+	if (canvas)
+		ctx = canvas.getContext("2d");
 }
 
-// ! all the rooms created still in the database (40+ of them)
-let cachedRooms = null;
-async function getAllRooms() {
-	if (cachedRooms)
-		return cachedRooms;
+function getBoardStartX() {
+	setCanvas();
+	return canvas.width - 950;
+}
 
-	try {
-		const res = await getRoomAPI();
-		cachedRooms = res;
-		return res;
-	} catch (error) {
-		console.error("Error cannot get rooms: ", error);
-		return null;
-	}
+const	boardObj = {
+	startX: getBoardStartX(), startY: 125, padding: 30,
+	height: 330, width: 450,
+	headerPos: 77, textPadding: 40, space: 10,
 }
 
 function fillRoomName(room, xPos, yPos) {
@@ -48,37 +41,23 @@ function getBtnHeight(roomName) {
 	return finalHeight;
 }
 
-let roomId = null;
-function setRoomId(id) {
-	roomId = id;
-}
-
-export function getRoomId() {
-	if (!roomId)
-		return null;
-	return roomId;
-}
-
-async function handleRoomBtn(xPos, roomBtns, event) {
-	
+export async function handleRoomBtn(xPos, roomBtns, event) {
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	roomId = null;
-	for (let i = 0; i < visibleLines; i++) { 
+	// console.log(roomBtns);
+	for (let i = 0; i < roomBtns.length ; i++) { 
 		const btnX = xPos - roomBtns[i].width / 2; // delete the left margin from the drawing function
 		const btnY = roomBtns[i].yPos + roomBtns[i].height / 2; // delete the top margin
 		if (x >= btnX && x <= btnX + roomBtns[i].width && 
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
-			setRoomId(roomBtns[i].id);
 
 			// for load game online page
-			loadPage("/online?room_id=" + getRoomId());
+			loadPage("/online?room_id=" + roomBtns[i].id);
 			break;
 		}
 	}
-	// console.log(getRoomId());
 }
 
 // Scroll state
@@ -92,12 +71,12 @@ const scrollbarThumbMinHeight = 20;
 
 // Room buttons
 let hasEvent = false;
-const   roomBtns = [];
+export const   roomBtns = [];
 async function initRooms(rooms) {
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
-	if (rooms) {
+	if (rooms.length > 0) {
 		const startIndex = Math.floor(scrollY / lineHeight);
 		for (let i = 0; i < visibleLines; i++) {
 			const roomIndex = startIndex + i;
@@ -123,6 +102,7 @@ async function initRooms(rooms) {
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}
+		// console.log(rooms);
 	}
 
 	const scrollbarHeight = boardObj.height + boardObj.padding * 2 - 2 * scrollbarPadding;
@@ -162,6 +142,8 @@ async function initRooms(rooms) {
 
 
 export async function drawRoomDisplay() {
+	setCanvas();
+
 	// Clear the entire board area
 	ctx.clearRect(boardObj.startX, boardObj.startY, boardObj.width, boardObj.height + boardObj.padding * 2);
 
@@ -187,6 +169,7 @@ export async function drawRoomDisplay() {
 	ctx.textAlign = "center";
 
 	const rooms = await getAllRooms();
+	rooms.sort((a,b) => a.id - b.id);
 	await initRooms(rooms);
 
 	// Add event listeners for scrolling (only if they haven't been added before)
@@ -202,8 +185,7 @@ export async function drawRoomDisplay() {
 
 function handleWheel(event) {
 	event.preventDefault();
-	const rooms = cachedRooms;
-	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
+	const maxScroll = Math.max(0, (getRoomlength() - visibleLines) * lineHeight);
 	scrollY += event.deltaY;
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
 	drawRoomDisplay();
@@ -245,3 +227,5 @@ function handleMouseMove(event) {
 function handleMouseUp() {
 	isDragging = false;
 }
+
+export const scrollEvt = {handleWheel, handleMouseDown, handleMouseMove, handleMouseUp};
