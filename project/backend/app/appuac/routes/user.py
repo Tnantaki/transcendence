@@ -51,9 +51,12 @@ def get_user_by_id(request, path_param: UserPathParam = Path(...)):
     
     ask = Q(requestor=requestor)
     ans = Q(receiver=requestor)
-    is_friend = FriendRequest.objects.filter(ask | ans , status="ACCEPT").exists()
+    is_friend = FriendRequest.objects.filter(ask | ans ).first()
+    if is_friend is not None:
+        res_user.is_friend = is_friend.status
+    else:
+        res_user.is_friend = "NOT_FRIEND"
     res = res_user
-    res.is_friend = is_friend
     return 200, res
 
 
