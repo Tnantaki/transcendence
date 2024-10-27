@@ -34,8 +34,9 @@ export async function checkNoti() {
     }
     const friendReqValue = await response.json();
 
-    if (friendReqValue.length) {
-      notiBtn.src = "../static/svg/notification-have.svg"
+    const friendsPending = friendReqValue.filter(req => req.status === 'PENDING')
+    if (friendsPending.length) {
+      notiBtn.src = "../static/svg/noti-friend-have.svg"
     }
   } catch (error) {
     console.error(error.message);
@@ -118,10 +119,10 @@ async function getProfileById(id) {
     profile.querySelector("#friendProfileImage").src = "/api" + profileValue["profile"]
       || "./static/svg/default-user-picture.svg";
 
-    if (!profileValue.is_friend) {
+    if (profileValue.is_friend === 'ACCEPT') {
+      profile.querySelector('#del-friend-btn').hidden = false
       profile.querySelector('#add-friend-btn').hidden = false
     } else {
-      profile.querySelector('#del-friend-btn').hidden = false
     }
   } catch (error) {
     console.error(error.message);
