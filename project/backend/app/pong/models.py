@@ -128,3 +128,28 @@ class UserGameInfo(BaseAutoDate):
     lose = models.IntegerField(default=0)
     draw = models.IntegerField(default=0)
     total_score = models.IntegerField(default=0)
+    
+class Tournament(BaseAutoDate, BaseID):
+    """
+    :param name: name of tournament
+    :param users: list of users
+    :param size: number of player
+    :param status: status of tournament `CLOSE`, `OPEN`, `PLAYING`
+    :param winner: winner of tournament
+    """
+    name = models.CharField(default="", max_length=255)
+    users = models.ManyToManyField(AUTH_USER_MODEL, related_name="tournament_user")
+    size = models.IntegerField(default=4)
+    status = models.CharField(default="OPEN", max_length=255)
+    winner = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="tournament_winner",
+    )
+    owner = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="tournament_owner",
+    )

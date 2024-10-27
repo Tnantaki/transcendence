@@ -10,7 +10,7 @@ def gen_id():
 
 class AuthSession(models.Model):
     
-    SHORT_TTL = 10  # 10 min
+    SHORT_TTL = 10 * 20  # 10 min
     LONG_TTL = 60 * 24 * 7 # 7 day 
     
     id = models.CharField(default=gen_id, primary_key=True)
@@ -23,12 +23,16 @@ class AuthSession(models.Model):
     )
     last_used = models.DateTimeField(auto_now=True)
     mem = models.BooleanField(default=False)
+    in_game = models.BooleanField(default=False)
     
     @property
     def is_expired(self):
         """
         If user check remember me token have long ttl
         """
+        if self.in_game:
+            return False
+            
         if self.mem:
             return timezone.now() > self.last_used + timedelta(minutes=self.LONG_TTL)
             # return False
