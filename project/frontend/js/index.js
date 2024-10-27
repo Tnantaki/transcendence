@@ -1,7 +1,9 @@
 import * as constant from "./constants.js";
+import { getProfile } from "./services/profileService.js";
 import { setSelectLanguage } from "./i18n.js";
 import { loadPage } from "./router.js";
 import { fetchAPI } from "./userManage/api.js";
+import ChatRoom from "./userManage/chatRoom.js";
 
 let friend_id_target = ""
 
@@ -99,42 +101,32 @@ async function addFriendById() {
 const addFriendBtn = document.getElementById('add-friend-btn')
 addFriendBtn.addEventListener('click', addFriendById)
 
-
 // For Modal Profile
 async function getProfileById(id) {
-  try {
-    const profile = document.getElementById("modal-friend-profile");
-    const response = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id + "/", { auth: true });
+  const profile = document.getElementById("modal-friend-profile");
+  const profileValue = await getProfile(id)
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const profileValue = await response.json();
+  friend_id_target = profileValue["id"]
+  const total = profileValue["wins"] + profileValue["losses"]
+  profile.querySelector("#friendDisplayName").innerHTML = profileValue["display_name"] || "";
+  profile.querySelector("#friendBio").innerHTML = profileValue["bio"] || "";
+  profile.querySelector("#friendEmail").innerHTML = profileValue["email"] || "";
+  profile.querySelector("#friendWinLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
+  profile.querySelector("#friendTotalPlay").innerHTML = profileValue["total_games_play"] || total.toString();
+  profile.querySelector("#friendTourWon").innerHTML = profileValue["tour_won"];
+  profile.querySelector("#friendTourPlay").innerHTML = profileValue["tour_play"];
+  profile.querySelector("#friendProfileImage").src = "/api" + profileValue["profile"]
+    || "./static/svg/default-user-picture.svg";
 
-    friend_id_target = profileValue["id"]
-    const total = profileValue["wins"] + profileValue["losses"]
-    profile.querySelector("#friendDisplayName").innerHTML = profileValue["display_name"] || "";
-    profile.querySelector("#friendBio").innerHTML = profileValue["bio"] || "";
-    profile.querySelector("#friendEmail").innerHTML = profileValue["email"] || "";
-    profile.querySelector("#friendWinLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
-    profile.querySelector("#friendTotalPlay").innerHTML = profileValue["total_games_play"] || total.toString();
-    profile.querySelector("#friendTourWon").innerHTML = profileValue["tour_won"];
-    profile.querySelector("#friendTourPlay").innerHTML = profileValue["tour_play"];
-    profile.querySelector("#friendProfileImage").src = "/api" + profileValue["profile"]
-      || "./static/svg/default-user-picture.svg";
-
-    console.log(profileValue.is_friend)
-    const btnAdd = profile.querySelector('#add-friend-btn')
-    const btnDel = profile.querySelector('#del-friend-btn')
-    btnAdd.hidden = true
-    btnDel.hidden = true
-    if (profileValue.is_friend === 'ACCEPT') {
-      btnDel.hidden = false
-    } else if (profileValue.is_friend === 'NOT_FRIEND') {
-      btnAdd.hidden = false
-    }
-  } catch (error) {
-    console.error(error.message);
+  console.log(profileValue.is_friend)
+  const btnAdd = profile.querySelector('#add-friend-btn')
+  const btnDel = profile.querySelector('#del-friend-btn')
+  btnAdd.hidden = true
+  btnDel.hidden = true
+  if (profileValue.is_friend === 'ACCEPT') {
+    btnDel.hidden = false
+  } else if (profileValue.is_friend === 'NOT_FRIEND') {
+    btnAdd.hidden = false
   }
 }
 
@@ -151,7 +143,6 @@ async function getFriendRequest() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const friendReqValue = await response.json();
-
 
     friendReqValue.forEach(req => {
       if (req.status === 'PENDING') {
@@ -188,21 +179,22 @@ async function openChat(id) {
   console.log('Open Chat with:', id)
 	const chatBox = new bootstrap.Modal(document.getElementById('chatBoxModal'));
   chatBox.show()
-  try {
+  const chatInput = document.getElementById('chatInput')
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  const chatBody = document.getElementById('chatBody')
+  const chatRoom = await ChatRoom.create(chatBody, id)
+
+  // Chat input
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      const msg = chatInput.value
+      chatRoom.createMsgSent(msg)
+      // TODO: call socket to send message
+      chatInput.value = ''
     }
-  } catch (error) {
-    console.error(error.message);
-  }
+  })
 }
-// Chat input
-const chatInput = document.getElementById('chatInput')
-chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    console.log(chatInput.value)
-    // TODO: call socket to send message
-    chatInput.value = ''
-  }
+// input focus
+document.getElementById('chatBoxModal').addEventListener('shown.bs.modal', () => {
+  document.getElementById('chatInput').focus()
 })

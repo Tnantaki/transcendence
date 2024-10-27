@@ -121,7 +121,7 @@ p {
   border: var(--bs-lg) solid var(--clr-border);
   border-radius: var(--bs-xl);
   padding: 0;
-  width: 100%;
+  min-width: 100%;
   height: 70%;
 }
 .chat-title-bar {
@@ -163,13 +163,15 @@ p {
 	width: min(70px, max(calc(70px * 0.15) + calc(70vw * 0.038), calc(70px * 0.15) + calc(70vh * 0.038)));
 	aspect-ratio: 1 / 1;
 }
-.message {
+.chat-message {
   margin: var(--mg-md);
   margin-bottom: 0;
+  display: flex;
+  gap: var(--mg-lg);
 }
 .chat-text {
 	font-family: 'Orbitron', 'system ui';
-	font-size: var(--fs-md);
+	font-size: var(--fs-lg);
   font-weight: 500;
 	color: #fff;
 }

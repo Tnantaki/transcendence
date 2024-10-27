@@ -1,50 +1,32 @@
-import * as constant from "../constants.js";
-import { fetchAPI } from "./api.js";
+import { getMyProfile } from "../services/profileService.js";
+import { getFriends } from "../services/friendService.js";
 
 const RED_CLR = '#B63A3A'
 const GREEN_CLR = '#62E54C'
 
-
 async function getProfile() {
-  try {
-    const profile = document.getElementById("my-profile");
-    const response = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true, });
+  const profile = document.getElementById("my-profile");
+  const profileValue = await getMyProfile()
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const profileValue = await response.json();
-
-    profile.querySelector("#displayName").innerHTML = profileValue["display_name"] || "";
-    profile.querySelector("#bio").innerHTML = profileValue["bio"] || "";
-    profile.querySelector("#email").innerHTML = profileValue["email"] || "";
-    profile.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
-    profile.querySelector("#totalPlay").innerHTML = profileValue["wins"] + profileValue["losses"];
-    profile.querySelector("#tourWon").innerHTML = profileValue["tour_won"];
-    profile.querySelector("#tourPlay").innerHTML = profileValue["tour_play"];
-    profile.querySelector("#profileImage").src = "/api" + profileValue["profile"];
-  } catch (error) {
-    console.error(error.message);
-  }
+  profile.querySelector("#displayName").innerHTML = profileValue["display_name"] || "";
+  profile.querySelector("#bio").innerHTML = profileValue["bio"] || "";
+  profile.querySelector("#email").innerHTML = profileValue["email"] || "";
+  profile.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
+  profile.querySelector("#totalPlay").innerHTML = profileValue["wins"] + profileValue["losses"];
+  profile.querySelector("#tourWon").innerHTML = profileValue["tour_won"];
+  profile.querySelector("#tourPlay").innerHTML = profileValue["tour_play"];
+  profile.querySelector("#profileImage").src = "/api" + profileValue["profile"];
 }
 
 async function getFriendList() {
-  try {
-    const friendList = document.getElementById("friendList");
-    const response = await fetchAPI("GET", constant.API_FRIEND_LIST, {
-      auth: true,
-    });
+  const friendList = document.getElementById("friendList");
+  const friendListValue = await getFriends()
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const friendListValue = await response.json();
-
-    friendListValue.forEach(friend => {
-      const item = document.createElement("li");
-      item.classList.add("friend-list-item");
-      const clr = friend.is_online ? GREEN_CLR : RED_CLR
-      item.innerHTML = `
+  friendListValue.forEach(friend => {
+    const item = document.createElement("li");
+    item.classList.add("friend-list-item");
+    const clr = friend.is_online ? GREEN_CLR : RED_CLR
+    item.innerHTML = `
         <div class="friend-item-picture">
           <img src="/api${friend.profile}" alt="profile picture">
         </div>
@@ -61,11 +43,8 @@ async function getFriendList() {
         </div>
         <div class="friend-item-background"></div>
       `
-      friendList.appendChild(item);
-    })
-  } catch (error) {
-    console.error(error.message);
-  }
+    friendList.appendChild(item);
+  })
 }
 
 getProfile();

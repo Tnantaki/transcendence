@@ -1,26 +1,15 @@
 import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
 import { fetchAPI } from "./api.js";
+import { getMyProfile } from "../services/profileService.js";
 
 async function getProfile() {
-  try {
-    const profile = document.getElementById("blockProfile");
-    const response = await fetchAPI("GET", constant.API_MY_PROFILE, {
-      auth: true
-    });
+  const profile = document.getElementById("blockProfile");
+  const profileValue = await getMyProfile()
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const profileValue = await response.json();
-
-    profile.querySelector("#profilePicture").src = "api/" + profileValue["profile"]
-      || "../static/svg/default-user-picture.svg";
-    profile.querySelector("#profileName").innerHTML = profileValue["display_name"] || "";
-    
-  } catch (error) {
-    console.error(error.message);
-  }
+  profile.querySelector("#profilePicture").src = "api/" + profileValue["profile"]
+    || "../static/svg/default-user-picture.svg";
+  profile.querySelector("#profileName").innerHTML = profileValue["display_name"] || "";
 }
 
 async function submitLogout() {
