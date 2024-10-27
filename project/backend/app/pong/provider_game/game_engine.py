@@ -3,7 +3,7 @@ import asyncio
 import random
 from channels.layers import get_channel_layer
 from copy import deepcopy
-from pong.player import Player
+from pong.provider_game.player import Player
 from logging import getLogger
 logger = getLogger(__name__)
 
