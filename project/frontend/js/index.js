@@ -90,10 +90,14 @@ async function addFriendById() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    loadPage(location.pathname)
   } catch (error) {
     console.error(error.message);
   }
 }
+const addFriendBtn = document.getElementById('add-friend-btn')
+addFriendBtn.addEventListener('click', addFriendById)
+
 
 // For Modal Profile
 async function getProfileById(id) {
@@ -105,7 +109,6 @@ async function getProfileById(id) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const profileValue = await response.json();
-    console.log(profileValue)
 
     friend_id_target = profileValue["id"]
     const total = profileValue["wins"] + profileValue["losses"]
@@ -119,10 +122,15 @@ async function getProfileById(id) {
     profile.querySelector("#friendProfileImage").src = "/api" + profileValue["profile"]
       || "./static/svg/default-user-picture.svg";
 
+    console.log(profileValue.is_friend)
+    const btnAdd = profile.querySelector('#add-friend-btn')
+    const btnDel = profile.querySelector('#del-friend-btn')
+    btnAdd.hidden = true
+    btnDel.hidden = true
     if (profileValue.is_friend === 'ACCEPT') {
-      profile.querySelector('#del-friend-btn').hidden = false
-      profile.querySelector('#add-friend-btn').hidden = false
-    } else {
+      btnDel.hidden = false
+    } else if (profileValue.is_friend === 'NOT_FRIEND') {
+      btnAdd.hidden = false
     }
   } catch (error) {
     console.error(error.message);
