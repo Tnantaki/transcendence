@@ -188,16 +188,21 @@ async function openChat(id) {
   console.log('Open Chat with:', id)
 	const chatBox = new bootstrap.Modal(document.getElementById('chatBoxModal'));
   chatBox.show()
-  // try {
-  //   const response = await fetchAPI("DELETE", constant.API_FRIEND_DEL_BY_ID + friend_id_target + "/", {
-  //     auth: true,
-  //   });
+  try {
 
-  //   if (!response.ok) {
-  //     throw new Error(`HTTP error! status: ${response.status}`);
-  //   }
-  //   loadPage(location.pathname)
-  // } catch (error) {
-  //   console.error(error.message);
-  // }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
 }
+// Chat input
+const chatInput = document.getElementById('chatInput')
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    console.log(chatInput.value)
+    // TODO: call socket to send message
+    chatInput.value = ''
+  }
+})

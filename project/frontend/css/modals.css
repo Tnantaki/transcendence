@@ -129,7 +129,7 @@ p {
   background-color: var(--clr-text);
   border-radius: var(--bs-md);
 	font-family: 'Orbitron', 'system ui';
-	font-size: var(--fs-xl);
+	font-size: var(--fs-lg);
 	font-weight: bold;
 	color: #0946A6;
 
@@ -142,10 +142,37 @@ p {
 .chat-typing-area {
   border: var(--bs-md) solid var(--clr-border);
   border-radius: var(--bs-xl);
+  margin: var(--mg-lg);
+  padding: var(--bs-lg);
+}
+.chat-input {
 	font-family: 'Orbitron', 'system ui';
 	font-size: var(--fs-lg);
-	font-weight: bold;
+  font-weight: normal;
 	color: #fff;
-  margin: var(--mg-lg);
-  padding: var(--bs-xl);
+  background-color: 0;
+}
+.chat-picture {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.chat-picture img {
+	border: var(--bs-md) solid var(--clr-border);
+	border-radius: 50%;
+	width: min(70px, max(calc(70px * 0.15) + calc(70vw * 0.038), calc(70px * 0.15) + calc(70vh * 0.038)));
+	aspect-ratio: 1 / 1;
+}
+.message {
+  margin: var(--mg-md);
+  margin-bottom: 0;
+}
+.chat-text {
+	font-family: 'Orbitron', 'system ui';
+	font-size: var(--fs-md);
+  font-weight: 500;
+	color: #fff;
+}
+.chat-text > p {
+  padding: var(--pd-md) 0;
 }

@@ -187,8 +187,8 @@
         <!-- <div class="modal-body"> -->
           <!-- Title bar -->
           <div class="chat-title-bar">
-            <div id="chat-title-name" class="flex-grow-1">
-              <p>Waiting for friend...</p>
+            <div id="chat-title-name" class="d-flex align-items-center flex-grow-1">
+              <p class="d-flex align-items-center">Waiting for friend...</p>
             </div>
             <img id="chat-invite-pong" class="icon-menu ic-lg btn-hover"
               src="../static/svg/pong-icon.svg" alt="pong button">
@@ -196,12 +196,46 @@
               data-bs-dismiss="modal" alt="close button">
           </div>
           <!-- Chat Body -->
-          <div id="chat-body" class="flex-grow-1 table-list overflow-auto scroll-custom "></div>
+          <div id="chat-body" class="flex-grow-1 table-list overflow-auto scroll-custom ">
+
+            <div class="d-flex gap-3 message message-sent">
+              <div class="flex-grow-1 d-flex flex-column text-end chat-text justify-content-center">
+                <p>Hello How are you?</p>
+                <p>Wanna Play some game</p>
+                <p>Wanna Play some game</p>
+                <p>Wanna Play some game</p>
+                <p>Wanna Play some game</p>
+              </div>
+              <div class="chat-picture">
+                <img src="./js/mock/joey.png" alt="profile-picture">
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 message message-sent">
+              <div class="chat-picture">
+                <img src="./js/mock/gideon.png" alt="profile-picture">
+              </div>
+              <div class="flex-grow-1 d-flex flex-column text-start chat-text justify-content-center">
+                <p>What supppppp</p>
+                <p>Do you have 200 bath for me to borrow, I will give you back tomorrow.</p>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 message message-sent">
+              <div class="flex-grow-1 d-flex flex-column text-end chat-text justify-content-center">
+                <p>No?</p>
+              </div>
+              <div class="chat-picture">
+                <img src="./js/mock/joey.png" alt="profile-picture">
+              </div>
+            </div>
+
+          </div>
           
           <!-- Chat Typing Area -->
-          <div class="chat-box">
-            <div class="chat-typing-area">
-              <p>Waiting for firend...</p>
+          <div class="chat-box d-flex">
+            <div class="input-group input-group-custom chat-typing-area">
+              <input id="chatInput" type="text" class="chat-input form-control">
             </div>
           </div>
         <!-- </div> -->
