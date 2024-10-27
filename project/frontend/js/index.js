@@ -9,6 +9,7 @@ window.togglePassword = togglePassword;
 window.getProfileById = getProfileById;
 window.responseFriendRequest = responseFriendRequest;
 window.deleteFriendById = deleteFriendById;
+window.openChat = openChat;
 
 // Button - Hide & Visible Password
 function togglePassword(inputPassword) {
@@ -180,4 +181,23 @@ async function getFriendRequest() {
   } catch (error) {
     console.error(error.message);
   }
+}
+
+// Open Chat
+async function openChat(id) {
+  console.log('Open Chat with:', id)
+	const chatBox = new bootstrap.Modal(document.getElementById('chatBoxModal'));
+  chatBox.show()
+  // try {
+  //   const response = await fetchAPI("DELETE", constant.API_FRIEND_DEL_BY_ID + friend_id_target + "/", {
+  //     auth: true,
+  //   });
+
+  //   if (!response.ok) {
+  //     throw new Error(`HTTP error! status: ${response.status}`);
+  //   }
+  //   loadPage(location.pathname)
+  // } catch (error) {
+  //   console.error(error.message);
+  // }
 }

@@ -159,27 +159,33 @@
     </div>
   </div>
 
-  <!-- Modal Live Chat -->
-  <div class="modal fade" id="deleteContactModal" tabindex="-1">
-    <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
-      <div class="modal-content popup-content">
-        <div class="modal-body">
-          <div class="popup-frame">
-            <div class="popup-header-icon">
-              <img src="../static/svg/delContact.svg" alt="alert picture">
+  <!-- Modal Notification Messages -->
+  <div class="modal fade" id="notiMsgModal" tabindex="-1">
+    <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered modal-xl">
+      <div class="modal-content" style="height: 75%;">
+        <div class="modal-body d-flex h-100">
+          <div class="bk-noti">
+            <div class="d-flex justify-content-center align-items-center bk-noti-title modal-custom-width">
+              <h2 class="font-bs-bold h-md my-2 px-4" data-i18n="direct_messages">Direct Messages</h2>
             </div>
-            <div class="d-flex justify-content-center popup-body">
-              <p class="font-bs fs-lg" style="color: #ffffff;" data-i18n="delete_friend_content">
-                Are you sure you want to delete this contact ?
-              </p>
-            </div>
-            <div class="d-flex justify-content-evenly w-100">
-              <button type="button" class="font-bs-bold btn btn-secondary px-4"
-                data-bs-dismiss="modal" data-i18n="no">No !!</button>
-              <button type="button" class="font-bs-bold btn btn-danger px-4"
-                data-bs-dismiss="modal" data-i18n="yes" onclick="deleteFriendById()">Yes</button>
+            <ol class="d-flex flex-column align-items-center overflow-auto bk-noti-list scroll-custom" id="notiList">
+            </ol>
+            <div class="d-flex justify-content-evenly">
+              <button type="button" class="font-bs-bold fs-lg btn btn-primary"
+                data-bs-dismiss="modal" data-i18n="back">Back</button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Chat Box -->
+  <div class="modal fade" id="chatBoxModal" tabindex="-1">
+    <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          
         </div>
       </div>
     </div>
