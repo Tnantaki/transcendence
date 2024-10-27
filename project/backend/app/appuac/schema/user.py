@@ -40,7 +40,7 @@ class UserSchema(ModelSchema):
         return obj.display_name
 
 class UserAddIsFriend(UserSchema):
-    is_friend: bool
+    is_friend: str
 
 class UserPatchIn(ModelSchema):
     
