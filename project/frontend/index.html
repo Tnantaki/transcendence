@@ -183,10 +183,28 @@
   <!-- Modal Chat Box -->
   <div class="modal fade" id="chatBoxModal" tabindex="-1">
     <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body">
+      <div class="modal-content modal-content-chat">
+        <!-- <div class="modal-body"> -->
+          <!-- Title bar -->
+          <div class="chat-title-bar">
+            <div id="chat-title-name" class="flex-grow-1">
+              <p>Waiting for friend...</p>
+            </div>
+            <img id="chat-invite-pong" class="icon-menu ic-lg btn-hover"
+              src="../static/svg/pong-icon.svg" alt="pong button">
+            <img class="icon-menu ic-md btn-hover me-2" src="../static/svg/cross-icon.svg"
+              data-bs-dismiss="modal" alt="close button">
+          </div>
+          <!-- Chat Body -->
+          <div id="chat-body" class="flex-grow-1 table-list overflow-auto scroll-custom "></div>
           
-        </div>
+          <!-- Chat Typing Area -->
+          <div class="chat-box">
+            <div class="chat-typing-area">
+              <p>Waiting for firend...</p>
+            </div>
+          </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>
