@@ -4,34 +4,19 @@ import { fetchAPI, fetchUploadFile } from "./api.js";
 
 const profileForm = document.getElementById("profileForm");
 const profilePicture = document.getElementById("profile-picture");
-const email2FA = document.getElementById("2fa-email");
-const inputCode = document.querySelectorAll(".input-box");
-const sendForm = document.getElementById("edit-continue");
-const resendCode = document.getElementById("edit-resend-code");
+// const email2FA = document.getElementById("2fa-email");
+// const inputCode = document.querySelectorAll(".input-box");
+// const sendForm = document.getElementById("edit-continue");
+// const resendCode = document.getElementById("edit-resend-code");
 
-profileForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  console.log("send 2fa to backend") // :TODO
-});
-resendCode.addEventListener("click", async (event) => {
-  console.log("send 2fa to backend") // :TODO
-})
-
-sendForm.addEventListener("click", (event) => {
-  let code = ""
-  inputCode.forEach((input) => {
-    code += input.value
-  })
-  console.log("sendProfile")
-  console.log(code)
-  // sendEditProfileForm(event, code)
-})
-
-
-add2FAInputFocus();
 getProfile();
 countCharacter();
 uploadProfilePicture();
+
+profileForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  sendEditProfileForm(event)
+});
 
 function countCharacter() {
   const textArea = document.getElementById("bio");
@@ -90,7 +75,7 @@ function removeEmptyFields(obj) {
   );
 }
 
-async function sendEditProfileForm(event, code) {
+async function sendEditProfileForm(event) {
   const formData = new FormData(event.target);
   const input = {
     displayName: formData.get("displayName"),
@@ -150,7 +135,7 @@ async function getProfile() {
       profileForm.querySelector("#displayName").value = profileValue["display_name"];
     if (profileValue["email"]) {
       profileForm.querySelector("#email").value = profileValue["email"];
-      email2FA.innerHTML = profileValue["email"];
+      // email2FA.innerHTML = profileValue["email"];
     }
     if (profileValue["bio"]) {
       profileForm.querySelector("#bio").value = profileValue["bio"];
@@ -162,24 +147,43 @@ async function getProfile() {
   }
 }
 
+// --------------- Cancel ---------------
+// profileForm.addEventListener("submit", async (event) => {
+//   event.preventDefault();
+//   console.log("send 2fa to backend")
+// });
+// resendCode.addEventListener("click", async (event) => {
+//   console.log("send 2fa to backend")
+// })
 // For 2FA Popup : jump focus input behavior
-function add2FAInputFocus() {
-  inputCode.forEach((input, index) => {
-    input.addEventListener("input", () => {
-      if (input.value.length === 1) {
-        if (index < inputCode.length - 1) {
-          inputCode[index + 1].focus();
-        }
-      }
-    });
-    input.addEventListener("keydown", (event) => {
-      if (event.key === "Backspace" && input.value.length === 0)
-        if (index > 0) {
-          inputCode[index - 1].focus();
-        }
-    });
-  });
-}
-document.getElementById('2FA').addEventListener('shown.bs.modal', function () {
-  inputCode[0].focus()
-});
+// function add2FAInputFocus() {
+//   inputCode.forEach((input, index) => {
+//     input.addEventListener("input", () => {
+//       if (input.value.length === 1) {
+//         if (index < inputCode.length - 1) {
+//           inputCode[index + 1].focus();
+//         }
+//       }
+//     });
+//     input.addEventListener("keydown", (event) => {
+//       if (event.key === "Backspace" && input.value.length === 0)
+//         if (index > 0) {
+//           inputCode[index - 1].focus();
+//         }
+//     });
+//   });
+// }
+// document.getElementById('2FA').addEventListener('shown.bs.modal', function () {
+//   inputCode[0].focus()
+// });
+// sendForm.addEventListener("click", (event) => {
+//   let code = ""
+//   inputCode.forEach((input) => {
+//     code += input.value
+//   })
+//   console.log("sendProfile")
+//   console.log(code)
+//   sendEditProfileForm(event, code)
+// })
+
+// add2FAInputFocus();
