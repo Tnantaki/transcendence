@@ -3,7 +3,12 @@ import { setSelectLanguage } from "./i18n.js";
 import { loadPage } from "./router.js";
 import { fetchAPI } from "./userManage/api.js";
 
-let friend_id_delete_target = ""
+let friend_id_target = ""
+
+window.togglePassword = togglePassword;
+window.getProfileById = getProfileById;
+window.responseFriendRequest = responseFriendRequest;
+window.deleteFriendById = deleteFriendById;
 
 // Button - Hide & Visible Password
 function togglePassword(inputPassword) {
@@ -58,9 +63,9 @@ async function responseFriendRequest(reqId, isAccept) {
 }
 
 // Delete friend
-async function deleteFriendById() {
+async function deleteFriendById(id) {
   try {
-    const response = await fetchAPI("DELETE", constant.API_FRIEND_DEL_BY_ID + friend_id_delete_target + "/", {
+    const response = await fetchAPI("DELETE", constant.API_FRIEND_DEL_BY_ID + friend_id_target + "/", {
       auth: true,
     });
 
@@ -73,10 +78,21 @@ async function deleteFriendById() {
   }
 }
 
-window.togglePassword = togglePassword;
-window.getProfileById = getProfileById;
-window.responseFriendRequest = responseFriendRequest;
-window.deleteFriendById = deleteFriendById;
+// Add friend
+async function addFriendById() {
+  try {
+    const response = await fetchAPI("POST", constant.API_FRIEND_SENT_REQ, {
+      auth: true,
+      body: { receiver_id: friend_id_target }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 
 // For Modal Profile
 async function getProfileById(id) {
@@ -90,7 +106,7 @@ async function getProfileById(id) {
     const profileValue = await response.json();
     console.log(profileValue)
 
-    friend_id_delete_target = profileValue["id"]
+    friend_id_target = profileValue["id"]
     const total = profileValue["wins"] + profileValue["losses"]
     profile.querySelector("#friendDisplayName").innerHTML = profileValue["display_name"] || "";
     profile.querySelector("#friendBio").innerHTML = profileValue["bio"] || "";
@@ -101,11 +117,16 @@ async function getProfileById(id) {
     profile.querySelector("#friendTourPlay").innerHTML = profileValue["tour_play"];
     profile.querySelector("#friendProfileImage").src = "/api" + profileValue["profile"]
       || "./static/svg/default-user-picture.svg";
+
+    if (!profileValue.is_friend) {
+      profile.querySelector('#add-friend-btn').hidden = false
+    } else {
+      profile.querySelector('#del-friend-btn').hidden = false
+    }
   } catch (error) {
     console.error(error.message);
   }
 }
-
 
 async function getFriendRequest() {
   try {

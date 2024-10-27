@@ -6,12 +6,17 @@ fetchLeaderboardData()
 async function fetchLeaderboardData() {
   try {
 		// const response = await fetchAPI("GET", constant.API_GET_LEADERBOARD, { auth: true, });
-		const response = await fetchAPI("GET", constant.API_FRIEND_LIST, { auth: true, });
+		// const response = await fetchAPI("GET", constant.API_FRIEND_LIST, { auth: true, });
+    const response = await fetchAPI("GET", constant.API_FRIEND_GET_REQ, {
+      auth: true,
+    });
 
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		const learderboardValue = await response.json();
+		// const learderboardValue = await response.json();
+		const test = await response.json();
+    const learderboardValue = test.map(item => item.user)
     console.log(learderboardValue)
     if (learderboardValue) {
       listLeaderBoardProfile(learderboardValue)
