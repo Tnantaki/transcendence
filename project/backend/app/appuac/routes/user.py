@@ -245,5 +245,9 @@ def delete_friend(request, friend_id: str):
         raise HttpError(404, "USER_NOT_FOUND")
     user.friend.remove(friend_obj)
     friend_obj.friend.remove(user)
+    FriendRequest.objects.filter(
+        Q(requestor=user) & Q(receiver=friend_obj)
+        | Q(requestor=friend_obj) & Q(receiver=user)
+    ).delete()
 
     return 204, None
