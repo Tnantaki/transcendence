@@ -3,7 +3,7 @@ import { getProfile } from "./services/profileService.js";
 import { setSelectLanguage } from "./i18n.js";
 import { loadPage } from "./router.js";
 import { fetchAPI } from "./userManage/api.js";
-import ChatRoom from "./userManage/chatRoom.js";
+import ChatRoom from "./liveChat/chatRoom.js";
 
 let friend_id_target = ""
 
@@ -118,7 +118,6 @@ async function getProfileById(id) {
   profile.querySelector("#friendProfileImage").src = "/api" + profileValue["profile"]
     || "./static/svg/default-user-picture.svg";
 
-  console.log(profileValue.is_friend)
   const btnAdd = profile.querySelector('#add-friend-btn')
   const btnDel = profile.querySelector('#del-friend-btn')
   btnAdd.hidden = true
@@ -175,26 +174,17 @@ async function getFriendRequest() {
 }
 
 // Open Chat
-async function openChat(id) {
-  console.log('Open Chat with:', id)
-	const chatBox = new bootstrap.Modal(document.getElementById('chatBoxModal'));
-  chatBox.show()
-  const chatInput = document.getElementById('chatInput')
+const chatBoxModal = document.getElementById('chatBoxModal')
+let chatRoom = null
 
-  const chatBody = document.getElementById('chatBody')
-  const chatRoom = await ChatRoom.create(chatBody, id)
-
-  // Chat input
-  chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      const msg = chatInput.value
-      chatRoom.createMsgSent(msg)
-      // TODO: call socket to send message
-      chatInput.value = ''
-    }
-  })
+async function openChat(friendId) {
+  chatRoom = await ChatRoom.create(friendId, chatBoxModal)
 }
-// input focus
-document.getElementById('chatBoxModal').addEventListener('shown.bs.modal', () => {
+// Box chat open & close
+chatBoxModal.addEventListener('shown.bs.modal', () => {
   document.getElementById('chatInput').focus()
+})
+chatBoxModal.addEventListener('hidden.bs.modal', () => {
+  chatRoom.clear()
+  chatRoom = null
 })

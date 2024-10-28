@@ -178,3 +178,9 @@ p {
 .chat-text > p {
   padding: var(--pd-md) 0;
 }
+.chat-text-warning {
+	font-family: 'Orbitron', 'system ui';
+	font-size: var(--fs-lg);
+  font-weight: 500;
+	color: var(--clr-red);
+}

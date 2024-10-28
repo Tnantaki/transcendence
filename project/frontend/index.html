@@ -181,20 +181,12 @@
   </div>
 
   <!-- Modal Chat Box -->
-  <div class="modal fade" id="chatBoxModal" tabindex="-1">
+  <div class="modal fade" id="chatBoxModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
       <div class="modal-content modal-content-chat">
           <!-- Title bar -->
           <div class="chat-title-bar">
-            <div id="chat-title-name" class="d-flex align-items-center flex-grow-1">
-              <!-- <p id="chat-title-info" class="d-flex align-items-center">Waiting for friend...</p> -->
-              <div class="chat-picture me-2">
-                <img src="./js/mock/gideon.png" alt="profile-picture">
-              </div>
-              <p class="font-bs-bold fs-lg friend-name" data-bs-toggle="modal" data-bs-target="#profileModal" 
-                onclick="getProfileById('${friend.id}')">
-                ${friend.display_name}
-              </p>
+            <div id="chatTitleBarName" class="d-flex align-items-center flex-grow-1">
             </div>
             <img id="chat-invite-pong" class="icon-menu ic-lg btn-hover"
               src="../static/svg/pong-icon.svg" alt="pong button">
@@ -203,25 +195,6 @@
           </div>
           <!-- Chat Body -->
           <div id="chatBody" class="flex-grow-1 table-list overflow-auto scroll-custom ">
-
-            <!-- <div class="chat-message message-received">
-              <div class="chat-picture">
-                <img src="./js/mock/gideon.png" alt="profile-picture">
-              </div>
-              <div class="flex-grow-1 d-flex flex-column text-start chat-text justify-content-center">
-                <p>What supppppp</p>
-                <p>Do you have 200 bath for me to borrow, I will give you back tomorrow.</p>
-              </div>
-            </div>
-
-            <div class="chat-message message-sent">
-              <div class="flex-grow-1 d-flex flex-column text-end chat-text justify-content-center">
-                <p>No?</p>
-              </div>
-              <div class="chat-picture">
-                <img src="./js/mock/joey.png" alt="profile-picture">
-              </div>
-            </div> -->
 
           </div>
           

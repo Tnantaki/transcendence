@@ -38,7 +38,7 @@ async function getFriendList() {
           </p>
         </div>
         <div class="d-flex justify-content-center me-2">
-          <img id="notiMsgBtn" class="icon-menu ic-lg btn-hover"
+          <img id="notiMsgBtn" class="icon-menu ic-md btn-hover"
             src="../static/svg/chat.svg" alt="chat button" onclick="openChat('${friend.id}')">
         </div>
         <div class="friend-item-background"></div>
