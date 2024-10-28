@@ -1,8 +1,7 @@
 from ninja import Router, Schema, ModelSchema, Field
 
 from appuac.models import User
-from .game_consumer import GameConsumer
-from .models import (Room, MatchHistory, UserGameInfo)
+from pong.models import (Room, MatchHistory, UserGameInfo, Tournament)
 from appuac.service.auth import BearerTokenAuth
 from django.db.models import Q
 from django.contrib.auth import get_user_model
@@ -133,3 +132,44 @@ def get_leaderboard(request):
     leaderboad = UserGameInfo.objects.all().order_by("-win", "lose", "-total_score")
     return 200, leaderboad
 
+
+class TournamentOut(Schema):
+    id: str
+    name: str
+    users: list[UserSchema]
+    size: int
+    owner: UserSchema | None = None
+    winner: UserSchema | None = None
+    status: str
+
+@pong_router.post(
+    '/tournament/create/',
+    response={
+        201: TournamentOut
+    },
+    auth=BearerTokenAuth()
+)
+def post_create_tournament(request):
+    """
+    Create tournament
+    """
+    tournament = Tournament.objects.create(
+        owner=request.auth.user,
+    )
+    tournament.name = f"Tournament #{tournament.id}"
+    tournament.save()
+    return 201, tournament
+
+@pong_router.get(
+    '/tournament/',
+    response={
+        200: list[TournamentOut]
+    },
+    auth=BearerTokenAuth()
+)
+def get_tornament(request):
+    """
+    Get all tournament
+    """
+    res = Tournament.objects.all().prefetch_related("users", "owner")
+    return 200, res

@@ -1,4 +1,4 @@
-from pong.paddle import Paddle
+from pong.provider_game.paddle import Paddle
 
 class Player:
     def __init__(self, id):

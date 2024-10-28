@@ -9,6 +9,7 @@ from ninja import UploadedFile
 from appuac.schema.user import (
     SimpleRespond,
     UserSchema,
+    UserAddIsFriend,
     UserPatchIn,
     UserPathParam,
     RegisterPostIn,
@@ -18,6 +19,7 @@ from appuac.schema.user import (
     FriendReceiveBaseOut,
     FriendRequestorBaseOut,
 )
+from django.db.models import Q
 
 debug_router = Router()
 
@@ -40,11 +42,24 @@ def get_me(request):
 @router.get(
     "/user/{user_id}/",
     response={
-        200: UserSchema,
+        200: UserAddIsFriend,
     },
 )
 def get_user_by_id(request, path_param: UserPathParam = Path(...)):
-    return path_param.user
+    requestor = request.auth.user
+    res_user = path_param.user
+    
+    ask = Q(requestor=requestor) & Q(receiver=res_user)
+    ans = Q(receiver=requestor) & Q(requestor=res_user)
+    is_friend = FriendRequest.objects.filter(ask | ans ).first()
+    if is_friend is not None:
+        res_user.is_friend = is_friend.status
+    else:
+        res_user.is_friend = "NOT_FRIEND"
+    if res_user.id == requestor.id:
+        res_user.is_friend = "ITS_ME"
+    res = res_user
+    return 200, res
 
 
 @open_router.post(
@@ -230,5 +245,9 @@ def delete_friend(request, friend_id: str):
         raise HttpError(404, "USER_NOT_FOUND")
     user.friend.remove(friend_obj)
     friend_obj.friend.remove(user)
+    FriendRequest.objects.filter(
+        Q(requestor=user) & Q(receiver=friend_obj)
+        | Q(requestor=friend_obj) & Q(receiver=user)
+    ).delete()
 
     return 204, None
