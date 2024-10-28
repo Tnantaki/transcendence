@@ -161,7 +161,7 @@ def post_create_tournament(request):
     return 201, tournament
 
 @pong_router.get(
-    '/tournament/rooms/',
+    '/tournament/',
     response={
         200: list[TournamentOut]
     },

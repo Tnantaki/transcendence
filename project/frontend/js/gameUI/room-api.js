@@ -103,17 +103,6 @@ async function createRoomAPI(roomName) {
 export async function getRoomAPI() {
 	try {
 		const response = await fetchAPI("GET", Constant.API_ROOM, { auth: true, });
-		console.log("sendding url: ", Constant.API_ROOM);
-		console.log(response);
-        // Log the full response details for debugging
-        // console.log("Response status:", response.status);
-        // console.log("Response headers:", Object.fromEntries(response.headers.entries()));
-        
-        // Get the raw response text
-        // const rawResponse = await response.text();
-        // console.log("Raw response:", rawResponse.substring(0, 500)); // First 500 characters
-
-		// console.log("content-type: ", response.headers.get("Content-Type"));
 
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
@@ -190,9 +179,7 @@ async function createTourRoomAPI() {
 export async function getTourRoomAPI() {
 	try {
 		const response = await fetchAPI("GET", Constant.API_GET_TOUR, { auth: true, });
-		// console.log(response.headers.get("content-type"));
-		// console.log("sendding url: ", Constant.API_GET_TOUR);
-		console.log(response);
+
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
@@ -216,7 +203,6 @@ export async function getAllRooms(mode) {
 	
 	try {
 		const res = mode === "online" ? await getRoomAPI() : await getTourRoomAPI();
-		console.log("api: ", res);
 		cachedRooms = res;
 		return res;
 	}

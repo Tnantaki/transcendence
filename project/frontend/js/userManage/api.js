@@ -35,7 +35,6 @@ export async function fetchAPI(method, url, options = {}) {
       localStorage.removeItem("token");
       loadPage("/login")
     }
-    console.log("fetch: ", response);
     return response;
   } catch (error) {
     console.log("get response");
