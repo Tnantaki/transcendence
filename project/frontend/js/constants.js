@@ -23,6 +23,8 @@ export const API_GET_MATCH_HISTORY = BACKEND_URL + "/i/game/me/match-history/";
 
 // API GAME
 export const API_ROOM = BACKEND_URL + "/i/game/pong/room/";
+export const API_ROOM_TOUR = BACKEND_URL + "/i/game/tournament/create";
+export const API_GET_TOUR = BACKEND_URL + "/list/i/game/tournament";
 
 // WEBSOCKET
 export const WS_TOUR_ROOM = WS_URL + "/room/tour";
