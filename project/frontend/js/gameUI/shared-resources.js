@@ -1,7 +1,8 @@
 import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
-import { scrollEvt, roomBtns, handleRoomBtn } from "./lobby-board.js";
+import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
+import { checkGameMode } from "./lobby-menu.js";
 
 let canvas;
 let ctx;
@@ -65,7 +66,7 @@ function handleCreateBtn(btnObj, event)
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		console.log("clicked create btn");
-		createRoom();
+		createRoom(checkGameMode());
 	}	
 }
 
