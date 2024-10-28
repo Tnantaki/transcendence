@@ -64,5 +64,6 @@
   "2fa_authen_header": "Enable two-factor authentication",
   "2fa_authen_body1": "We have sent a verification code to ",
   "2fa_authen_body2": " Please enter it here.",
-  "add_friend": "Add friend +"
+  "add_friend": "Add friend +",
+  "direct_messages": "Direct Messages"
 }

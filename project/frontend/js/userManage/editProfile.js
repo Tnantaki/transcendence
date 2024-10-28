@@ -1,6 +1,7 @@
 import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
 import { fetchAPI, fetchUploadFile } from "./api.js";
+import { getMyProfile } from "../services/profileService.js";
 
 const profileForm = document.getElementById("profileForm");
 const profilePicture = document.getElementById("profile-picture");
@@ -121,29 +122,20 @@ async function sendEditProfileForm(event) {
 };
 
 async function getProfile() {
-  try {
-    const response = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true, });
+  const profileValue = getMyProfile()
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const profileValue = await response.json();
-
-    if (profileValue["profile"])
-      profilePicture.src = "/api" + profileValue["profile"]
-    if (profileValue["display_name"])
-      profileForm.querySelector("#displayName").value = profileValue["display_name"];
-    if (profileValue["email"]) {
-      profileForm.querySelector("#email").value = profileValue["email"];
-      // email2FA.innerHTML = profileValue["email"];
-    }
-    if (profileValue["bio"]) {
-      profileForm.querySelector("#bio").value = profileValue["bio"];
-      const charCount = document.querySelector(".char-count");
-      charCount.textContent = `${profileValue["bio"].length}/200`
-    }
-  } catch (error) {
-    console.error(error.message);
+  if (profileValue["profile"])
+    profilePicture.src = "/api" + profileValue["profile"]
+  if (profileValue["display_name"])
+    profileForm.querySelector("#displayName").value = profileValue["display_name"];
+  if (profileValue["email"]) {
+    profileForm.querySelector("#email").value = profileValue["email"];
+    // email2FA.innerHTML = profileValue["email"];
+  }
+  if (profileValue["bio"]) {
+    profileForm.querySelector("#bio").value = profileValue["bio"];
+    const charCount = document.querySelector(".char-count");
+    charCount.textContent = `${profileValue["bio"].length}/200`
   }
 }
 

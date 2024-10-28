@@ -73,6 +73,7 @@ async function sendFriendRequest(username, id) {
 
 async function test() {
   const data = await getMe("mos123")
+  // const data = await getMe("test2")
   for (let i = 1; i <= 10; i++) {
     const result = await sendFriendRequest("test" + i, data.id)
     console.log(result)
