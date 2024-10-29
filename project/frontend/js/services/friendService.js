@@ -1,35 +1,53 @@
 import * as constant from '../constants.js'
-import { fetchAPI } from "../userManage/api.js";
+import { fetchData } from "../userManage/api.js";
 
-async function getFriends() {
-  try {
-    const response = await fetchAPI("GET", constant.API_FRIEND_LIST, {
-      auth: true,
-    });
+function getFriends() {
+  const url = constant.API_FRIEND_LIST
+  const option = { auth: true}
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(error.message);
-  }
+  return fetchData('GET', url, option)
 }
 
-async function getFriend(id) {
-  try {
-    const response = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id + "/", { auth: true });
+function getFriend(id) {
+  const url = constant.API_PROFILE_BY_ID + id + "/"
+  const option = { auth: true}
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return profile = await response.json();
-  } catch (error) {
-    console.error(error.message);
-  }
+  return fetchData('GET', url, option)
+}
+
+function getFriendRequests() {
+  const url = constant.API_FRIEND_GET_REQ
+  const option = { auth: true}
+
+  return fetchData('GET', url, option)
+}
+
+function createFriendResponse(id,  data) {
+  const url = constant.API_FRIEND_RES_REQ_BY_ID + id + "/"
+  const option = { auth: true, body: data}
+
+  return fetchData('POST', url, option)
+}
+
+function deleteFriend(id) {
+  const url = constant.API_FRIEND_DEL_BY_ID + id + "/"
+  const option = { auth: true }
+
+  return fetchData('DELETE', url, option)
+}
+
+function createFriendRequest(data) {
+  const url = constant.API_FRIEND_SENT_REQ
+  const option = { auth: true, body: data}
+
+  return fetchData('POST', url, option)
 }
 
 export {
   getFriends,
-  getFriend
+  getFriend,
+  deleteFriend,
+  getFriendRequests,
+  createFriendRequest,
+  createFriendResponse
 }

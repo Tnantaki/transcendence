@@ -7,6 +7,7 @@ import { disconnetWebSocket } from "../liveChat/chatSocket.js";
 async function getProfile() {
   const profile = document.getElementById("blockProfile");
   const profileValue = await getMyProfile()
+  if (!profileValue) return
 
   profile.querySelector("#profilePicture").src = "api/" + profileValue["profile"]
     || "../static/svg/default-user-picture.svg";
@@ -25,7 +26,7 @@ async function submitLogout() {
     localStorage.removeItem("my_id");
     disconnetWebSocket()
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
   }
   loadPage("/login");
 }

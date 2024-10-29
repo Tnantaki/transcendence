@@ -1,9 +1,8 @@
-import * as constant from "./constants.js";
 import { getProfile } from "./services/profileService.js";
 import { setSelectLanguage } from "./i18n.js";
 import { loadPage } from "./router.js";
-import { fetchAPI } from "./userManage/api.js";
 import ChatRoom from "./liveChat/chatRoom.js";
+import { createFriendRequest, createFriendResponse, deleteFriend, getFriendRequests } from "./services/friendService.js";
 
 let friend_id_target = ""
 
@@ -21,83 +20,43 @@ function togglePassword(inputPassword) {
 
 // Notification Friends
 document.getElementById('notificationModal').addEventListener('shown.bs.modal', function () {
-  getFriendRequest()
+  displayFriendRequests()
 });
 // Check noti
 export async function checkNoti() {
   const notiBtn = document.getElementById("notiBtn");
   if (!notiBtn) return
-  try {
-    const response = await fetchAPI("GET", constant.API_FRIEND_GET_REQ, {
-      auth: true,
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const friendReqValue = await response.json();
+    const friendReqValue = await getFriendRequests()
 
     const friendsPending = friendReqValue.filter(req => req.status === 'PENDING')
     if (friendsPending.length) {
       notiBtn.src = "../static/svg/noti-friend-have.svg"
     }
-  } catch (error) {
-    console.error(error.message);
-  }
 }
 
 // Friends accect & decline button
 async function responseFriendRequest(reqId, isAccept) {
   const status = isAccept ? 'ACCEPT' : 'REJECT'
-  try {
-    const response = await fetchAPI("POST", constant.API_FRIEND_RES_REQ_BY_ID + reqId + "/", {
-      auth: true,
-      body: { status: status }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    await response.json();
-    getFriendRequest()
-    loadPage(location.pathname)
-  } catch (error) {
-    console.error(error.message);
-  }
+  const data = { status: status }
+  await createFriendResponse(reqId, data)
+  displayFriendRequests()
+  loadPage(location.pathname)
 }
 
 // Delete friend
-async function deleteFriendById(id) {
-  try {
-    const response = await fetchAPI("DELETE", constant.API_FRIEND_DEL_BY_ID + friend_id_target + "/", {
-      auth: true,
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    loadPage(location.pathname)
-  } catch (error) {
-    console.error(error.message);
-  }
+async function deleteFriendById() {
+  const id = friend_id_target
+  await deleteFriend(id)
+  loadPage(location.pathname)
 }
 
 // Add friend
 async function addFriendById() {
-  try {
-    const response = await fetchAPI("POST", constant.API_FRIEND_SENT_REQ, {
-      auth: true,
-      body: { receiver_id: friend_id_target }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    loadPage(location.pathname)
-  } catch (error) {
-    console.error(error.message);
-  }
+  const data = { receiver_id: friend_id_target }
+  await createFriendRequest(data)
+  loadPage(location.pathname)
 }
+
 const addFriendBtn = document.getElementById('add-friend-btn')
 addFriendBtn.addEventListener('click', addFriendById)
 
@@ -129,25 +88,17 @@ async function getProfileById(id) {
   }
 }
 
-async function getFriendRequest() {
-  try {
-    const notiList = document.getElementById("notiList");
-    // to reset friend request when close modal
-    notiList.innerHTML = ''
-    const response = await fetchAPI("GET", constant.API_FRIEND_GET_REQ, {
-      auth: true,
-    });
+async function displayFriendRequests() {
+  const notiList = document.getElementById("notiList");
+  // to reset friend request when close modal
+  notiList.innerHTML = ''
+  const friendReqValue = await getFriendRequests()
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const friendReqValue = await response.json();
-
-    friendReqValue.forEach(req => {
-      if (req.status === 'PENDING') {
-        const item = document.createElement("li");
-        item.classList.add("noti-list-item");
-        item.innerHTML = `
+  friendReqValue.forEach(req => {
+    if (req.status === 'PENDING') {
+      const item = document.createElement("li");
+      item.classList.add("noti-list-item");
+      item.innerHTML = `
           <div class="d-flex align-items-center">
             <div class="noti-item-picture">
               <img alt="profile-picture" src="api/${req.user.profile}">
@@ -164,13 +115,10 @@ async function getFriendRequest() {
               data-i18n="accept" onclick="responseFriendRequest('${req.id}', true)"></button>
           </div>
         `
-        notiList.appendChild(item);
-      }
-    })
-    setSelectLanguage()
-  } catch (error) {
-    console.error(error.message);
-  }
+      notiList.appendChild(item);
+    }
+  })
+  setSelectLanguage()
 }
 
 // Open Chat

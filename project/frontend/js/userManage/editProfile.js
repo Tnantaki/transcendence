@@ -1,7 +1,7 @@
 import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
-import { fetchAPI, fetchUploadFile } from "./api.js";
-import { getMyProfile } from "../services/profileService.js";
+import { fetchAPI } from "./api.js";
+import { createProfilePicture, getMyProfile } from "../services/profileService.js";
 
 const profileForm = document.getElementById("profileForm");
 const profilePicture = document.getElementById("profile-picture");
@@ -38,20 +38,8 @@ function uploadProfilePicture() {
       const formData = new FormData();
       formData.append("file", file);
 
-      try {
-        const response = await fetchUploadFile("POST", constant.API_UPLOAD, {
-          auth: true,
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const profileValue = await response.json();
-        profilePicture.src = "/api" + profileValue["profile"];
-      } catch (error) {
-        console.error(error.message);
-      }
+      const profileValue = await createProfilePicture(formData)
+      profilePicture.src = "/api" + profileValue["profile"];
     }
   });
 }
@@ -122,7 +110,7 @@ async function sendEditProfileForm(event) {
 };
 
 async function getProfile() {
-  const profileValue = getMyProfile()
+  const profileValue = await getMyProfile()
 
   if (profileValue["profile"])
     profilePicture.src = "/api" + profileValue["profile"]
