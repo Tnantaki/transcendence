@@ -1,11 +1,13 @@
 import { setSelectLanguage } from "./i18n.js";
 import { checkNoti } from "./index.js";
+import { connectWebSocket } from "./liveChat/chatSocket.js";
 
 const title_extension = "Transcendence";
 const template_dir = "/templates/";
 const js_dir = "js/";
 const js_game_dir = js_dir + "gameUI/";
 const js_user_dir = js_dir + "userManage/";
+// let ws = null
 
 const urlRoute = {
   "/": {
@@ -98,6 +100,9 @@ function loadContent(url) {
     endPoint = "/login";
   } else if (token && endPoint === '/login') {
     endPoint = "/";
+  }
+  if (token) {
+    connectWebSocket()
   }
   const route = urlRoute[endPoint];
   const contentDiv = document.getElementById('content');

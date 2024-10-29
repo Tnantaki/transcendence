@@ -2,6 +2,7 @@ import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
 import { fetchAPI } from "./api.js";
 import { getMyProfile } from "../services/profileService.js";
+import { disconnetWebSocket } from "../liveChat/chatSocket.js";
 
 async function getProfile() {
   const profile = document.getElementById("blockProfile");
@@ -22,6 +23,7 @@ async function submitLogout() {
     // Remove token and my_id in browser cache
     localStorage.removeItem("token");
     localStorage.removeItem("my_id");
+    disconnetWebSocket()
   } catch (error) {
     console.error(error.message);
   }
@@ -30,10 +32,12 @@ async function submitLogout() {
 
 const btnLogout = document.getElementById("submitLogout");
 
-btnLogout.addEventListener('click', () => {
-  submitLogout();
-  const modal = bootstrap.Modal.getInstance(document.getElementById("logoutModal"));
-  modal.hide();
-});
+btnLogout.addEventListener('click', (event) => {
+  if (event.target && event.target.id === 'submitLogout') {
+    submitLogout();
+    const modal = bootstrap.Modal.getInstance(document.getElementById("logoutModal"));
+    modal.hide();
+  }
+}, { once: true });
 
 getProfile();
