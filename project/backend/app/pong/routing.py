@@ -142,6 +142,10 @@ class TournamentOut(Schema):
     winner: UserSchema | None = None
     status: str
 
+
+class TournamentBaseIn(Schema):
+    name: str | None = None
+
 @pong_router.post(
     '/tournament/create/',
     response={
@@ -149,15 +153,17 @@ class TournamentOut(Schema):
     },
     auth=BearerTokenAuth()
 )
-def post_create_tournament(request):
+def post_create_tournament(request, payload: TournamentBaseIn):
     """
     Create tournament
     """
+    d_payload = payload.dict()
+    if d_payload.get("name", None) is None:
+        d_payload["name"] = f"Tournament {random.randint(0, 1000)}"
     tournament = Tournament.objects.create(
+        name=d_payload["name"],
         owner=request.auth.user,
     )
-    tournament.name = f"Tournament #{tournament.id}"
-    tournament.save()
     return 201, tournament
 
 @pong_router.get(
