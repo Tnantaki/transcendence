@@ -24,6 +24,7 @@ const	boardObj = {
 
 function fillRoomName(room, xPos, yPos) {
 	ctx.fillText(room.name, xPos, yPos);
+	console.log("mode: ", checkGameMode());
 	if (checkGameMode() == "online")
 		ctx.fillText(room.number_of_player + 1 + "/2", boardObj.width - 10, yPos);
 	else
@@ -77,6 +78,7 @@ const scrollbarThumbMinHeight = 20;
 let hasEvent = false;
 export const   roomBtns = [];
 async function initRooms(rooms) {
+	// console.log("initRooms");
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
@@ -171,6 +173,7 @@ export async function drawRoomDisplay() {
 	ctx.textBaseline = "middle";
 	ctx.textAlign = "center";
 
+	// console.log("check: ", checkGameMode());
 	const rooms = await getAllRooms(checkGameMode());
 	// console.log("rooms: ", rooms);
 	if (rooms)

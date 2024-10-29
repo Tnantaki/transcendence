@@ -21,7 +21,7 @@ export function checkGameMode() {
 
 async function execLobby(mode, img) {
 	initGameMode(mode);
-	if (mode == "VERSUS" || mode == "online")
+	if (mode == "online")
 		Utils.initCanvas("Online Match", img);
 	else if (mode == "tournament")
 		Utils.initCanvas("Tournament", img);
