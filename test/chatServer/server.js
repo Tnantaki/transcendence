@@ -14,20 +14,28 @@ const server = createServer()
 // Get trigger when receive http request with 'Upgrade' header
 server.on('upgrade', (req, socket, head) => {
   const { pathname, query } = url.parse(req.url, true)
+  const token = query.token
+  const userId = query.userId
 
-  if (pathname === '/chat/noti') {
+  if (pathname === '/chat') {
     wss.handleUpgrade(req, socket, head, ws => {
-      wss.emit('connection', ws, req, query.userId)
+      wss.emit('connection', ws, req, token, userId)
     })
   }
 })
 
-wss.on('connection', (ws, req, userId) => {
-  console.log('Client connect: ', userId)
+wss.on('connection', (ws, req, token, userId) => {
+  console.log('Client connect:')
+  console.log('token:', token)
+  console.log('userId:', userId)
 
   ws.on('message', msg => {
     console.log(msg)
   })
+
+  ws.on("close", () => { // Trigger when connection is close
+    console.log("Cliend has disconnected!");
+  });
 })
 
 server.listen(port, host, () => {

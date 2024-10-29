@@ -10,7 +10,6 @@ window.togglePassword = togglePassword;
 window.getProfileById = getProfileById;
 window.responseFriendRequest = responseFriendRequest;
 window.deleteFriendById = deleteFriendById;
-window.openChat = openChat;
 
 // Button - Hide & Visible Password
 function togglePassword(inputPassword) {
@@ -120,19 +119,3 @@ async function displayFriendRequests() {
   })
   setSelectLanguage()
 }
-
-// Open Chat
-const chatBoxModal = document.getElementById('chatBoxModal')
-let chatRoom = null
-
-async function openChat(friendId) {
-  chatRoom = await ChatRoom.create(friendId, chatBoxModal)
-}
-// Box chat open & close
-chatBoxModal.addEventListener('shown.bs.modal', () => {
-  document.getElementById('chatInput').focus()
-})
-chatBoxModal.addEventListener('hidden.bs.modal', () => {
-  chatRoom.clear()
-  chatRoom = null
-})

@@ -7,7 +7,6 @@ const template_dir = "/templates/";
 const js_dir = "js/";
 const js_game_dir = js_dir + "gameUI/";
 const js_user_dir = js_dir + "userManage/";
-// let ws = null
 
 const urlRoute = {
   "/": {

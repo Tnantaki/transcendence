@@ -28,7 +28,7 @@ export const API_ROOM = BACKEND_URL + "/i/game/pong/room/";
 export const WS_TOUR_ROOM = WS_URL + "/room/tour";
 // export const WS_CHAT_ROOM = WS_URL + "/room/chat";
 // export const WS_CHAT_NOTI = "ws://localhost:3000";
-export const WS_CHAT_ROOM = "ws://localhost:3000";
+export const WS_CHAT_ROOM = "ws://localhost:3000/chat";
 
 // MOCKUP API
 export const MOCKUP_PROFILE = "./js/mock/mockProfile.json";
