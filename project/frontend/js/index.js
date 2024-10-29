@@ -21,17 +21,18 @@ function togglePassword(inputPassword) {
 document.getElementById('notificationModal').addEventListener('shown.bs.modal', function () {
   displayFriendRequests()
 });
-// Check noti
-export async function checkNoti() {
+// Check noti Friend
+export async function checkNofiFriend() {
   const notiBtn = document.getElementById("notiBtn");
   if (!notiBtn) return
-    const friendReqValue = await getFriendRequests()
+  const friendReqValue = await getFriendRequests()
 
-    const friendsPending = friendReqValue.filter(req => req.status === 'PENDING')
-    if (friendsPending.length) {
-      notiBtn.src = "../static/svg/noti-friend-have.svg"
-    }
+  const friendsPending = friendReqValue.filter(req => req.status === 'PENDING')
+  if (friendsPending.length) {
+    notiBtn.src = "../static/svg/noti-friend-have.svg"
+  }
 }
+
 
 // Friends accect & decline button
 async function responseFriendRequest(reqId, isAccept) {

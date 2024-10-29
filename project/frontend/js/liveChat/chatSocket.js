@@ -7,6 +7,7 @@ class ChatSocket {
     this.token = localStorage.getItem('token');
     this.my_id = localStorage.getItem('my_id');
     this.chatBoxModal = document.getElementById('chatBoxModal')
+    this.chatBox = new bootstrap.Modal(chatBoxModal);
     this.friendIdTarget = ''
     this.chatRoom = null
 
@@ -77,8 +78,7 @@ class ChatSocket {
   openChat = async (friendId) => {
     // Popup Chat box
     this.chatRoom = await ChatRoom.create(friendId, this.chatBoxModal, this.sendMessage)
-    const chatBox = new bootstrap.Modal(chatBoxModal);
-    chatBox.show()
+    this.chatBox.show()
 
     this.friendIdTarget = friendId // set friendIdTarget
 
@@ -136,6 +136,9 @@ class ChatSocket {
   };
 
   listNoficationMessage = (data) => {
+    localStorage.setItem('Messages', data.length)
+    if (data.length > 0)
+      checkNofiMsg()
     console.log('Not do yet')
   }
 
@@ -153,6 +156,7 @@ class ChatSocket {
     this.closeChat()
   }
 
+
   clear = () => {
     this.chatBoxModal.removeEventListener('shown.bs.modal', this.handleChatBoxFocusInput)
     this.chatBoxModal.removeEventListener('hidden.bs.modal', this.handleChatBoxCloseChat)
@@ -163,7 +167,6 @@ class ChatSocket {
 }
 
 export function connectWebSocket() {
-
   if (!chatSocket) {
     chatSocket = new ChatSocket()
   }
@@ -174,7 +177,14 @@ export function disconnetWebSocket() {
   chatSocket = null
 }
 
+export function checkNofiMsg() {
+  const notiMsgBtn = document.getElementById("notiMsgBtn");
+  if (!notiMsgBtn) return
+  notiMsgBtn.src = "../../static/svg/noti-msg-have.svg"
+}
+
 window.openChat = openChat;
+
 function openChat(friendId) {
   chatSocket.openChat(friendId)
 }

@@ -1,5 +1,4 @@
 import { getMyProfile, getProfile } from "../services/profileService.js";
-import { WS_CHAT_ROOM } from "../constants.js";
 
 export default class ChatRoom {
   constructor(my_profile, friend_profile, chatBoxModal, sendMessage) {
@@ -148,7 +147,7 @@ export default class ChatRoom {
   }
 
   clear = () => {
-    document.removeEventListener('keypress', this.enterToSendMessage)
+    this.chatInput.removeEventListener('keypress', this.enterToSendMessage)
     this.chatBody.innerHTML = ''
     this.chatInput.value = ''
   }
