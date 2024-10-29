@@ -1,87 +1,29 @@
 import { getMyProfile, getProfile } from "../services/profileService.js";
-import { WS_CHAT_ROOM } from "../constants.js";
 
 export default class ChatRoom {
-  constructor(my_profile, friend_profile, chatBoxModal) {
+  constructor(my_profile, friend_profile, chatBoxModal, sendMessage) {
     this.chatBody = document.getElementById('chatBody')
     this.chatInput = document.getElementById('chatInput')
     this.my_profile = my_profile
     this.friend_profile = friend_profile
-    this.ws = new WebSocket(WS_CHAT_ROOM) // TODO: for Testing
     this.chatBoxModal = chatBoxModal
     this.lastMsgUser = null
     this.titleBarName = null
+    this.sendMessage = sendMessage
 
-    this.setWebSocketEvent()
     this.setInvitePongIcon()
     this.setTitleBar()
+    this.setEnterKey()
   }
 
-  static async create(friend_id, chatBoxModal) {
+  static async create(friend_id, chatBoxModal, sendMessage) {
     const my_profile = await getMyProfile()
     const friend_profile = await getProfile(friend_id)
 
-    return new ChatRoom(my_profile, friend_profile, chatBoxModal)
+    return new ChatRoom(my_profile, friend_profile, chatBoxModal, sendMessage)
   }
 
-  setWebSocketEvent = () => {
-    this.ws.onopen = this.webSocketEventOnOpen;
-    this.ws.onclose = this.webSocketEventOnClose;
-    this.ws.onmessage = this.webSocketEventOnMessage;
-    this.ws.onerror = this.webSocketEventOnError;
-  }
-
-  webSocketEventOnOpen = () => {
-    console.log("connected.")
-    // Open chat box
-    const chatBox = new bootstrap.Modal(chatBoxModal);
-    chatBox.show()
-  };
-
-  webSocketEventOnError = (event) => {
-    console.log("Error: ", event);
-  };
-
-  webSocketEventOnClose = () => {
-    console.log("disconnected")
-  };
-
-  // TODO: Waiting for backend change protocol
-  webSocketEventOnMessage = (event) => {
-    let data = JSON.parse(event.data);
-    switch (data.type) {
-      case "MESSAGE_CHAT":
-        if (data.sender === this.my_profile.id)
-          this.createMsgSent(data.message)
-        else
-          this.createMsgReceive(data.message)
-        break;
-      case "MESSAGE_WARNING":
-        this.createMsgWaning(data.message)
-        break;
-      case "PONT_INVITE":
-        if (data.sender !== this.my_profile.id)
-          this.createPongInvite()
-        break;
-      case "CHAT_START":
-        this.createTitleBarName()
-        this.setEnterKey()
-        break;
-      default:
-        break;
-    }
-  };
-
-  sendMessage = (msg) => {
-    const msgObj = {
-      sender: this.my_profile.id,
-      type: "MESSAGE_CHAT",
-      message: msg
-    }
-    this.ws.send(JSON.stringify(msgObj));
-  };
-
-  createMsgSent = (msg) => {
+  displayMsgSent = (msg) => {
     if (this.lastMsgUser && this.lastMsgUser.getElementsByTagName('div')[0].id === 'message-sent') {
       const msgParagraph = document.createElement('p')
       msgParagraph.innerHTML = msg
@@ -102,7 +44,7 @@ export default class ChatRoom {
     }
   }
 
-  createMsgReceive = (msg) => {
+  displayMsgReceive = (msg) => {
     if (this.lastMsgUser && this.lastMsgUser.getElementsByTagName('div')[1].id === 'message-received') {
       const msgParagraph = document.createElement('p')
       msgParagraph.innerHTML = msg
@@ -123,7 +65,7 @@ export default class ChatRoom {
     }
   }
 
-  createMsgWaning = (msg) => {
+  displayMsgWaning = (msg) => {
     const msgWarning = document.createElement('div')
     msgWarning.classList.add("chat-message", "justify-content-center")
     msgWarning.innerHTML = `
@@ -133,7 +75,7 @@ export default class ChatRoom {
     this.lastMsgUser = null
   }
 
-  createPongInvite = () => {
+  displayPongInvite = () => {
     const msgWarning = document.createElement('div')
     msgWarning.classList.add("chat-message", "justify-content-center")
     msgWarning.innerHTML = `
@@ -181,7 +123,6 @@ export default class ChatRoom {
   }
 
   setEnterKey = () => {
-    // Chat input
     chatInput.addEventListener('keypress', this.enterToSendMessage)
   }
 
@@ -206,8 +147,8 @@ export default class ChatRoom {
   }
 
   clear = () => {
-    document.removeEventListener('keypress', this.enterToSendMessage)
+    this.chatInput.removeEventListener('keypress', this.enterToSendMessage)
     this.chatBody.innerHTML = ''
-    this.ws.close()
+    this.chatInput.value = ''
   }
 }

@@ -77,3 +77,17 @@ export async function fetchUploadFile(method, url, options = {}) {
     throw error;
   }
 }
+
+export async function fetchData(method, url, option) {
+  try {
+    const response = await fetchAPI(method, url, option);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    if (method === 'DELETE') return
+    return await response.json();
+  } catch (error) {
+    console.error(error.message);
+  }
+}

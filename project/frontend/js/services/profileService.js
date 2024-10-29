@@ -1,22 +1,26 @@
 import * as constant from '../constants.js'
-import { fetchAPI } from "../userManage/api.js";
+import { fetchData, fetchUploadFile } from "../userManage/api.js";
 
-async function getProfile(id) {
-  try {
-    const response = await fetchAPI("GET", constant.API_PROFILE_BY_ID + id + "/", { auth: true });
+function getProfile(id) {
+  const url = constant.API_PROFILE_BY_ID + id + "/"
+  const option = { auth: true}
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(error.message);
-  }
+  return fetchData('GET', url, option)
 }
 
-async function getMyProfile() {
+function getMyProfile() {
+  const url = constant.API_MY_PROFILE
+  const option = { auth: true}
+
+  return fetchData('GET', url, option)
+}
+
+async function createProfilePicture(data) {
   try {
-    const response = await fetchAPI("GET", constant.API_MY_PROFILE, { auth: true, });
+    const response = await fetchUploadFile("POST", constant.API_UPLOAD, {
+      auth: true,
+      body: data,
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,5 +33,6 @@ async function getMyProfile() {
 
 export {
   getProfile,
-  getMyProfile
+  getMyProfile,
+  createProfilePicture
 }

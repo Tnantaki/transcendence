@@ -1,5 +1,6 @@
 import { setSelectLanguage } from "./i18n.js";
-import { checkNoti } from "./index.js";
+import { checkNofiFriend } from "./index.js";
+import { connectWebSocket } from "./liveChat/chatSocket.js";
 
 const title_extension = "Transcendence";
 const template_dir = "/templates/";
@@ -22,32 +23,32 @@ const urlRoute = {
     urlPath: template_dir + "login.html",
     script: js_user_dir + "login.js",
     title: "Login" + " - " + title_extension,
-  }, 
+  },
   "/profile": {
     urlPath: template_dir + "profile.html",
     script: js_user_dir + "profile.js",
     title: "Profile" + " - " + title_extension,
-  }, 
+  },
   "/editProfile": {
     urlPath: template_dir + "editProfile.html",
     script: js_user_dir + "editProfile.js",
     title: "Edit Profile" + " - " + title_extension,
-  }, 
+  },
   "/history": {
     urlPath: template_dir + "match-history.html",
     script: js_game_dir + "history-table.js",
     title: "Match History" + " - " + title_extension,
-  }, 
+  },
   "/leaderboard": {
     urlPath: template_dir + "leaderboard.html",
     script: js_game_dir + "leaderboard.js",
     title: "Leaderboard" + " - " + title_extension,
-  }, 
+  },
   "/game": {
     urlPath: template_dir + "game.html",
     script: js_game_dir + "init-menu.js",
     // script: [js_game_dir + "main-menu.js"], 
-      // js_game_dir +  "init-menu.js"],
+    // js_game_dir +  "init-menu.js"],
     title: "Game" + " - " + title_extension,
   },
   "/game-single": {
@@ -63,7 +64,7 @@ const urlRoute = {
   "/online": {
     urlPath: template_dir + "test/index.html",
     script: js_dir + "test/PongOnline.js",
-      // js_dir + "test/pongOnlineScript.js" ,
+    // js_dir + "test/pongOnlineScript.js" ,
     title: "Tests" + " - " + title_extension,
   }
 };
@@ -74,7 +75,7 @@ export function loadPage(url) {
   // 1st arg: state use for store obj in histor stack
   // 2nd arg: not use anymore pass empty string for safe
   // 3rd arg: url string that will display on browser url
-  history.pushState({page: newUrl}, "", newUrl);
+  history.pushState({ page: newUrl }, "", newUrl);
 }
 
 // Disable default a tag behavior of reload full page to make SPA
@@ -83,7 +84,7 @@ function setATagDefault() {
   linkTags.forEach(link => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
-      const url = link.getAttribute('href'); 
+      const url = link.getAttribute('href');
       loadPage(url);
     });
   });
@@ -98,6 +99,9 @@ function loadContent(url) {
     endPoint = "/login";
   } else if (token && endPoint === '/login') {
     endPoint = "/";
+  }
+  if (token) {
+    connectWebSocket()
   }
   const route = urlRoute[endPoint];
   const contentDiv = document.getElementById('content');
@@ -117,7 +121,7 @@ function loadContent(url) {
       }
       setATagDefault();
       setSelectLanguage();
-      checkNoti();
+      checkNofiFriend();
     })
     .catch(error => {
       contentDiv.innerHTML = `<p>Error loading page from url="${url}"</p>`;

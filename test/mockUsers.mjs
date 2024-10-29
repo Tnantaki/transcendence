@@ -1,3 +1,5 @@
+import { mockFriend } from "./mockFriend.mjs";
+
 const BACKEND_URL = "http://localhost:8001/api/";
 
 const API_SIGNUP = BACKEND_URL + "i/uac/register/";
@@ -20,15 +22,15 @@ async function registerUser(name) {
   }
 }
 
-
-
-async function test() {
-  const res1 = await registerUser("mos123")
+async function mockUser(username) {
+  const res1 = await registerUser(username)
   console.log("Create", res1)
   for (let i = 1; i <= 10; i++) {
     const result = await registerUser("test" + i)
     console.log("Create", result)
   }
+
+  await mockFriend(username)
 }
 
-test()
+mockUser('mos123')

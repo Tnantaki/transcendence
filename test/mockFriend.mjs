@@ -71,7 +71,7 @@ async function sendFriendRequest(username, id) {
   return ""
 }
 
-async function test() {
+export async function mockFriend() {
   const data = await getMe("mos123")
   // const data = await getMe("test2")
   for (let i = 1; i <= 10; i++) {
@@ -79,5 +79,3 @@ async function test() {
     console.log(result)
   }
 }
-
-test()
