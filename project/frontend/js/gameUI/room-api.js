@@ -1,7 +1,8 @@
 import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
-import { updateLobby } from "./lobby-menu.js";
+import { checkGameMode, updateLobby } from "./lobby-menu.js";
 import { loadPage } from "../router.js";
+import { manageEvt } from "./utils.js";
 
 export let cachedRooms = [];
 
@@ -36,50 +37,54 @@ function initCreateRoomBtn() {
 	createRoomBtn = document.getElementById("createRoomBtn");
 }
 
-function execCreateRoomBtn(mode) {
-	createRoomBtn.addEventListener('click', function () {
-		const roomName = document.getElementById("room-name-input").value;
-		console.log("roomName: ", roomName);
-		if (roomName) {
-			if (mode == "online") {
-				console.log("isOnline");
-				createRoomAPI(roomName)
-					.then(res => {
-						cachedRooms.length = 0;
-						updateLobby("online"); // no need to update, just go the game. The update will take place after the player leave the match
-						closeModal();
-						// loadPage("/online?room_id=" + res.id);
-					})
-					.catch(error => {
-						console.error("Error creating room: ", error);
-					})
+const createEvt = (event) => postRoom(checkGameMode(), event);
 
-			}
-			else {
-				// console.log("create in tournament");
-				// console.log("name: ", roomName);
-				createTourRoomAPI(roomName)
-					.then(res => {
-						// console.log("res: ", res);
-						cachedRooms.length = 0;
-						updateLobby("tournament"); // no need to update, just go the game. The update will take place after the player leave the match
-						closeModal();
-						// loadPage("/online?room_id=" + res.id);
-					})
-					.catch(error => {
-						console.error("Error creating tournament: ", error);
-					})
-			}
-		}
-	})
+function manageCreateRoomBtn(status, evt) {
+	if (!status)
+		createRoomBtn.addEventListener("click", evt);
+	else
+		createRoomBtn.removeEventListener("click", evt);
 }
 
+function postRoom(mode) {
+	const roomName = document.getElementById("room-name-input").value;
+	console.log("roomName: ", roomName);
+	if (roomName) {
+		if (mode == "online") {
+			console.log("isOnline");
+			createRoomAPI(roomName)
+				.then(res => {
+					cachedRooms.length = 0;
+					updateLobby("online"); //! no need to update, just go the game. The update will take place after the player leave the match
+					manageCreateRoomBtn(1, createEvt);
+					closeModal();
+					// loadPage("/online?room_id=" + res.id);
+				})
+				.catch(error => {
+					console.error("Error creating room: ", error);
+				})
+		}
+		else {
+			createTourRoomAPI(roomName)
+				.then(res => {
+					cachedRooms.length = 0;
+					updateLobby("tournament"); //! no need to update, just go the game. The update will take place after the player leave the match
+					manageCreateRoomBtn(1, createEvt);
+					closeModal();
+					// loadPage("/online?room_id=" + res.id);
+				})
+				.catch(error => {
+					console.error("Error creating tournament: ", error);
+				})
+		}
+	}
+}
 
 export function createRoom(mode) {
 	showModal();
 	if (!createRoomBtn)
 		initCreateRoomBtn();
-	execCreateRoomBtn(mode);
+	manageCreateRoomBtn(0, createEvt);
 }
 
 async function createRoomAPI(roomName) {
@@ -130,7 +135,7 @@ async function createTourRoomAPI(roomName) {
 			auth: true,
 			body: { name: roomName },
 		});
-		// console.log("tournamenet: ", response.body);
+
 		if (!response.ok) {
 			const errorBody = await response.text();
 			console.log("error body res: ", errorBody);
@@ -139,7 +144,7 @@ async function createTourRoomAPI(roomName) {
 		else {
 			console.log("suceess! ", response.status);
 			const res = await response.json();
-			console.log("here: ", res);
+			// console.log("here: ", res);
 			return res;
 		}
 	} catch (error) {
@@ -147,40 +152,6 @@ async function createTourRoomAPI(roomName) {
 		throw error;
 	}
 }
-// export async function getTourRoomAPI() {
-//     try {
-//         const response = await fetchAPI("GET", Constant.API_GET_TOUR, { auth: true });
-        
-//         // Log the full response details for debugging
-//         console.log("Response status:", response.status);
-//         console.log("Response headers:", Object.fromEntries(response.headers.entries()));
-        
-//         // Get the raw response text
-//         const rawResponse = await response.text();
-//         console.log("Raw response:", rawResponse.substring(0, 500)); // First 500 characters
-
-//         // Try to determine what we received
-//         const contentType = response.headers.get("content-type");
-//         console.log("Content-Type:", contentType);
-
-//         if (!response.ok) {
-//             throw new Error(`HTTP error! status: ${response.status}`);
-//         }
-
-//         // If we got here and the content isn't JSON, throw an error
-//         if (!contentType || !contentType.includes("application/json")) {
-//             throw new Error(`Invalid content type: ${contentType}. Expected JSON.`);
-//         }
-
-//         // If it is JSON, parse it
-//         const res = JSON.parse(rawResponse);
-//         console.log("Parsed JSON:", res);
-//         return res;
-//     } catch (error) {
-//         console.error("Cannot GET tournament:", error.message);
-//         throw error;
-//     }
-// }
 
 export async function getTourRoomAPI() {
 	try {
@@ -206,48 +177,18 @@ export async function getAllRooms(mode) {
 	if (cachedRooms.length > 0)
 		return cachedRooms;
 	
+	// console.log("mode in api: ", mode);
 	try {
 		const res = mode === "online" ? await getRoomAPI() : await getTourRoomAPI();
-		cachedRooms = res;
+		if (res && Array.isArray(res))
+			cachedRooms.length = 0;
+			cachedRooms = res;
 		return res;
 	}
 	catch (error) {
 		console.log("Error cannot get rooms: ", error);
 		return null;
 	}
-	// try {
-	// 	let res;
-	// 	if (checkGameMode() == "online")
-	// 		res = await getRoomAPI();
-	// 	else
-	// 		res = await getTourRoomAPI();
-	// 	cachedRooms = res;
-	// 	return res;
-	// } catch (error) {
-	// 	console.error("Error cannot get rooms: ", error);
-	// 	return null;
-	// }
-
-	// if (mode == "online") {
-		// try {
-		// 	const res = await getRoomAPI();
-		// 	cachedRooms = res;
-		// 	return res;
-		// } catch (error) {
-		// 	console.error("Error cannot get rooms: ", error);
-		// 	return null;
-		// }
-	// }
-	// else {
-	// 	try {
-	// 		const res = await getTourRoomAPI();
-	// 		cachedRooms = res;
-	// 		return res;
-	// 	} catch (error) {
-	// 		console.error("Error cannot get rooms: ", error);
-	// 		return null;
-	// 	}
-	// }
 }
 
 export function getRoomlength() {

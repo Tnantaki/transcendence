@@ -24,7 +24,6 @@ const	boardObj = {
 
 function fillRoomName(room, xPos, yPos) {
 	ctx.fillText(room.name, xPos, yPos);
-	console.log("mode: ", checkGameMode());
 	if (checkGameMode() == "online")
 		ctx.fillText(room.number_of_player + 1 + "/2", boardObj.width - 10, yPos);
 	else
@@ -173,9 +172,7 @@ export async function drawRoomDisplay() {
 	ctx.textBaseline = "middle";
 	ctx.textAlign = "center";
 
-	// console.log("check: ", checkGameMode());
 	const rooms = await getAllRooms(checkGameMode());
-	// console.log("rooms: ", rooms);
 	if (rooms)
 		rooms.sort((a,b) => a.id - b.id);
 	await initRooms(rooms);
