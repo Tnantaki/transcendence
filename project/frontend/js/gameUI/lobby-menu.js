@@ -9,14 +9,20 @@ import * as Utils from "./utils.js";
 
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d");
+let gameMode;
+
+function initGameMode(mode) {
+	gameMode = mode
+}
+
+export function checkGameMode() {
+	return gameMode;
+}
 
 async function execLobby(mode, img) {
-	console.log("execLobby");
-	if (mode == "VERSUS" || mode == "online")
-	{
-		console.log("isLobbyOnline");
+	initGameMode(mode);
+	if (mode == "online")
 		Utils.initCanvas("Online Match", img);
-	}
 	else if (mode == "tournament")
 		Utils.initCanvas("Tournament", img);
 	Utils.drawTextBtn(btns.createBtn);

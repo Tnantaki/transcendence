@@ -88,7 +88,7 @@ function handleMenu(event)
 			else if (btn == "Online")
 				createLobby("online");
 			else if (btn == "Tournament")
-				createTournament(players);
+				createLobby("tournament");
 			else if (btn == "Return To Home")
 				loadPage("/");
 			break;

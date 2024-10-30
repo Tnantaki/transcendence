@@ -1,6 +1,7 @@
 import { getAllRooms, getRoomlength} from "./room-api.js";
 import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
+import { checkGameMode } from "./lobby-menu.js";
 
 let canvas;
 let ctx;
@@ -23,7 +24,10 @@ const	boardObj = {
 
 function fillRoomName(room, xPos, yPos) {
 	ctx.fillText(room.name, xPos, yPos);
-	ctx.fillText(room.number_of_player + 1 + "/2", boardObj.width - 10, yPos);
+	if (checkGameMode() == "online")
+		ctx.fillText(room.number_of_player + 1 + "/2", boardObj.width - 10, yPos);
+	else
+		ctx.fillText(room.number_of_player + 1 + "/4", boardObj.width - 10, yPos);
 }
 
 function getBtnWidth(roomName) { 
@@ -73,6 +77,7 @@ const scrollbarThumbMinHeight = 20;
 let hasEvent = false;
 export const   roomBtns = [];
 async function initRooms(rooms) {
+	// console.log("initRooms");
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
@@ -140,7 +145,6 @@ async function initRooms(rooms) {
 	ctx.fill();
 }
 
-
 export async function drawRoomDisplay() {
 	setCanvas();
 
@@ -168,8 +172,9 @@ export async function drawRoomDisplay() {
 	ctx.textBaseline = "middle";
 	ctx.textAlign = "center";
 
-	const rooms = await getAllRooms();
-	rooms.sort((a,b) => a.id - b.id);
+	const rooms = await getAllRooms(checkGameMode());
+	if (rooms)
+		rooms.sort((a,b) => a.id - b.id);
 	await initRooms(rooms);
 
 	// Add event listeners for scrolling (only if they haven't been added before)
