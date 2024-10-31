@@ -65,8 +65,8 @@ function handleCreateBtn(btnObj, event)
 
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
-		console.log("clicked create btn");
-		createRoom(checkGameMode());
+		// console.log("clicked create btn");
+		createRoom();
 	}	
 }
 

@@ -2,7 +2,6 @@ import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
 import { checkGameMode, updateLobby } from "./lobby-menu.js";
 import { loadPage } from "../router.js";
-import { manageEvt } from "./utils.js";
 
 export let cachedRooms = [];
 
@@ -80,7 +79,7 @@ function postRoom(mode) {
 	}
 }
 
-export function createRoom(mode) {
+export function createRoom() {
 	showModal();
 	if (!createRoomBtn)
 		initCreateRoomBtn();
