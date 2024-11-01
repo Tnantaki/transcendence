@@ -2,7 +2,6 @@ import * as Constant from "../constants.js";
 import { fetchAPI } from "../userManage/api.js";
 import { checkGameMode, updateLobby } from "./lobby-menu.js";
 import { loadPage } from "../router.js";
-import { manageEvt } from "./utils.js";
 
 export let cachedRooms = [];
 
@@ -58,7 +57,7 @@ function postRoom(mode) {
 					updateLobby("online"); //! no need to update, just go the game. The update will take place after the player leave the match
 					manageCreateRoomBtn(1, createEvt);
 					closeModal();
-					// loadPage("/online?room_id=" + res.id);
+					loadPage("/online?room_id=" + res.id);
 				})
 				.catch(error => {
 					console.error("Error creating room: ", error);
@@ -71,7 +70,7 @@ function postRoom(mode) {
 					updateLobby("tournament"); //! no need to update, just go the game. The update will take place after the player leave the match
 					manageCreateRoomBtn(1, createEvt);
 					closeModal();
-					// loadPage("/online?room_id=" + res.id);
+					loadPage("/online?room_id=" + res.id);
 				})
 				.catch(error => {
 					console.error("Error creating tournament: ", error);
@@ -80,7 +79,7 @@ function postRoom(mode) {
 	}
 }
 
-export function createRoom(mode) {
+export function createRoom() {
 	showModal();
 	if (!createRoomBtn)
 		initCreateRoomBtn();
