@@ -3,38 +3,13 @@ from rich import print
 from channels.layers import get_channel_layer
 
 
-async def server_send_message(
-    obj,
-    code: int = 2000,
-    command: str = "NULL",
-    sender: str = "SERVER",
-    data: dict = {},
-    *arg,
-    **kwargs,
-):
-    if not hasattr(obj, "send"):
-        raise Exception("Object must have send method")
-    send_ret = await obj.send(
-        text_data=json.dumps(
-            {
-                "code": code,
-                "command": command,
-                "sender": sender,
-                "data": data,
-                **kwargs,
-            }
-        )
-    )
-    return send_ret
-
-
 async def server_send_message_to_group(
     obj,
     code: int = 2000,
     command: str = "NULL",
     sender: str = "SERVER",
     data: dict = {},
-    message_type: str = "tour.boradcast",
+    message_type: str = "consumer.talk",
     group: str | list[str] | None = None,
     *arg,
     **kwargs,
