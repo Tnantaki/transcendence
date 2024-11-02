@@ -8,5 +8,4 @@ class Command(BaseCommand):
         remove_pending_tour()
         self.stdout.write(self.style.SUCCESS('Successfully removed all users from tournaments'))
         remove_all_user_from_room()
-        self.stdout.write(self.style.SUCCESS('Successfully removed all users disconnect server
-                                             q'))
+        self.stdout.write(self.style.SUCCESS('Successfully removed all users disconnect server'))
