@@ -7,7 +7,7 @@ from pong.models import Room
 from appuac.models.authsession import AuthSession
 from channels.db import database_sync_to_async
 from pong.provider_game.game_engine import GameEngine
-
+from pong.provider_game.services.connect import connect
 
 # GET TOKEN FROM SCOPE
 def get_token_from_scope(scope_headers):
@@ -92,6 +92,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 i.split("=") for i in self.scope["query_string"].decode().split("&")
             ]
         }
+        await connect(self, self.scope)
 
         # Check room is exist
         room_id = self.query_param.get("room_id", None)
@@ -141,7 +142,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         # User Join Room
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.send(
-            {"text_data": json.dumps({"code": 2000, "message": "Connected"})}
+            **{"text_data": json.dumps({"code": 2000, "message": "Connected"})}
         )
         if self.room.number_of_player == 2:
             await self.channel_layer.group_send(
