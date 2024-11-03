@@ -37,7 +37,7 @@ class BaseAutoDate(models.Model):
 
 class Room(BaseAutoDate):
     """
-    TYPE: VERSUS, TORNAMENT
+    TYPE: VERSUS, TOURNAMENT
     """
 
     name = models.CharField(default="", max_length=255)
@@ -46,6 +46,7 @@ class Room(BaseAutoDate):
     size = models.IntegerField(default=2)
 
     game_type = models.CharField(default="VERSUS", max_length=255)
+    hide = models.BooleanField(default=False)
 
     # user_player_register_affter_game_start
 
@@ -81,7 +82,7 @@ class Game(BaseID, BaseAutoDate):
     p2_score = models.IntegerField(default=0)
     status = models.CharField(default="CLOSE", max_length=255)
     room = models.ForeignKey("Room", on_delete=models.CASCADE, null=True)
-
+    tour = models.ForeignKey("Tournament", on_delete=models.CASCADE, null=True)
 
 class MatchHistory(BaseAutoDate, BaseID):
     """
@@ -134,7 +135,7 @@ class Tournament(BaseAutoDate, BaseID):
     :param name: name of tournament
     :param users: list of users
     :param size: number of player
-    :param status: status of tournament `CLOSE`, `OPEN`, `PLAYING`
+    :param status: status of tournament `CLOSE`, `OPEN`, `PLAYING-R1`, `PLAYING-R2`
     :param winner: winner of tournament
     """
     name = models.CharField(default="", max_length=255)

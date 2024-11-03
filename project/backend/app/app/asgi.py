@@ -26,6 +26,11 @@ from pong.urls import websocket_urlpatterns
 from channels.auth import AuthMiddlewareStack
 
 
+from appuac.management.commands.remove_tournaments import Command as remove_pending_tour
+# TODO DELETE ME
+remove_pending_tour().handle()
+
+
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
