@@ -1,9 +1,15 @@
+import { dictionary } from "./shared-resources.js";
+
 let canvas;
 let ctx;
+let curLanguage;
+
 function setCanvas() {
 	canvas = document.getElementById("gameArea");
 	if (canvas)
 		ctx = canvas.getContext("2d");
+
+	curLanguage = localStorage.getItem('currentLanguage') || 'en';
 }
 
 export function removeEvent(evt){
@@ -45,7 +51,7 @@ export function initCanvas(title, pongImg)
 	ctx.textAlign = "center";
 	ctx.textBaseline = "top";
 	ctx.fillStyle = "white";
-	ctx.fillText(title, textX, textY);
+	ctx.fillText(dictionary[curLanguage][title], textX, textY);
 
 	// get text height
 	const textHeight = ctx.measureText("m").width;
@@ -55,7 +61,6 @@ export function initCanvas(title, pongImg)
 	imageY = textY + textHeight + (100 / 2);
 	ctx.drawImage(pongImg, imageX, imageY, imgRatio, imgRatio);
 	ctx.closePath();	
-	// console.log("canvas: " + imageX + " " + imageY)
 }
 
 export function getImgPosition() { 
@@ -82,5 +87,5 @@ export function drawTextBtn(btnObj)
 	ctx.font = btnObj.font;
 	ctx.textAlign = btnObj.textAlign;
 	ctx.textBaseline = btnObj.textBaseline;
-	ctx.fillText(btnObj.text, x + btnWidth / 2, y + btnHeight / 2);
+	ctx.fillText(dictionary[curLanguage][btnObj.text], x + btnWidth / 2, y + btnHeight / 2);
 }

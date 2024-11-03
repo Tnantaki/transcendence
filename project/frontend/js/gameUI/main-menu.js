@@ -22,7 +22,6 @@ const menuPos = 100;
 const btnWidth = 200;
 const btnHeight = 50;
 const btnSpace = 20;
-// const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Return To Home"]
 const btnArray = ["singlePlayer", "versus", "online", "tournament", "returnHome"];
 
 function drawCanvas()

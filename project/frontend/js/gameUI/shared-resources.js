@@ -5,10 +5,13 @@ import {cachedRooms, createRoom} from "./room-api.js";
 
 let canvas;
 let ctx;
+let curLanguage;
 function setCanvas() {
 	canvas = document.getElementById("gameArea");
 	if (canvas)
 		ctx = canvas.getContext("2d");
+
+	curLanguage = localStorage.getItem('currentLanguage') || 'en';
 }
 
 // preload the img
@@ -33,19 +36,19 @@ const createBtnObj = {
 	width: 300, height: 50, bg: "transparent",
 	textColor: "white", font: "50px Irish Grover",
 	textAlign: "center", textBaseline: "middle",
-	text: "Create Room", xPos: 5, yPos: 320
+	text: "createRoom", xPos: 5, yPos: 320
 };
 const startBtnObj = {
 	width: 150, height: 50, bg: "transparent",
 	textColor: "white", font: "60px Irish Grover",
 	textAlign: "center", textBaseline: "middle",
-	text: "Start", xPos: 70, yPos: 320
+	text: "start", xPos: 70, yPos: 320
 };
 const backBtnObj = {
 	width: 90, height: 35, bg: "transparent",
 	textColor: "white", font: "40px Irish Grover",
 	textAlign: "center", textBaseline: "middle",
-	text: "Back", xPos: 90, yPos: 380
+	text: "back", xPos: 90, yPos: 380
 };
 
 function handleCreateBtn(btnObj, event)
@@ -114,27 +117,44 @@ const backBtn = (event) => handleBackBtn(backBtnObj, event);
 
 export const btns = {createBtn: createBtnObj, startBtn: startBtnObj, backBtn: backBtnObj};
 export const evtBtns = {createBtn: createBtn, startBtn: startBtn, backBtn: backBtn};
-
 export const dictionary = {
 	en: {
 		singlePlayer: "Single Player",
 		versus: "Versus",
 		online: "Online",
+		onlineMatch: "Online Match",
 		tournament: "Tournament",
-		returnHome: "Return To Home"
+		returnHome: "Return To Home",
+		room: "Room",
+		status: "Status",
+		createRoom: "Create Room",
+		start: "Start",
+		back: "Back"
 	  },
 	  fr: {
 		singlePlayer: "Un Joueur",
 		versus: "Versus",
 		online: "En Ligne",
+		onlineMatch: "Match en ligne",
 		tournament: "Tournoi",
-		returnHome: "Retour à l'Accueil"
+		returnHome: "Retour à l'Accueil",
+		room: "Salle",
+		status: "État",
+		createRoom: "Créer une Salle",
+		start: "Démarrer",
+		back: "Retour"
 	  },
 	  th: {
 		singlePlayer: "ผู้เล่นเดี่ยว",
 		versus: "ประชัน",
 		online: "ออนไลน์",
+		onlineMatch: "แมตช์ออนไลน์",
 		tournament: "ทัวร์นาเมนต์",
-		returnHome: "กลับสู่หน้าหลัก"
+		returnHome: "กลับสู่หน้าหลัก",
+		room: "ห้อง",
+		status: "สถานะ",
+		createRoom: "สร้างห้อง",
+		start: "เริ่มเกม",
+		back: "ย้อนกลับ"
 	  }
 }

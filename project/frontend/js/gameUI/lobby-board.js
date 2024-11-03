@@ -2,13 +2,17 @@ import { getAllRooms, getRoomlength} from "./room-api.js";
 import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
 import { checkGameMode } from "./lobby-menu.js";
+import { dictionary } from "./shared-resources.js";
 
 let canvas;
 let ctx;
+let curLanguage;
 function setCanvas() {
 	canvas = document.getElementById("gameArea");
 	if (canvas)
 		ctx = canvas.getContext("2d");
+
+	curLanguage = localStorage.getItem('currentLanguage') || 'en';
 }
 
 function getBoardStartX() {
@@ -92,7 +96,6 @@ async function initRooms(rooms) {
 				let tmpObj = {
 					"name" : room.name,
 					"id" : room.id,
-					// "status" : room.number_of_player,
 					"width": getBtnWidth(room.name),
 					"height": getBtnHeight(room.name),
 					"yPos": yPos,
@@ -164,8 +167,8 @@ export async function drawRoomDisplay() {
 	ctx.fillStyle = "white";
 	ctx.textBaseline = "top";
 	ctx.textAlign = "center";
-	ctx.fillText("Room", boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
-	ctx.fillText("Status", boardObj.width - 10, boardObj.headerPos);
+	ctx.fillText(dictionary[curLanguage].room, boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
+	ctx.fillText(dictionary[curLanguage].status, boardObj.width - 10, boardObj.headerPos);
 
 	// Draw room on the board
 	ctx.font = "25px Irish Grover";

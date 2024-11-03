@@ -22,9 +22,9 @@ export function checkGameMode() {
 async function execLobby(mode, img) {
 	initGameMode(mode);
 	if (mode == "online")
-		Utils.initCanvas("Online Match", img);
+		Utils.initCanvas("onlineMatch", img);
 	else if (mode == "tournament")
-		Utils.initCanvas("Tournament", img);
+		Utils.initCanvas("tournament", img);
 	Utils.drawTextBtn(btns.createBtn);
 	Utils.drawTextBtn(btns.backBtn);
 	await drawRoomDisplay();
