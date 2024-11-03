@@ -1,13 +1,18 @@
 import { loadPage } from "../router.js";
 import { createLobby } from "./lobby-menu.js";
+import { dictionary } from "./shared-resources.js";
 import * as Utils from "./utils.js";
 
 let canvas;
 let ctx;
+let curLanguage;
+
 function setCanvas() {
 	canvas = document.getElementById("gameArea");
 	if (canvas)
 		ctx = canvas.getContext("2d");
+
+	curLanguage = localStorage.getItem('currentLanguage') || 'en';
 }
 
 // console.log("canvas: ", canvas);
@@ -17,7 +22,8 @@ const menuPos = 100;
 const btnWidth = 200;
 const btnHeight = 50;
 const btnSpace = 20;
-const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Return To Home"]
+// const btnArray = ["Single Player", "Versus", "Online", "Tournament", "Return To Home"]
+const btnArray = ["singlePlayer", "versus", "online", "tournament", "returnHome"];
 
 function drawCanvas()
 {
@@ -59,7 +65,8 @@ function drawBtn()
 		ctx.font = "30px Irish Grover";
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
-		ctx.fillText(btn, x + btnWidth / 2, y + btnHeight / 2);
+		// ctx.fillText(btn, x + btnWidth / 2, y + btnHeight / 2);
+		ctx.fillText(dictionary[curLanguage][btn], x + btnWidth / 2, y + btnHeight / 2);
 
 		y += btnHeight + btnSpace;
 	}
@@ -80,16 +87,16 @@ function handleMenu(event)
 		if (x >= startX && x <= startX + btnWidth && y >= btnY && y <= (btnY + btnHeight) - 20)
 		{
 			Utils.manageEvt(1, handleMenu);
-			if (btn == "Single Player")
+			if (btn == "singlePlayer")
 				console.log("single player");
 				// loadPage('/game-single')
-			else if (btn == "Versus")
+			else if (btn == "versus")
 				loadPage('/game-versus')
-			else if (btn == "Online")
+			else if (btn == "online")
 				createLobby("online");
-			else if (btn == "Tournament")
+			else if (btn == "tournament")
 				createLobby("tournament");
-			else if (btn == "Return To Home")
+			else if (btn == "returnHome")
 				loadPage("/");
 			break;
 		}

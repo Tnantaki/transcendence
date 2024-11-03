@@ -2,7 +2,6 @@ import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
-import { checkGameMode } from "./lobby-menu.js";
 
 let canvas;
 let ctx;
@@ -115,3 +114,27 @@ const backBtn = (event) => handleBackBtn(backBtnObj, event);
 
 export const btns = {createBtn: createBtnObj, startBtn: startBtnObj, backBtn: backBtnObj};
 export const evtBtns = {createBtn: createBtn, startBtn: startBtn, backBtn: backBtn};
+
+export const dictionary = {
+	en: {
+		singlePlayer: "Single Player",
+		versus: "Versus",
+		online: "Online",
+		tournament: "Tournament",
+		returnHome: "Return To Home"
+	  },
+	  fr: {
+		singlePlayer: "Un Joueur",
+		versus: "Versus",
+		online: "En Ligne",
+		tournament: "Tournoi",
+		returnHome: "Retour à l'Accueil"
+	  },
+	  th: {
+		singlePlayer: "ผู้เล่นเดี่ยว",
+		versus: "ประชัน",
+		online: "ออนไลน์",
+		tournament: "ทัวร์นาเมนต์",
+		returnHome: "กลับสู่หน้าหลัก"
+	  }
+}

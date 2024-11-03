@@ -25,9 +25,9 @@ const	boardObj = {
 function fillRoomName(room, xPos, yPos) {
 	ctx.fillText(room.name, xPos, yPos);
 	if (checkGameMode() == "online")
-		ctx.fillText(room.number_of_player + 1 + "/2", boardObj.width - 10, yPos);
+		ctx.fillText(room.number_of_player + "/2", boardObj.width - 10, yPos);
 	else
-		ctx.fillText(room.number_of_player + 1 + "/4", boardObj.width - 10, yPos);
+		ctx.fillText(room.number_of_player + "/4", boardObj.width - 10, yPos);
 }
 
 function getBtnWidth(roomName) { 
@@ -92,6 +92,7 @@ async function initRooms(rooms) {
 				let tmpObj = {
 					"name" : room.name,
 					"id" : room.id,
+					// "status" : room.number_of_player,
 					"width": getBtnWidth(room.name),
 					"height": getBtnHeight(room.name),
 					"yPos": yPos,
