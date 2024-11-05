@@ -8,6 +8,7 @@ from appuac.models.authsession import AuthSession
 from channels.db import database_sync_to_async
 from pong.provider_game.game_engine import GameEngine
 from pong.provider_game.services.connect import connect
+from rich import inspect
 
 # GET TOKEN FROM SCOPE
 def get_token_from_scope(scope_headers):
@@ -77,7 +78,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         super().__init__(*args, **kwargs)
 
     async def connect(self):
-        print("GAME - CONNECT")
         self.room_name = ""
         self.is_join = None
 
@@ -85,65 +85,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         # if error send message to client and close connection
         await self.accept()
 
-        # Convert query string to dict
-        self.query_param = {
-            k: v
-            for (k, v) in [
-                i.split("=") for i in self.scope["query_string"].decode().split("&")
-            ]
-        }
-        await connect(self, self.scope)
+        await connect(self)
 
-        # Check room is exist
-        room_id = self.query_param.get("room_id", None)
-        try:
-            room_id = int(room_id)
-            if not room_id:
-                await self.set_exit_code(4002, f"Room ID is required: {room_id}")
-                return
-        except ValueError:
-            await self.set_exit_code(4002, f"Room ID is invalid: {room_id}")
-            return
 
-        # Query room from database
-        self.room = await self.query_room(room_id)
-        if not self.room:
-            await self.set_exit_code(4003, f"Room is not exist: {room_id}")
-            return
-        self.room_group_name = f"Game_Group_{room_id}"
-        self.game_engine = GameEngine(self.room_group_name)
-
-        # Check token in query string
-        token = self.query_param.get("token", None)
-        if token is None:
-            await self.set_exit_code(4001, "Token is required")
-            return
-        # Check Token exist and not expired then get user
-        user = await self.auth_user(token)
-        if user is None:
-            await self.set_exit_code(4000, "Token is invalid")
-            return
-        self.user = user
-
-        # Add user to room
-        # Check room is not full
-        self.room_id = room_id
-        self.token = token
-        # Reconnection process mebey
-
-        if await self.check_is_user_already_join(self.room, user):
-            await self.set_exit_code(4005, "User is already join")
-            return
-
-        await self.user_join_room(self.room, user)
-        self.game_engine.add_user(self.token)
-        self.game_engine.set_player(self.token, self.player_number)
-
-        # User Join Room
-        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-        await self.send(
-            **{"text_data": json.dumps({"code": 2000, "message": "Connected"})}
-        )
         if self.room.number_of_player == 2:
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -170,19 +114,11 @@ class GameConsumer(AsyncWebsocketConsumer):
                         "sender": "SERVER",
                     },
                 )
-            if not self.game_engine.running:
-                await self.game_engine.check()
-                loop = asyncio.get_event_loop()
-                self.game_engine.run(loop)
 
     @database_sync_to_async
     def check_is_user_already_join(self, room, user):
         return user in room.users.all()
 
-    @database_sync_to_async
-    def query_room(self, room_id):
-        room = Room.objects.filter(id=room_id).first()
-        return room
 
     @database_sync_to_async
     def user_join_room(self, room, user):
@@ -216,8 +152,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         # Leave room group
-        print("Exit worker", self.exit_code)
-        print("is join when disconnect ", self.is_join)
+        # print("Exit worker", self.exit_code)
+        # print("is join when disconnect ", self.is_join)
 
         if self.room_group_name:
             await self.channel_layer.group_discard(
@@ -251,6 +187,11 @@ class GameConsumer(AsyncWebsocketConsumer):
                 }
             )
         )
+        if t == 3 and not self.game_engine.running:
+                await self.game_engine.check()
+                loop = asyncio.get_event_loop()
+                self.game_engine.run(loop)
+
 
     async def client_message(self, event):
         data = event["data"]
@@ -269,9 +210,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         full_message = event["full_message"]
 
         # Send message to WebSocket
-        WB_HELPER.server_send_message(
-            self, code=2000, command=command, sender=player, data=full_message
-        )
+        # WB_HELPER.server_send_message(
+        #     self, code=2000, command=command, sender=player, data=full_message
+        # )
         await self.send(
             text_data=json.dumps(
                 {
@@ -308,6 +249,22 @@ class GameConsumer(AsyncWebsocketConsumer):
                     "command": "GAME_STATE",
                     "sender": "SERVER",
                     "data": state["game_state"],
+                }
+            )
+        )
+        
+    async def game_finish(self, winner):
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "code": 2000,
+                    "command": "GAME_FINISHED",
+                    "sender": "SERVER",
+                    "data": {
+                        "game_type": self.room.game_type,
+                        "tour_id": self.room.tour_id,
+                        **winner
+                    }
                 }
             )
         )

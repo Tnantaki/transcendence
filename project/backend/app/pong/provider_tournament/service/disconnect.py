@@ -11,6 +11,8 @@ async def message_user_leave(obj):
 @database_sync_to_async
 def user_leave_tour(obj):
     # Remove relationship from user and tour
+    if not hasattr(obj, 'tour'):
+        return 
     obj.tour.users.remove(obj.user)
     return obj
 

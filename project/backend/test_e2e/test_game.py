@@ -19,6 +19,8 @@ class GameTestClient:
             try:
                 message = await self.ws.recv()
                 data = json.loads(message)
+                if data['command'] == 'GAME_STATE':
+                    continue
                 print("=======================================================================================")
                 print(f"ได้รับข้อความ:")
                 print(data)
@@ -51,7 +53,7 @@ async def main():
         # "JbCPZZvCYQJVHjYsYGGDUzQlMl1fC7HQe2vXSvqtCJorS-thXDRn2Oac0-7hs9ZP",
         # "-KpwYARQqkysU4J4A31nbt-CQrt45FPcAUO68n80BfPJz26Qky0cJjo4WhDS-Pc4",
     ]
-    room_id = '384'
+    room_id = '397'
     
     clients = []
     for token in tokens:
@@ -69,13 +71,13 @@ async def main():
     await asyncio.sleep(2)
     
     # ทดสอบส่งคำสั่งเคลื่อนที่
-    await clients[0].send_move(38) # กด UP
-    await asyncio.sleep(1)
-    await clients[0].send_move(38, "RELEASE") # ปล่อย UP
+    # await clients[0].send_move(38) # กด UP
+    # await asyncio.sleep(1)
+    # await clients[0].send_move(38, "RELEASE") # ปล่อย UP
     
-    await clients[1].send_move(40) # กด DOWN
-    await asyncio.sleep(1) 
-    await clients[1].send_move(40, "RELEASE") # ปล่อย DOWN
+    # await clients[1].send_move(40) # กด DOWN
+    # await asyncio.sleep(1) 
+    # await clients[1].send_move(40, "RELEASE") # ปล่อย DOWN
     
     # รอรับข้อความ
     await asyncio.gather(*receive_tasks)

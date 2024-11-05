@@ -4,8 +4,8 @@ import random
 from channels.layers import get_channel_layer
 from copy import deepcopy
 from pong.provider_game.player import Player
-from logging import getLogger
-logger = getLogger(__name__)
+from rich import inspect, print
+from pong.provider_game.services.create_game_history import create_history
 
 KEY_STATE = {"RELASE": 0, "PRESS": 1}
 KEY_VALUE = {
@@ -72,7 +72,7 @@ class GameEngine:
             return None
         self.ball_position = {'x': 512, 'y': 300}
         self.ball_velocity = {'x': 1, 'y': 1}
-        self.player = []
+        self.player: list[Player] = []
 
         self.canvas_size = {
             'player1': {
@@ -82,10 +82,12 @@ class GameEngine:
         }
         self.channels = get_channel_layer()
         self.id = id
+        self.score_to_win = 1
         self._running = False
 
         self.key_value = deepcopy(KEY_VALUE)
         self._is_init = True
+        self.game_type = "VERSUS"
         
     def __str__(self):
         return f'game_engine_for_group:{self.id}'
@@ -93,8 +95,6 @@ class GameEngine:
     async def cale_ball_position(self):
         self.ball_position['x'] += self.ball_velocity['x']
         self.ball_position['y'] += self.ball_velocity['y']
-        # if self.ball_position['x'] > 1024 or self.ball_position['x'] < 0:
-        #     self.ball_velocity['x'] = -1 * self.ball_velocity['x']
         if self.ball_position['y'] > 600 or self.ball_position['y'] < 0:
             self.ball_velocity['y'] = -1 * self.ball_velocity['y']
 
@@ -118,46 +118,84 @@ class GameEngine:
             self.task = loop.create_task(self.start())
 
     async def start(self):
+        asyncio.sleep(0.5);
         while self._running:
             await self.cale_ball_position()
             await self.update_player_paddle()
             await self.check_ball_hit_paddle()
             await self.check_ball_score()
             await self.update_game_state()
+            await self.check_winner()
             asyncio.sleep(0.05)
 
 
     async def check_ball_hit_paddle(self):
         left_paddle = self.player[0].paddle
         right_paddle = self.player[1].paddle
+        # left_paddle.y = ยอดของ paddle น้อยสุด = 0
         # Check Left Paddle
-        if self.ball_position['x'] <= left_paddle.x + left_paddle.width and \
-                self.ball_position['y'] <= left_paddle.y + left_paddle.height:
+        if self.ball_position['x'] <= left_paddle.x + left_paddle.width and (\
+                self.ball_position['y'] <= left_paddle.y + left_paddle.height and \
+                    self.ball_position['y'] > left_paddle.y):
             self.ball_velocity['x'] = -1 * self.ball_velocity['x']
         # Check Right Paddle
         if self.ball_position['x'] >= right_paddle.x and \
-                self.ball_position['y'] <= right_paddle.y + right_paddle.height:
+               (self.ball_position['y'] <= right_paddle.y + right_paddle.height and \
+                    self.ball_position['y'] >= right_paddle.y):
             self.ball_velocity['x'] = -1 * self.ball_velocity['x']
 
     async def check_ball_score(self):
-        if self.ball_position['x'] > 1025:
+        if self.ball_position['x'] > 1030:
             self.ball_position = {'x': 512, 'y': 300}
             self.ball_velocity = {'x': 1, 'y': 1}
             self.player[0].increase_score()
+            self.player[0].set_block_inc(True)
             await self.broadcase_score()
+            self.player[0].set_block_inc(False)
             self.reset()
+            await self.delay_game()
 
-        if self.ball_position['x'] < -1:
+        if self.ball_position['x'] < -5:
             self.ball_position = {'x': 512, 'y': 300}
             self.ball_velocity = {'x': 1, 'y': 1}
             self.player[1].increase_score()
+            self.player[1].set_block_inc(True)
             await self.broadcase_score()
+            self.player[1].set_block_inc(False)
+
             self.reset()
+            await self.delay_game()
+        
+
+            
+    async def check_winner(self):
+        if len(self.player) != 2:
+            print("error Player != 2")
+            
+        for p in self.player:
+            if p.get_score() >= self.score_to_win:
+                self.reset()
+                self._running = False
+                inspect(p)
+                a = await create_history(self, p)
+                await self.channels.group_send(
+                    self.id,
+                    {
+                        'type': 'game.finish',
+                        'winner': {
+                            "name": p.get_name()
+                        }
+                    }
+                )
+    
+
+    async def delay_game(self):
+        await asyncio.sleep(0.3)
 
     async def reset(self):
         self.ball_position = {'x': 512, 'y': 300}
         self.ball_velocity = {'x': 1, 'y': 1}
-
+        
     async def broadcase_score(self):
         await self.channels.group_send(
             self.id,
@@ -181,9 +219,6 @@ class GameEngine:
     def running(self):
         return self._running
 
-    @classmethod
-    def shared_game(cls):
-        return cls.GameEnginInstance
 
     def add_user(self, id):
         player_instance = Player(id)
@@ -212,11 +247,13 @@ class GameEngine:
         for player in self.player:
             player.update_paddle_position()
 
-    def set_player(self, id, player_side):
+    def set_player(self, id, player_side, obj):
         player = self.get_player(id)
         if not player:
             return
         player.set_player_side(player_side)
+        player.set_obj(obj)
+        
 
         # Set Paddle
         if player.as_player == 1:
@@ -227,9 +264,11 @@ class GameEngine:
     # All Check Code
 
     async def check(self):
+        # Debug purpose
+        print("Update Score")
         self.check_player_paddle()
-        self.player[0].increase_score()
-        self.player[1].increase_score()
+        # self.player[0].increase_score()
+        # self.player[1].increase_score()
         await self.update_player_paddle()
         await self.broadcase_score()
 

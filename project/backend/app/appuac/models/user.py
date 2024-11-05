@@ -7,7 +7,8 @@ from appuac.models.base import (
 )
 from datetime import timedelta
 from django.utils import timezone
-
+from pong.models import MatchHistory
+from django.db.models import Q
 
 def gen_id():
     return generate(size=24)
@@ -35,11 +36,17 @@ class User(AbstractUser):
     
     @property
     def wins(self):
-        return 0
+        m = MatchHistory.objects.filter(
+            winner=self
+        ).count()
+        return m
     
     @property
     def losses(self):
-        return 0
+        player_1 = Q(player_1=self)
+        player_2 = Q(player_2=self)
+        matches = abs(MatchHistory.objects.filter(player_1 | player_2).count() - self.wins)
+        return matches
     
     @property
     def tour_won(self):
@@ -53,10 +60,10 @@ class User(AbstractUser):
         db_table = "auth_user"
 
     def __repr__(self) -> str:
-        return f"user: {self.id}"
+        return f"user: {self.id} username: {self.username}"
 
-    def __repr__(self) -> str:
-        return f"user: {self.id}"
+    def __str__(self) -> str:
+        return f"user: {self.id}, username: {self.username}"
 
 
 class FriendRequest(BaseAutoDate, BaseID):

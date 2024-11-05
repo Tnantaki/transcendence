@@ -91,4 +91,5 @@ def remove_all_user_from_room():
     all_user = User.objects.all()
     for u in all_user:
         u.room_user.clear()
+    
         

@@ -1,5 +1,6 @@
 from pong.provider_game.paddle import Paddle
-
+from channels.db import database_sync_to_async
+from appuac.models.user import User
 class Player:
     def __init__(self, id):
         self.paddle = None
@@ -9,6 +10,8 @@ class Player:
         self.score = 0
         self.canvas_x = 1024
         self.canvas_y = 600
+        self.block = False
+        self.obj = None
 
     def set_id(self, id):
         if id:
@@ -31,10 +34,28 @@ class Player:
         return self.score
 
     def increase_score(self):
+        if self.block:
+            return 
         self.score += 1
+    
+    def set_obj(self, obj):
+        self.obj = obj
 
     def update_paddle_position(self):
         """
         Let paddle move itself
         """
         self.paddle.update_position(0, self.canvas_x, 0, self.canvas_y)
+    
+    def get_name(self):
+        if self.obj.display_name != "":
+            return self.obj.display_name
+        return self.obj.username
+    
+    def set_block_inc(self, block=True):
+        self.block = block
+    
+    @database_sync_to_async
+    def refresh_user(self):
+        self.obj = User.objects.get(id=self.obj.id)
+        
