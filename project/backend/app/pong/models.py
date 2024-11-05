@@ -47,6 +47,7 @@ class Room(BaseAutoDate):
 
     game_type = models.CharField(default="VERSUS", max_length=255)
     hide = models.BooleanField(default=False)
+    tour_id = models.CharField(default="", max_length=255)
 
     # user_player_register_affter_game_start
 
@@ -55,34 +56,6 @@ class Room(BaseAutoDate):
         self.save()
         return self
 
-
-class Game(BaseID, BaseAutoDate):
-    """
-    - param p1: player one
-    - param p2: player two
-    - param p1_score: player one score
-    - param p2_score: player two score
-    - param status: CLOSE game end, PENDING, PLAYING, FINISH,
-
-    """
-
-    p1 = models.ForeignKey(
-        AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        related_name="game_p1",
-        null=True,
-    )
-    p2 = models.ForeignKey(
-        AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        related_name="game_p2",
-        null=True,
-    )
-    p1_score = models.IntegerField(default=0)
-    p2_score = models.IntegerField(default=0)
-    status = models.CharField(default="CLOSE", max_length=255)
-    room = models.ForeignKey("Room", on_delete=models.CASCADE, null=True)
-    tour = models.ForeignKey("Tournament", on_delete=models.CASCADE, null=True)
 
 class MatchHistory(BaseAutoDate, BaseID):
     """

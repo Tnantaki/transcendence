@@ -1,3 +1,5 @@
+import * as constants from "../constants.js";
+
 // import { PongGame } from "./pongOnlineScript.js";
 var PLAYER = {
     IDLE: 0,
@@ -49,7 +51,7 @@ var PLAYER = {
       this.webSocketSession = undefined;
       this.room_id = undefined;
       this.user_token = undefined;
-      this.webSocketHostUrl = "ws://localhost:8001/";
+      this.webSocketHostUrl = constants.WS_URL;
   
       // Game State
       this.isSetup = false;
@@ -62,6 +64,10 @@ var PLAYER = {
       // Paddle Event utility
       this.latestLeftPaddleHit = Date.now();
       this.latestRightPaddleHit = Date.now();
+
+      // END message
+      this.endmessage = "";
+      this.showGoBackState = true;
     }
   
     // Set up board for the game
@@ -325,6 +331,9 @@ var PLAYER = {
     };
   
     gameloop = async () => {
+      if (this.display_state !=  "GAME"){
+        return;
+      }
       this.displayBackground();
       this.displayScore();
       this.displayCenterLine();
@@ -381,9 +390,13 @@ var PLAYER = {
     //   replace canva with goback button <a href="index.html">Go Back</a>
     showGoBack = () => {
       let goBack = document.createElement("p");
-      goBack.innerHTML =
-        "<center><button type='button'><a href='index.html'>Go Back</a></button></center>";
-      document.body.appendChild(goBack);
+
+      if (this.showGoBackState == true) {
+          goBack.innerHTML =
+          "<center><button type='button'><a href='/'>Go Back</a></button></center>";
+          document.body.appendChild(goBack);
+          this.showGoBackState = false
+      }
     };
   
     setDisplay = (case_id) => {
@@ -411,6 +424,12 @@ var PLAYER = {
           break;
         case "GAME":
           this.gameloop();
+          break;
+        case "GAME_FINISHED":
+          // แก้ display เป็น นับถอยหลัง
+          this.showMessageMiddleScreen(this.endmessage);
+          this.showGoBack()
+          // wait 3 sec then redirect to /game or /tournament/:id/
           break;
         default:
           this.showMessageMiddleScreen("Error unknown case: " + case_id);
@@ -469,6 +488,11 @@ var PLAYER = {
             console.log("Update score", data.data);
             this.leftScore.score = data.data.left;
             this.rightScore.score = data.data.right;
+            break;
+          case "GAME_FINISHED":
+            this.endmessage = `${data.data.winner.name} WON`
+            this.display_state = "GAME_FINISHED";
+            break;
           default:
             break;
         }
