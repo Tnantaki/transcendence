@@ -1,6 +1,6 @@
-export const BACKEND_URL = "http://localhost:8000";
-export const FRONTEND_URL = "http://localhost:3333";
-export const WS_URL = "ws://localhost:8000";
+export const BACKEND_URL = "http://localhost:8001/api";
+export const FRONTEND_URL = "http://localhost:8001";
+export const WS_URL = "ws://localhost:8001";
 
 // API PROFILE
 export const API_SIGNUP = BACKEND_URL + "/i/uac/register/";
