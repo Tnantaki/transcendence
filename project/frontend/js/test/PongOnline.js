@@ -428,7 +428,7 @@ var PLAYER = {
         case "GAME_FINISHED":
           // แก้ display เป็น นับถอยหลัง
           this.showMessageMiddleScreen(this.endmessage);
-          this.showGoBack()
+          // this.showGoBack()
           // wait 3 sec then redirect to /game or /tournament/:id/
           break;
         default:
@@ -490,6 +490,7 @@ var PLAYER = {
             this.rightScore.score = data.data.right;
             break;
           case "GAME_FINISHED":
+            popupWinner(data.data.winner.name)
             this.endmessage = `${data.data.winner.name} WON`
             this.display_state = "GAME_FINISHED";
             break;
@@ -529,3 +530,13 @@ var PLAYER = {
 var Game = new PongGame();
 
 requestAnimationFrame(Game.loop);
+
+// Display Popup Finish Game
+const modalWinnerObj = document.getElementById('winnerModal')
+const modalWinner = new bootstrap.Modal(modalWinnerObj);
+function popupWinner(winnerName) {
+  modalWinner.show();
+
+  const winner = modalWinnerObj.querySelector('#winnerName');
+  winner.innerHTML = winnerName
+}
