@@ -1,0 +1,16 @@
+# kibana.yml
+server.name: kibana
+server.host: "0.0.0.0"
+server.ssl.enabled: true
+server.ssl.certificate: /usr/share/kibana/config/certs/kibana.pem
+server.ssl.key: /usr/share/kibana/config/certs/kibana-key.pem
+server.ssl.certificateAuthorities: [ "/usr/share/kibana/config/certs/root-ca.pem" ]
+
+elasticsearch.hosts: [ "https://elasticsearch:9200" ] # connect to elasticsearch
+elasticsearch.username: "kibana_system"
+elasticsearch.password: "${KIBANA_SYSTEM_PASSWORD}"
+elasticsearch.ssl.certificateAuthorities: [ "/usr/share/kibana/config/certs/root-ca.pem" ]
+
+xpack.security.encryptionKey: "${KIBANA_ENCRYPTION_KEY}"
+xpack.encryptedSavedObjects.encryptionKey: "${KIBANA_ENCRYPTION_KEY}"
+xpack.reporting.encryptionKey: "${KIBANA_ENCRYPTION_KEY}"

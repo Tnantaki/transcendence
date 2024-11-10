@@ -1,0 +1,82 @@
+<link rel="stylesheet" href="css/leaderboard.css">
+
+<!-- icon menu -->
+<div class="icon-menu-container">
+  <img id="notiBtn" class="icon-menu ic-xl btn-hover" data-bs-toggle="modal" data-bs-target="#notificationModal"
+    src="../static/svg/noti-friend.svg" alt="notification button">
+  <a class="m-0 p-0" href="/">
+    <img class="icon-menu ic-xl btn-hover p-0 mt-0" src="../static/svg/home.svg" alt="Home button">
+  </a>
+  <a class="m-0 p-0" href="/profile">
+    <img class="icon-menu ic-xl btn-hover p-0 mt-0" src="../static/svg/Sign-out.svg" alt="back button">
+  </a>
+</div>
+
+<div class="bk-main">
+
+  <!-- leaderboard -->
+  <div id="leaderboard" class="d-flex justify-content-center bk-picture-title">
+    <div id="number2" class="d-flex flex-column align-items-center align-self-end bk-leader">
+      <div class=" profile-image">
+        <img src="/static/svg/default-user-picture.svg" id="picture" alt="profile-picture">
+      </div>
+      <div class="bk-ribbon">
+        <img class="ribbon" src="/static/svg/ribbon.svg" alt="ribbon">
+        <img class="medal" src="/static/svg/medalNo2.svg" alt="medal">
+        <p id="name" class="font-bs fs-lg"></p>
+      </div>
+    </div>
+    <div id="number1" class="d-flex flex-column align-items-center align-self-center bk-leader">
+      <div class="profile-image position-relative">
+        <img src="/static/svg/default-user-picture.svg" id="picture" alt="profile-picture">
+        <div class="crown">
+          <img src="/static/svg/crown.svg" alt="ribbon">
+        </div>
+      </div>
+      <div class="bk-ribbon">
+        <img class="ribbon" src="/static/svg/ribbon.svg" alt="ribbon">
+        <img class="medal" src="/static/svg/medalNo1.svg" alt="medal">
+        <p id="name" class="font-bs fs-lg"></p>
+      </div>
+    </div>
+    <div id="number3" class="d-flex flex-column align-items-center align-self-end bk-leader">
+      <div class=" profile-image">
+        <img src="/static/svg/default-user-picture.svg" id="picture" alt="profile-picture">
+      </div>
+      <div class="bk-ribbon">
+        <img class="ribbon" src="/static/svg/ribbon.svg" alt="ribbon">
+        <img class="medal" src="/static/svg/medalNo3.svg" alt="medal">
+        <p id="name" class="font-bs fs-lg"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- table -->
+  <div class="bk-table">
+    <!-- table headline -->
+    <div class="table-headline container-fluid ">
+      <div class="row d-flex m-0">
+        <div class="col-2">
+          <p data-i18n="rank">rank</p>
+        </div>
+        <div class="col">
+          <p data-i18n="player">player</p>
+        </div>
+        <div class="col-2">
+          <p data-i18n="win">win</p>
+        </div>
+        <div class="col-2">
+          <p data-i18n="lose">lose</p>
+        </div>
+        <div class="col-2">
+          <p data-i18n="score">score</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- table data -->
+    <div class="bk-table">
+      <ol id="player-list" class="overflow-auto scroll-custom player-list"> </ol>
+    </div>
+  </div>
+</div>

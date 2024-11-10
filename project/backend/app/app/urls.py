@@ -20,6 +20,11 @@ from ninja import NinjaAPI
 from appuac.url import UACRouter
 # from api.urls import apiRouter
 from ninja import Swagger
+from django.urls import path, include
+from django.conf.urls.static import static
+from app import settings
+from pong import urls as pong_urls
+from pong.routing import  pong_router
 
 api = NinjaAPI(
     # docs=Swagger(),
@@ -30,7 +35,15 @@ api.add_router(
     router=UACRouter,
 )
 
+api.add_router(
+    prefix="/game",
+    router=pong_router
+)
+
 urlpatterns = [
     path("i/", api.urls),
     path('admin/', admin.site.urls),
+    path('game/pong/', include(pong_urls))
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

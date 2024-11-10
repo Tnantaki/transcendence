@@ -1,0 +1,32 @@
+
+<link rel="stylesheet" type="text/css" href="style.css">
+<div>
+    <h1 style="color: white;">Pong Game</h1>
+    <h2>version 0.1.0.0</h2>
+    <center>
+    <canvas id="gameArea" width="1024" height="600"></canvas>
+    </center>
+
+
+	<!-- Modal Winner Contact -->
+	<div class="modal fade" id="winnerModal" tabindex="-1" data-bs-backdrop="static">
+		<div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+			<div class="modal-content popup-content">
+				<div class="modal-body">
+					<div class="popup-frame">
+						<h1 class="font-bs fs-xxl m-2" style="color: #fff;" data-i18n="winner">the winner</h1>
+						<div class="d-flex justify-content-center popup-body m-3">
+							<p id="winnerName" class="font-bs-bold h-md" style="color: #629DD2;"></p>
+						</div>
+						<div class="d-flex justify-content-around popup-footer w-100">
+							<a id="redirectPage" class="m-0 p-0" href="/game">
+								<button type="button" class="font-bs fs-lg btn btn-secondary flex-shrink-1 p-2 mx-2"
+									data-i18n="back_to_game_menu" data-bs-dismiss="modal">back to game menu</button>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

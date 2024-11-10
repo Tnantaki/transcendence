@@ -37,7 +37,6 @@ async function submitLogOut(){
         return true
     }
 
-
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + token);

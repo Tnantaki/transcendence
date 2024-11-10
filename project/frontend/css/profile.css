@@ -1,68 +1,14 @@
-.bk-item {
-  border: var(--bs-lg) solid var(--clr-border);
-  border-radius: 15px;
-}
-
-.bk-profile {
-  display: grid;
-  grid-template-rows: 2fr 3fr auto;
-  min-width: min(800px, max(calc(800px * 0.15) + calc(800vw * 0.038), calc(800px * 0.15) + calc(800vh * 0.038)));
-}
-
 .block-profile-main {
   display: grid;
   grid-template-columns: 7fr 5fr;
   width: 100%;
-  gap: var(--mg-xxl);
-  margin: var(--mg-xxl);
-  min-height: 0;
-}
-
-.bk-profile-title {
-  display: grid;
-  grid-template-columns: 1fr 3fr auto;
-  background-color: var(--clr-bg-title);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.bk-profile-stat {
+  gap: var(--mg-xl);
   margin: var(--mg-xl);
-  margin-bottom: var(--mg-md);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(2, 1fr);
-  gap:var(--mg-xl);
-}
-
-.micro-item {
-  border: var(--bs-lg) solid var(--clr-border);
-  border-radius: min(20px, calc(20px * 0.20) + calc(20vw * 0.038));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  font-size: min(24px, calc(24px * 0.20) + calc(24vw * 0.038));
-}
-
-.profile-image {
-  width: min(180px, max(calc(180px * 0.15) + calc(180vw * 0.038), calc(180px * 0.15) + calc(180vh * 0.038)));
-  aspect-ratio: 1 / 1;
-}
-
-.profile-image img {
-  border: var(--bs-md) solid var(--clr-border);
-  border-radius: 50%;
-  width: 100%;
-  height: auto;
+  min-height: 0;
 }
 
 .bk-profile-button > a {
   font-size: min(24px, calc(24px * 0.20) + calc(24vw * 0.038));
-}
-
-.micro-item .stat {
-  font-size: min(60px, max(calc(60px * 0.15) + calc(60vw * 0.038), calc(60px * 0.15) + calc(60vh * 0.038)));
 }
 
 .edit-button {
@@ -82,18 +28,6 @@
   margin-bottom: var(--mg-md);
 }
 
-.bio-box {
-  text-indent: 10%;
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  /* -webkit-line-clamp: 0; change in JS */
-}
-
-p {
-  margin: 0;
-}
-
 .bk-friend {
   display: grid;
   grid-template-rows: 1fr 6fr;
@@ -103,25 +37,19 @@ p {
 .friend-list-item {
   display: grid;
   position: relative;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 2fr 5fr 1fr;
   width: 85%;
   margin: var(--mg-md);
 }
-
+.friend-item-picture {
+  display: flex;
+  justify-content: center;
+}
 .friend-item-picture img {
   border: var(--bs-md) solid var(--clr-border);
   border-radius: 50%;
   width: min(100px, max(calc(100px * 0.15) + calc(100vw * 0.038), calc(100px * 0.15) + calc(100vh * 0.038)));
   aspect-ratio: 1 / 1;
-}
-
-.friend-name {
-  color: var(--clr-bg-btn);
-  text-decoration: none;
-}
-
-.friend-name:hover {
-  text-decoration: underline;
 }
 
 .friend-item-background {
@@ -141,23 +69,6 @@ p {
   margin-bottom: 0;
   padding: 0;
   padding-top: var(--mg-xl);
-  overflow: visible;
-}
-
-.bk-friend-list::-webkit-scrollbar {
-  width: var(--ic-sm);
-  background-color: var(--clr-text);
-  border-radius: 10px;
-  border: var(--bs-md) solid var(--clr-border);
-}
-
-.bk-friend-list::-webkit-scrollbar-thumb {
-  background: var(--clr-bg-btn); 
-  border-radius: 10px;
-}
-
-.bk-friend-list::-webkit-scrollbar-thumb:hover {
-  background: var(--clr-shadow); 
 }
 
 .bk-friend-list-title {
@@ -183,4 +94,15 @@ p {
 .bk-friend-button {
   font-size: var(--fs-lg);
   width: min(230px, max(calc(230px * 0.15) + calc(230vw * 0.038), calc(230px * 0.15) + calc(230vh * 0.038)));
+}
+
+.bk-friend-title {
+  gap: var(--mg-lg);
+}
+
+#displayName {
+  margin-bottom: var(--mg-md);
+}
+#email {
+  margin-bottom: var(--mg-md);
 }

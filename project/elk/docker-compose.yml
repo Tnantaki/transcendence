@@ -1,0 +1,74 @@
+services:
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION:?error}
+    image: elasticsearch
+    container_name: elasticsearch
+    environment:
+      node.name: elasticsearch
+      discovery.type: single-node # using for single node
+      ES_JAVA_OPTS: -Xms512m -Xmx512m # set JVM heap size for reduce momory usage
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?error} # define password
+    mem_limit: ${MEM_LIMIT}
+    ports:
+      - 9200:9200
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - certs:/usr/share/elasticsearch/config/certs
+    networks:
+      - elastic
+
+  logstash:
+    build:
+      context: ./logstash
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION:?error}
+    image: logstash
+    container_name: logstash
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?error}
+    volumes:
+      - certs:/usr/share/logstash/config/certs
+    mem_limit: ${MEM_LIMIT}
+    ports:
+      - 5044:5044
+    env_file:
+      - ../backend/.env
+    networks:
+      - backend
+      - elastic
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: ./kibana
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION:?error}
+    image: kibana
+    container_name: kibana
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?error} 
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_PASSWORD?:error}
+      KIBANA_ENCRYPTION_KEY: ${KIBANA_ENCRYPTION_KEY?:error}
+    mem_limit: ${MEM_LIMIT}
+    ports:
+      - 5601:5601
+    volumes:
+      - certs:/usr/share/kibana/config/certs
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+
+volumes:
+  esdata:
+    driver: local
+  certs:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge

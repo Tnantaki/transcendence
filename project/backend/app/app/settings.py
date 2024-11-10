@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from app.services.env_manager import ENVS
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,8 +33,9 @@ ALLOWED_HOSTS = ENVS['ALLOWED_HOSTS']
 # Application definition
 
 INSTALLED_APPS = [
-    'api',
     'appuac',
+    'pong',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,6 +76,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'app.wsgi.application'
+# Asyn server GateWay interface
+# Daphne
+ASGI_APPLICATION = "app.asgi.application"
 
 
 # Database
@@ -126,6 +131,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/asset/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'asset')
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -134,3 +143,36 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'appuac.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
+
+# Logstash
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'logstash': {
+#             'level': 'INFO',
+#             'class': 'logstash.TCPLogstashHandler',
+#             'host': 'logstash',
+#             'port': 5044,
+#             'version': 1,
+#             'message_type': 'django',
+#             'fqdn': False,
+#             'tags': ['backend'],
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['logstash'],
+#             'level': 'INFO',
+#         },
+#     },
+# }

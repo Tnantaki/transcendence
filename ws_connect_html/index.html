@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทดสอบ WebSocket</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button { margin: 5px 0; padding: 5px; }
+        #messages { border: 1px solid #ccc; height: 400px; overflow-y: scroll; padding: 10px; }
+    
+        .param-item {
+            display: inline-block;
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            margin: 2px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+        .param-item:hover {
+            background-color: #e0e0e0;
+        }
+        .message {
+            margin: 5px 0;
+            border: 1px solid brown;
+        }
+    
+    </style>
+</head>
+<body>
+    <h2>ทดสอบ WebSocket</h2>
+    <input type="text" id="urlInput" placeholder="ใส่ URL WebSocket ที่นี่" style="width: 300px;" value="ws://localhost:8000/ws/tournament/">
+    <input type="text" id="roomInput" placeholder="ใส่ Room ที่นี่" style="width: 300px;">
+    <input type="text" id="tokenInput" placeholder="ใส่ Token ที่นี่" style="width: 300px;">
+    <button onclick="connectWebSocket()">เชื่อมต่อ</button>
+    <br>
+    <input type="text" id="messageInput" placeholder="ใส่ข้อความที่นี่" style="width: 300px;">
+    <button onclick="sendMessage()">ส่ง</button>
+    <div id="messages"></div>
+    <button onclick="closeWebSocket()">ปิดการเชื่อมต่อ</button>
+    <button onclick="clearMessages()">ล้างข้อความ</button>
+
+    <!-- list of connect -->
+    <h3>รายการ URL ที่เก็บไว้:</h3>
+    <ul id="savedUrls"></ul>
+
+    <script>
+        let socket;
+
+        function connectWebSocket() {
+            const url = document.getElementById('urlInput').value;
+            const roomId = document.getElementById('roomInput').value;
+            const token = document.getElementById('tokenInput').value;
+            const wbUrl = `${url}?room_id=${roomId}&token=${token}`;
+
+
+            let savedUrls = JSON.parse(localStorage.getItem('savedWbUrls')) || [];
+            if (!savedUrls.includes(wbUrl)) {
+                savedUrls.push(wbUrl);
+                if (savedUrls.length > 5) {
+                    savedUrls.shift(); // ลบ URL ที่เก่าที่สุดออกถ้ามีมากกว่า 5 รายการ
+                }
+                localStorage.setItem('savedWbUrls', JSON.stringify(savedUrls));
+            }
+            displaySavedUrls();
+
+
+            socket = new WebSocket(wbUrl);
+
+            socket.onopen = function(e) {
+                addMessage("เชื่อมต่อสำเร็จ");
+            };
+
+            socket.onmessage = function(event) {
+                addMessage(`ได้รับ: ${event.data}`);
+            };
+
+            socket.onclose = function(event) {
+                addMessage("การเชื่อมต่อถูกปิด");
+            };
+
+            socket.onerror = function(error) {
+                addMessage(`เกิดข้อผิดพลาด: ${error.message}`);
+            };
+        }
+
+        function closeWebSocket() {
+            if (socket) {
+                socket.close();
+                addMessage("ปิดการเชื่อมต่อ WebSocket");
+                socket = null;
+            }
+        }
+
+        function sendMessage() {
+            const message = document.getElementById('messageInput').value;
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(message);
+                addMessage(`ส่ง: ${message}`);
+                document.getElementById('messageInput').value = '';
+            } else {
+                addMessage("ไม่สามารถส่งข้อความได้ กรุณาเชื่อมต่อ WebSocket ก่อน");
+            }
+        }
+
+        function addMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML += `<p class="message">${message}</p>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function clearMessages() {
+            document.getElementById('messages').innerHTML = '';
+        }
+
+        function displaySavedUrls() {
+            const savedUrlsList = document.getElementById('savedUrls');
+            const savedUrls = JSON.parse(localStorage.getItem('savedWbUrls')) || [];
+            
+            savedUrlsList.innerHTML = '';
+            if (savedUrls.length > 0) {
+                savedUrls.forEach((url, index) => {
+                    const li = document.createElement('li');
+                    console.log(url);
+                    const [baseUrl, params] = url.split('?');
+                    li.textContent = baseUrl;
+                    
+                    if (params) {
+                        const paramDiv = document.createElement('div');
+                        paramDiv.style.marginLeft = '20px';
+                        params.split('&').forEach(param => {
+                            const [key, value] = param.split('=');
+                            const paramSpan = document.createElement('span');
+                            paramSpan.className = 'param-item';
+                            paramSpan.textContent = `${key}=${value}`;
+                            paramSpan.title = 'คลิกเพื่อคัดลอก';
+                            paramSpan.onclick = function() {
+                                navigator.clipboard.writeText(`${value}`)
+                            };
+                            paramDiv.appendChild(paramSpan);
+                        });
+                        li.appendChild(paramDiv);
+                    }
+                    savedUrlsList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'ไม่มี URL ที่เก็บไว้';
+                savedUrlsList.appendChild(li);
+            }
+        }
+    
+
+        // เรียกใช้ฟังก์ชัน displaySavedUrls เมื่อโหลดหน้า
+        window.onload = displaySavedUrls;
+
+    </script>
+</body>
+</html>

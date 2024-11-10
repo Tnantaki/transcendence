@@ -2,7 +2,7 @@
   height: 30vh;
   flex-wrap: wrap;
   transform: translateX(-5%);
-  margin-bottom: var(--mg-xl);
+  margin-bottom: var(--mg-xxl);
 }
 
 .title-1 {
@@ -14,8 +14,11 @@
 }
 
 .block-login-input {
+  display: flex;
+  justify-content: space-between;
   border-bottom: var(--bs-lg)  solid var(--clr-border);
   font-size: var(--fs-xxl);
+  padding-bottom: var(--bs-xl);
   margin-bottom: var(--mg-lg);
 }
 
@@ -29,4 +32,12 @@
   z-index: -2;
   transform: translateX(-50%);
   position: absolute;
+}
+
+.block-login {
+  gap: var(--mg-xl);
+}
+
+.from-check {
+  margin-top: var(--mg-lg);
 }

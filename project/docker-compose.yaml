@@ -1,3 +1,6 @@
+# include:
+#   - elk/docker-compose.yml
+
 services:
   db:
     image: postgres
@@ -20,6 +23,7 @@ services:
       - ./backend:/app
     depends_on:
       - db
+      # - logstash
     networks:
       - backend
     env_file:
@@ -39,16 +43,13 @@ services:
       - backend
       - frontend
 
-  # for testing frontend only
-  # front: 
-  #   build: nginx
-  #   ports:
-  #     - '8002:80'
-  #   volumes:
-  #     - './frontend:/usr/share/nginx/html'
-  #     - ./nginx:/etc/nginx/conf.d
-  #   networks:
-  #     - frontend
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - 6801:6379
+    networks:
+      - backend
 
 networks:
   backend:

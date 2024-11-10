@@ -3,29 +3,47 @@
 <div class="d-flex align-items-end justify-content-center block-title">
   <h1 class="font-bs-bold title-1">New user? Sign Up</h1>
 </div>
-<form action="#" method="post">
+<form id="signupForm">
   <div class="container d-flex flex-column align-items-center block-signup">
     <div class="input-group input-group-custom rounded-pill d-flex align-items-center">
-      <input type="text" class="form-control mx-2 font-bs fs-xl" placeholder="User name">
+      <img class="input-icon-custom" src="../static/svg/username.svg" alt="user image">
+      <input type="text" class="form-control mx-1 font-bs fs-xl"
+        id="username" name="username" placeholder="User name" maxlength="20" required>
+    </div>
+    <div id="username-error" class="align-self-start font-bs ms-3 p-0">
+      <p class="text-error" data-i18n="error_username_invalid"></p>
+      <p class="text-error" data-i18n="error_username_same"></p>
     </div>
     <div class="input-group input-group-custom rounded-pill d-flex align-items-center">
-      <input type="text" class="form-control mx-2 font-bs fs-xl" placeholder="Avatar name">
+      <img class="input-icon-custom" src="../static/svg/email.svg" alt="user image">
+      <input type="email" class="form-control mx-1 font-bs fs-xl"
+        id="email" name="email" placeholder="Email" required>
     </div>
+    <p id="avatarName-error" class="font-bs text-error ms-3 p-0"></p>
     <div class="input-group input-group-custom rounded-pill d-flex align-items-center">
-      <input type="password" class="form-control mx-2 font-bs fs-xl" placeholder="Password">
+      <img class="input-icon-custom" src="../static/svg/lock.svg" alt="user image">
+      <input type="password" class="form-control mx-1 font-bs fs-xl" id="inputPassword"
+        id="password" name="password" autocomplete="on" placeholder="Password" required>
       <div class="input-group-append mx-1">
-        <img class="btn-eye btn-hover input-icon-custom" src="../static/svg/showpassword.svg" alt="eye icon"
+        <img class="btn-eye btn-hover input-icon-custom" src="../static/svg/eye.svg" alt="eye icon"
           onclick="togglePassword(this.parentNode.previousElementSibling)">
       </div>
     </div>
+    <p id="password-error" class="font-bs text-error ms-3 p-0"></p>
+    <div id="inputPasswordError" class="font-bs text-error ms-3"></div>
     <div class="input-group input-group-custom rounded-pill d-flex align-items-center">
-      <input type="password" class="form-control mx-2 font-bs fs-xl" placeholder="Confirm Password">
+      <img class="input-icon-custom" src="../static/svg/lock.svg" alt="user image">
+      <input type="password" class="form-control mx-1 font-bs fs-xl"
+        id="password2" name="password2" autocomplete="on" placeholder="Confirm Password" required>
       <div class="input-group-append mx-1">
-        <img class="btn-eye btn-hover input-icon-custom" src="../static/svg/showpassword.svg" alt="eye icon"
+        <img class="btn-eye btn-hover input-icon-custom" src="../static/svg/eye.svg" alt="eye icon"
           onclick="togglePassword(this.parentNode.previousElementSibling)">
       </div>
     </div>
-    <!-- <div class="font-bs error-text">Password must be the same!</div> -->
+    <div id="password2-error" class="align-self-start font-bs ms-3 p-0 text-start">
+      <p class="text-error" data-i18n="error_confirm_password"></p>
+      <p class="text-error" data-i18n="error_server"></p>
+    </div>
     <div class="d-flex align-items-center from-check mt-3">
       <input type="checkbox" class="form-check-input checkbox-lg" id="remember-me">
       <label class="form-check-label font-bs-bold ms-2 checkbox-label-lg" for="remember-me">
@@ -33,11 +51,36 @@
       </label>
     </div>
     <div class="d-flex align-self-stretch">
-      <a href="/signup" class="flex-grow-1 font-bs-bold btn btn-primary fs-xl">Create account</a>
+      <button type="submit" class="flex-grow-1 font-bs-bold btn btn-primary fs-xl">Create account</button>
     </div>
   </div>
 </form>
 <div class="font-bs-bold bottom-right">
   Already have an account?
   <a href="/">Sign in</a>
+</div>
+
+<!-- Modal Create Account Success -->
+<div class="modal fade" id="successCreateAccountModal" tabindex="-1">
+  <div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
+    <div class="modal-content popup-content">
+      <div class="modal-body">
+        <div class="popup-frame">
+          <div class="popup-header-icon">
+            <img src="../static/svg/success.svg" alt="alert picture">
+          </div>
+          <h1 class="font-bs-bold fs-xl" style="color: #ffffff;">SUCCESS</h1>
+          <div class="d-flex justify-content-center popup-body">
+            <p class="font-bs fs-lg" style="color: #ffffff;">
+              YOUR ACCOUNT HAS BEEN CREATED
+            </p>
+          </div>
+          <div class="d-flex justify-content-evenly popup-footer">
+            <button type="button" class="font-bs-bold btn btn-primary" id="btn-success"
+              data-bs-dismiss="modal">Back to login</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

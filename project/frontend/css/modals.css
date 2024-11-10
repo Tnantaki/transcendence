@@ -1,0 +1,186 @@
+/* Notification Modal */
+.bk-noti {
+  position: relative;
+  border: var(--bs-md) solid var(--clr-border);
+  border-radius: 15px;
+  display: grid;
+  grid-template-rows: 1fr 6fr auto;
+  /* min-width: min(800px, max(calc(800px * 0.15) + calc(800vw * 0.038), calc(800px * 0.15) + calc(800vh * 0.038)));
+  height: min(800px, max(calc(800px * 0.15) + calc(800vw * 0.038), calc(800px * 0.15) + calc(800vh * 0.038))); */
+}
+
+.bk-noti-title {
+  background-color: var(--clr-bg-title);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.bk-noti-list {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+.noti-list-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 7fr minmax(auto, 5fr);
+  border-bottom: 1px solid var(--clr-white);
+  margin: 0;
+  padding: 0;
+  padding-top: var(--pd-lg);
+  padding-bottom: var(--pd-lg);
+}
+
+.noti-item-picture img {
+  border: var(--bs-md) solid var(--clr-border);
+  border-radius: 50%;
+  width: min(90px, max(calc(90px * 0.15) + calc(90vw * 0.038), calc(90px * 0.15) + calc(90vh * 0.038)));
+  aspect-ratio: 1 / 1;
+  margin: var(--mg-md);
+}
+
+/* Friend Modal */
+.bk-item {
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: 15px;
+}
+
+.bk-profile {
+  display: grid;
+  grid-template-rows: 2fr 3fr auto;
+  min-width: min(800px, max(calc(800px * 0.15) + calc(800vw * 0.038), calc(800px * 0.15) + calc(800vh * 0.038)));
+}
+
+.bk-profile-title {
+  display: grid;
+  grid-template-columns: 1fr 3fr auto;
+  background-color: var(--clr-bg-title);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.bk-profile-stat {
+  margin: var(--mg-lg);
+  margin-bottom: var(--mg-md);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap:var(--mg-lg);
+}
+
+.micro-item {
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: min(20px, calc(20px * 0.20) + calc(20vw * 0.038));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: min(24px, calc(24px * 0.20) + calc(24vw * 0.038));
+}
+
+.micro-item .stat {
+  font-size: min(60px, max(calc(60px * 0.15) + calc(60vw * 0.038), calc(60px * 0.15) + calc(60vh * 0.038)));
+}
+
+.profile-image {
+  width: min(180px, max(calc(180px * 0.15) + calc(180vw * 0.038), calc(180px * 0.15) + calc(180vh * 0.038)));
+  aspect-ratio: 1 / 1;
+}
+
+.profile-image > img {
+  border: var(--bs-md) solid var(--clr-border);
+  border-radius: 50%;
+  width: 100%;
+  height: auto;
+}
+
+.bio-box {
+  text-indent: var(--mg-xl);
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  /* -webkit-line-clamp: 0; change in JS */
+}
+
+p {
+  margin: 0;
+}
+
+.btn {
+  margin: var(--mg-md) 0;
+}
+
+/* .modal-custom-width {
+  min-width: 400px;
+} */
+
+.modal-content-chat {
+  box-shadow: 0 0 20px var(--clr-shadow);
+  border: var(--bs-lg) solid var(--clr-border);
+  border-radius: var(--bs-xl);
+  padding: 0;
+  min-width: 100%;
+  height: 70%;
+}
+.chat-title-bar {
+  width: 100%;
+  background-color: var(--clr-text);
+  border-radius: var(--bs-md);
+	font-family: 'Orbitron', 'system ui';
+	font-size: var(--fs-lg);
+	font-weight: bold;
+	color: #0946A6;
+
+  display: flex;
+  padding: var(--bs-xl);
+}
+.chat-box {
+  border-top: var(--bs-md) solid var(--clr-border);
+}
+.chat-typing-area {
+  border: var(--bs-md) solid var(--clr-border);
+  border-radius: var(--bs-xl);
+  margin: var(--mg-lg);
+  padding: var(--bs-lg);
+}
+.chat-input {
+	font-family: 'Orbitron', 'system ui';
+	font-size: var(--fs-lg);
+  font-weight: normal;
+	color: #fff;
+  background-color: 0;
+}
+.chat-picture {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.chat-picture img {
+	border: var(--bs-md) solid var(--clr-border);
+	border-radius: 50%;
+	width: min(70px, max(calc(70px * 0.15) + calc(70vw * 0.038), calc(70px * 0.15) + calc(70vh * 0.038)));
+	aspect-ratio: 1 / 1;
+}
+.chat-message {
+  margin: var(--mg-md);
+  margin-bottom: 0;
+  display: flex;
+  gap: var(--mg-lg);
+}
+.chat-text {
+	font-family: 'Orbitron', 'system ui';
+	font-size: var(--fs-lg);
+  font-weight: 500;
+	color: #fff;
+}
+.chat-text > p {
+  padding: var(--pd-md) 0;
+}
+.chat-text-warning {
+	font-family: 'Orbitron', 'system ui';
+	font-size: var(--fs-lg);
+  font-weight: 500;
+	color: var(--clr-red);
+}
