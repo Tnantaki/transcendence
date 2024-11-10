@@ -5,13 +5,10 @@ import {cachedRooms, createRoom} from "./room-api.js";
 
 let canvas;
 let ctx;
-let curLanguage;
 function setCanvas() {
 	canvas = document.getElementById("gameArea");
 	if (canvas)
 		ctx = canvas.getContext("2d");
-
-	curLanguage = localStorage.getItem('currentLanguage') || 'en';
 }
 
 // preload the img
