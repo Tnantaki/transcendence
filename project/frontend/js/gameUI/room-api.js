@@ -57,20 +57,20 @@ function postRoom(mode) {
 					updateLobby("online"); //! no need to update, just go the game. The update will take place after the player leave the match
 					manageCreateRoomBtn(1, createEvt);
 					closeModal();
-					loadPage("/online?room_id=" + res.id);
+					// loadPage("/online?room_id=" + res.id);
 				})
 				.catch(error => {
 					console.error("Error creating room: ", error);
 				})
 		}
 		else {
+			console.log("isTour");
 			createTourRoomAPI(roomName)
 				.then(res => {
 					cachedRooms.length = 0;
 					updateLobby("tournament"); //! no need to update, just go the game. The update will take place after the player leave the match
 					manageCreateRoomBtn(1, createEvt);
 					closeModal();
-					loadPage("/online?room_id=" + res.id);
 				})
 				.catch(error => {
 					console.error("Error creating tournament: ", error);

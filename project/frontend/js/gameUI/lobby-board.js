@@ -3,6 +3,7 @@ import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
 import { checkGameMode } from "./lobby-menu.js";
 import { dictionary } from "./shared-resources.js";
+import { createWaitingRoom, waitPlayers } from "./WaitingRoom.js";
 
 let canvas;
 let ctx;
@@ -20,11 +21,12 @@ function getBoardStartX() {
 	return canvas.width - 950;
 }
 
-const	boardObj = {
+export const	boardObj = {
 	startX: getBoardStartX(), startY: 125, padding: 30,
 	height: 330, width: 450,
 	headerPos: 77, textPadding: 40, space: 10,
 }
+
 
 function fillRoomName(room, xPos, yPos) {
 	ctx.fillText(room.name, xPos, yPos);
@@ -49,7 +51,7 @@ function getBtnHeight(roomName) {
 	return finalHeight;
 }
 
-export async function handleRoomBtn(xPos, roomBtns, event) {
+export async function handleRoomBtn(xPos, roomBtns, event, mode) {
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
@@ -62,7 +64,10 @@ export async function handleRoomBtn(xPos, roomBtns, event) {
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
 
 			// for load game online page
-			loadPage("/online?room_id=" + roomBtns[i].id);
+			if (mode == "online")
+				loadPage("/online?room_id=" + roomBtns[i].id);
+			else if (mode == "tournament")
+				createWaitingRoom(roomBtns[i]);
 			break;
 		}
 	}
@@ -77,10 +82,34 @@ const scrollbarWidth = 10;
 const scrollbarPadding = 2;
 const scrollbarThumbMinHeight = 20;
 
+
+export const   playerBtns = [];
+async function initPlayers(players) {
+	console.log("initPlayers");
+	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
+	const maxScroll = Math.max(0, (players.length - visibleLines) * lineHeight);
+	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
+	if (players.length > 0) {
+		const startIndex = Math.floor(scrollY / lineHeight);
+		for (let i = 0; i < visibleLines; i++) {
+			const playerIndex = startIndex + i;
+			if (playerIndex < players.length) {
+				const playerName = players[playerIndex];
+				const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space) * i;
+				ctx.fillText(playerName, xPos, yPos);
+				if (playerBtns.length < visibleLines)
+					playerBtns.push(playerName);
+				else
+					playerBtns[i] = playerName;
+			}
+		}
+	}
+}
+
 // Room buttons
 let hasEvent = false;
 export const   roomBtns = [];
-async function initRooms(rooms) {
+async function initRooms(rooms, mode) {
 	// console.log("initRooms");
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
@@ -107,7 +136,7 @@ async function initRooms(rooms) {
 			}
 		}
 		if (!hasEvent) {
-			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event);
+			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event, mode);
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}
@@ -149,7 +178,7 @@ async function initRooms(rooms) {
 	ctx.fill();
 }
 
-export async function drawRoomDisplay() {
+export async function drawRoomDisplay(mode) {
 	setCanvas();
 
 	// Clear the entire board area
@@ -167,8 +196,13 @@ export async function drawRoomDisplay() {
 	ctx.fillStyle = "white";
 	ctx.textBaseline = "top";
 	ctx.textAlign = "center";
-	ctx.fillText(dictionary[curLanguage].room, boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
-	ctx.fillText(dictionary[curLanguage].status, boardObj.width - 10, boardObj.headerPos);
+	
+	if (mode == "waitingRoom")
+		ctx.fillText("Players" , boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
+	else {
+		ctx.fillText(dictionary[curLanguage].room, boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
+		ctx.fillText(dictionary[curLanguage].status, boardObj.width - 10, boardObj.headerPos);
+	}
 
 	// Draw room on the board
 	ctx.font = "25px Irish Grover";
@@ -176,19 +210,23 @@ export async function drawRoomDisplay() {
 	ctx.textBaseline = "middle";
 	ctx.textAlign = "center";
 
-	const rooms = await getAllRooms(checkGameMode());
-	if (rooms)
-		rooms.sort((a,b) => a.id - b.id);
-	await initRooms(rooms);
-
-	// Add event listeners for scrolling (only if they haven't been added before)
-	if (!canvas.hasScrollListeners) {
-		canvas.addEventListener('wheel', handleWheel);
-		canvas.addEventListener('mousedown', handleMouseDown);
-		canvas.addEventListener('mousemove', handleMouseMove);
-		canvas.addEventListener('mouseup', handleMouseUp);
-		canvas.addEventListener('mouseleave', handleMouseUp);
-		canvas.hasScrollListeners = true;
+	if (mode == "waitingRoom") {
+		await initPlayers(waitPlayers);
+	} else {
+		const rooms = await getAllRooms(checkGameMode());
+		if (rooms)
+			rooms.sort((a,b) => a.id - b.id);
+		await initRooms(rooms, mode);
+	
+		// Add event listeners for scrolling (only if they haven't been added before)
+		if (!canvas.hasScrollListeners) {
+			canvas.addEventListener('wheel', handleWheel);
+			canvas.addEventListener('mousedown', handleMouseDown);
+			canvas.addEventListener('mousemove', handleMouseMove);
+			canvas.addEventListener('mouseup', handleMouseUp);
+			canvas.addEventListener('mouseleave', handleMouseUp);
+			canvas.hasScrollListeners = true;
+		}
 	}
 }
 
@@ -237,4 +275,4 @@ function handleMouseUp() {
 	isDragging = false;
 }
 
-export const scrollEvt = {handleWheel, handleMouseDown, handleMouseMove, handleMouseUp};
+export const scrollEvt = {handleWheel, handleMouseDown, handleMouseMove, handleMouseUp}

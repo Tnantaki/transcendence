@@ -12,7 +12,7 @@ const ctx = canvas.getContext("2d");
 let gameMode;
 
 function initGameMode(mode) {
-	gameMode = mode
+	gameMode = mode;
 }
 
 export function checkGameMode() {
@@ -22,12 +22,12 @@ export function checkGameMode() {
 async function execLobby(mode, img) {
 	initGameMode(mode);
 	if (mode == "online")
-		Utils.initCanvas("onlineMatch", img);
+		Utils.initCanvas("onlineMatch", mode, img);
 	else if (mode == "tournament")
-		Utils.initCanvas("tournament", img);
+		Utils.initCanvas("tournament", mode, img);
 	Utils.drawTextBtn(btns.createBtn);
 	Utils.drawTextBtn(btns.backBtn);
-	await drawRoomDisplay();
+	await drawRoomDisplay(mode);
 	Utils.manageEvt(0, evtBtns.createBtn);
 	Utils.manageEvt(0, evtBtns.backBtn);
 }

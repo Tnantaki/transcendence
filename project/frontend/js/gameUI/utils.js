@@ -34,16 +34,16 @@ export function manageEvt(status, evt)
 // image position
 let imageX = 0;
 let imageY = 0;
-export function initCanvas(title, pongImg)
+export function initCanvas(title, mode, pongImg)
 {
 	// clear canvas
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+	
 	// draw game's screen
 	ctx.fillStyle = "black";
 	ctx.beginPath();
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+	
 	// write title
 	const textY = 50;
 	const textX = 768;
@@ -51,7 +51,10 @@ export function initCanvas(title, pongImg)
 	ctx.textAlign = "center";
 	ctx.textBaseline = "top";
 	ctx.fillStyle = "white";
-	ctx.fillText(dictionary[curLanguage][title], textX, textY);
+	if (mode == "waitingRoom")
+		ctx.fillText(title, textX, textY);
+	else
+		ctx.fillText(dictionary[curLanguage][title], textX, textY);
 
 	// get text height
 	const textHeight = ctx.measureText("m").width;
