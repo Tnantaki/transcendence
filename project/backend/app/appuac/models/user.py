@@ -65,6 +65,14 @@ class User(AbstractUser):
     def __str__(self) -> str:
         return f"user: {self.id}, username: {self.username}"
 
+    def get_display_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'display_name':self.display_name,
+            'profile': self.profile
+        }
+
 
 class FriendRequest(BaseAutoDate, BaseID):
     requestor = models.ForeignKey(

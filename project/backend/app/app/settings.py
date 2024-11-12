@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ENVS['ALLOWED_HOSTS']
 INSTALLED_APPS = [
     'appuac',
     'pong',
+    'chat',
     'daphne',
     'django.contrib.admin',
     'django.contrib.auth',

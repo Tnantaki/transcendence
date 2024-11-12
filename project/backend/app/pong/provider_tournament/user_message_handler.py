@@ -14,7 +14,6 @@ def user_tournament_event_handler_arg_check(*args, **kwargs):
         def wrapper(*args, **kwargs):
             try:
                 eve = json.loads(args[1])
-                print(eve)
             except json.JSONDecodeError as e:
                 raise ValueError(f'Invalid JSON {e}')
             if 'command' not in eve:

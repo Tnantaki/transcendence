@@ -104,6 +104,7 @@ class TournamentEngine:
     @database_sync_to_async
     def user_in_tour(self, is_print=False):
         users = get_user_model().objects.filter(tournament_user__id=self.tour_id)
+        # TODO chckec to user method
         res = [
             {
                 "id": u.id,
@@ -138,7 +139,7 @@ class TournamentEngine:
         bracket = self.create_bracket(info['user'])
         data = await create_game_for_tournament(self, bracket)
 
-        print(data)
+
 
         # # create room for all matching
         layer = get_channel_layer()
