@@ -176,7 +176,6 @@ class GameEngine:
             if p.get_score() >= self.score_to_win:
                 self.reset()
                 self._running = False
-                inspect(p)
                 a = await create_history(self, p)
                 await self.channels.group_send(
                     self.id,
