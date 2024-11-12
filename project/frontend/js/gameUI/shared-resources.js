@@ -2,6 +2,7 @@ import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
+import { loadPage } from "../router.js";
 
 let canvas;
 let ctx;
@@ -88,8 +89,9 @@ function handleStartBtn(btnObj, event)
 
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
+		// for full players in room to loadpage
+		// loadPage("/online?room_id=" + roomBtns[i].id);
 		console.log("clicked start btn");
-		// createRoom();
 	}	
 }
 
@@ -150,7 +152,8 @@ export const dictionary = {
 		status: "Status",
 		createRoom: "Create Room",
 		start: "Start",
-		back: "Back"
+		back: "Back",
+		player: "Player" // add for tournament
 	  },
 	  fr: {
 		singlePlayer: "Un Joueur",
