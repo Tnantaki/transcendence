@@ -13,7 +13,10 @@ function validateInput(input) {
     returnValue = false;
   }
 
-  if (input.password !== input.password2) {
+  if (input.password.length < 4) {
+    displayErr("#password2-error", "error_password_invalid");
+    returnValue = false;
+  } else if (input.password !== input.password2) {
     displayErr("#password2-error", "error_confirm_password");
     returnValue = false;
   }
