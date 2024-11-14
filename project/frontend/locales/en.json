@@ -35,7 +35,7 @@
   "decline": "Decline",
   "accept": "Accept",
   "error_login": "Incorrect username or password!",
-  "error_username_invalid": "Username must be alphabet or number, At least 6 character",
+  "error_username_invalid": "Username must be alphabet or number, At least 4 character",
   "error_username_same": "This username already taken!",
   "error_confirm_password": "Password must be the same!",
   "error_display_name_same": "This name already taken!",
@@ -66,5 +66,6 @@
   "2fa_authen_body1": "We have sent a verification code to ",
   "2fa_authen_body2": " Please enter it here.",
   "add_friend": "Add friend +",
-  "direct_messages": "Direct Messages"
+  "direct_messages": "Direct Messages",
+  "error_password_invalid": "Password must have at least 4 character."
 }

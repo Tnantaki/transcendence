@@ -1,7 +1,7 @@
 import { getMyProfile, getProfile } from "../services/profileService.js";
 
 export default class ChatRoom {
-  constructor(my_profile, friend_profile, chatBoxModal, sendMessage) {
+  constructor(my_profile, friend_profile, chatBoxModal, sendMessage, sendInvitePong, answerInvitePong) {
     this.chatBody = document.getElementById('chatBody')
     this.chatInput = document.getElementById('chatInput')
     this.my_profile = my_profile
@@ -10,17 +10,19 @@ export default class ChatRoom {
     this.lastMsgUser = null
     this.titleBarName = null
     this.sendMessage = sendMessage
+    this.sendInvitePong = sendInvitePong
+    this.answerInvitePong = answerInvitePong
 
     this.setInvitePongIcon()
-    this.setTitleBar()
+    this.createTitleBarName()
     this.setEnterKey()
   }
 
-  static async create(friend_id, chatBoxModal, sendMessage) {
+  static async create(friend_id, chatBoxModal, sendMessage, sendInvitePong, answerInvitePong) {
     const my_profile = await getMyProfile()
     const friend_profile = await getProfile(friend_id)
 
-    return new ChatRoom(my_profile, friend_profile, chatBoxModal, sendMessage)
+    return new ChatRoom(my_profile, friend_profile, chatBoxModal, sendMessage, sendInvitePong, answerInvitePong)
   }
 
   displayMsgSent = (msg) => {
@@ -94,32 +96,20 @@ export default class ChatRoom {
   }
 
   setInvitePongIcon = () => {
-    const invitePontBtn = document.getElementById('chat-invite-pong')
-    invitePontBtn.addEventListener('click', () => {
-      const msgObj = {
-        sender: this.my_profile.id,
-        type: "PONT_INVITE",
-        message: ""
-      }
-      this.ws.send(JSON.stringify(msgObj));
-    })
+    document.getElementById('chat-invite-pong')
+      .addEventListener('click', () => this.sendInvitePong(this.friend_profile.id))
   }
 
   pongJoinInvite = () => {
     console.log('Join Pong invite')
     // TODO: send message to server to join
+    // this.answerInvitePong({answer: 'yes'})
   }
 
   pongRejectInvite = () => {
     console.log('Join Reject invite')
     // TODO: send message to server to reject
-  }
-
-  setTitleBar = () => {
-    this.titleBarName = document.getElementById('chatTitleBarName')    
-    this.titleBarName.innerHTML = `
-      <p class="d-flex align-items-center">Waiting for friend...</p>
-    `
+    // this.answerInvitePong({answer: 'no'})
   }
 
   setEnterKey = () => {
@@ -131,10 +121,14 @@ export default class ChatRoom {
       const msg = this.chatInput.value
       this.sendMessage(msg)
       this.chatInput.value = ''
+      setTimeout(() => {
+        this.chatBody.scrollTop = this.chatBody.scrollHeight
+      }, 100);
     }
   }
 
   createTitleBarName = () => {
+    this.titleBarName = document.getElementById('chatTitleBarName')    
     this.titleBarName.innerHTML = `
       <div class="chat-picture me-2">
         <img src="/api/${this.friend_profile.profile}" alt="profile-picture">
