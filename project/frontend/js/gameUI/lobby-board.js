@@ -107,10 +107,9 @@ async function initPlayers(players) {
 }
 
 // Room buttons
-let hasEvent = false;
 export const   roomBtns = [];
 async function initRooms(rooms, mode) {
-	// console.log("initRooms");
+	let hasEvent = false;
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));

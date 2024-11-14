@@ -2,7 +2,7 @@ import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
-import { loadPage } from "../router.js";
+// import { loadPage } from "../router.js";
 
 let canvas;
 let ctx;
