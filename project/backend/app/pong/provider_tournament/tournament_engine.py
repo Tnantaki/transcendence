@@ -104,6 +104,7 @@ class TournamentEngine:
     @database_sync_to_async
     def user_in_tour(self, is_print=False):
         users = get_user_model().objects.filter(tournament_user__id=self.tour_id)
+        # TODO chckec to user method
         res = [
             {
                 "id": u.id,
@@ -136,9 +137,9 @@ class TournamentEngine:
         # if self.user_count < 3:
             # return "Can't Start Tournament"
         bracket = self.create_bracket(info['user'])
-        data =await create_game_for_tournament(self, bracket)
+        data = await create_game_for_tournament(self, bracket)
 
-        print(data)
+
 
         # # create room for all matching
         layer = get_channel_layer()
@@ -152,12 +153,6 @@ class TournamentEngine:
             }
         )
     
-    async def create_match(self):
-        """
-        create game match for tournament
-        """
-        pass
-
     def create_bracket(self, user_list):
         """
         create bracket for tournament
@@ -246,8 +241,10 @@ def create_game_for_tournament(obj, user_list):
     # create room for game match
     for pair in user_list:
         room = Room.objects.create(
+            name=f"tourGame",
             hide=True,
             game_type="TOURNAMENT",
+            tour_id=obj.tour_id,
         )
         pair['room_id'] = room.id
         pair['tour_id'] = obj.tour_id

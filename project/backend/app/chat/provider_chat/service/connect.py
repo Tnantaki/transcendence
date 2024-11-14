@@ -8,16 +8,10 @@ from pong.shared_services.utils.group_message import server_send_message_to_grou
 from pong.provider_tournament.tournament_engine import TournamentEngine
 
 @database_sync_to_async
-def find_tour_and_user(obj):
+def find_user(obj):
 
-    if not hasattr(obj, "room_id"):
-        raise ValueError("room id not set")
     if not hasattr(obj, "token"):
         raise ValueError("Obj Token Not set")
-
-    tour = Tournament.objects.filter(id=obj.room_id).first()
-    if tour is None:
-        raise ValueError("Tour Not Found")
 
     session = AuthSession.objects.filter(id=obj.token).first()
     if session is None:
@@ -26,24 +20,20 @@ def find_tour_and_user(obj):
     if session.is_expired:
         raise ValueError("Session Exprired")
     
-    obj.is_owner = tour.owner == session.user
     obj.user = session.user
-    obj.tour = tour
     obj.user_id = session.user.id
     session.in_game = True
     session.save()
     obj.instance_id = session.user.id
-    obj.room_group_name = f"Tournament_GROUP_{obj.room_id}"
-
     # add relation
-    tour.users.add(obj.user)
-
+    obj.room_group_name = obj.user_id
+    obj.groups.append(obj.user_id)
 
     return obj
 
 
 def create_query_param(obj):
-    obj.param_tocheck = ["room_id", "token"]
+    obj.param_tocheck = ["token"]
     if not hasattr(obj, "scope"):
         return None
 
@@ -90,32 +80,19 @@ async def s2s_message(obj, command):
         data={},
     )
 
-async def tour_connect(obj):
+async def connect(obj):
 
-    print("Tour Connect 1")
     create_query_param(obj)
-    print("Tour Connect 2")
-    await find_tour_and_user(obj)
-    print("Tour Connect 3")
-    await tournament_init_engine(obj)
-    print("Tour Connect 4")
+    await find_user(obj)
     await create_or_channel_to_group(obj)
-    print("Tour Connect 5")
-    await message_user_join(obj)
-    print("Tour Connect 6")
     obj.is_init = True
+    consumer_info(obj, True, True)
     
 
-def tournament_consumer_info(obj, is_print=False):
+def consumer_info(obj, is_print=False, is_inspect=False):
     attribute_list = [
-        'room_id',
-        'is_owner',
         'is_init',
-        'room_id',
-        'room_group_name',
         'channel_name',
-        'user_count',
-        'tour_engine',
         'user_id'
     ]
     # inspect(obj)
@@ -128,10 +105,9 @@ def tournament_consumer_info(obj, is_print=False):
 
     if is_print or True:
         print(res)
+    
+    if is_inspect:
+        inspect(obj)
 
     return res
     
-async def tournament_init_engine(obj):
-    obj.tour_engine = TournamentEngine(obj.room_group_name, obj.tour.id)
-    await obj.tour_engine.register_instance(obj.user_id, obj)
-    return obj

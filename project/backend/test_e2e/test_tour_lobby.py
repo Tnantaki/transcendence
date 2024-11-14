@@ -42,10 +42,10 @@ async def main():
     tokens = [
         "kNNltIZHAxlWvMGVeRxwAHLiZZv9w3h5Jgqc5H79SzWRnO78kDYSBAqdoeIPUXNe", # เปลี่ยนเป็น token จริง
         "1kCE1PvPRYQy31--PGFUBeYg11h4r56CdoeOhCQqaqFRlgApmLo12Ibm8oB0PMPz",
-        # "JbCPZZvCYQJVHjYsYGGDUzQlMl1fC7HQe2vXSvqtCJorS-thXDRn2Oac0-7hs9ZP",
-        # "-KpwYARQqkysU4J4A31nbt-CQrt45FPcAUO68n80BfPJz26Qky0cJjo4WhDS-Pc4",
+        "JbCPZZvCYQJVHjYsYGGDUzQlMl1fC7HQe2vXSvqtCJorS-thXDRn2Oac0-7hs9ZP",
+        "-KpwYARQqkysU4J4A31nbt-CQrt45FPcAUO68n80BfPJz26Qky0cJjo4WhDS-Pc4",
     ]
-    room_id = 381 # เปลี่ยนเป็น room id จริง
+    room_id = "9gkkspkjttt57edprmrrafjb" # เปลี่ยนเป็น room id จริง
     
     clients = []
     for token in tokens:

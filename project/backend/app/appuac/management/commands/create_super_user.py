@@ -8,7 +8,6 @@ class Command(BaseCommand):
 
     def handle(self, *arg, **kwarg):
 
-        print(ENVS)
         super_user = User.objects.create_superuser(
             username="admin",
             password="admin",

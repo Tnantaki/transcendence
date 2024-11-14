@@ -25,6 +25,7 @@ from django.conf.urls.static import static
 from app import settings
 from pong import urls as pong_urls
 from pong.routing import  pong_router
+from chat import url as chat_urls
 
 api = NinjaAPI(
     # docs=Swagger(),
@@ -43,7 +44,8 @@ api.add_router(
 urlpatterns = [
     path("i/", api.urls),
     path('admin/', admin.site.urls),
-    path('game/pong/', include(pong_urls))
+    path('game/pong/', include(pong_urls)),
+    path('chat/', include(chat_urls))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

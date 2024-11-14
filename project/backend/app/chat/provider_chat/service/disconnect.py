@@ -17,12 +17,7 @@ def user_leave_tour(obj):
     return obj
 
 
-async def tour_disconnect(obj):
-    await user_leave_tour(obj)
-    await message_user_leave(obj)
-    
-    if not hasattr(obj, "is_init"):
-        return obj
+async def disconnect(obj):
     
     await obj.channel_layer.group_discard(obj.room_group_name, obj.channel_name)
     return obj

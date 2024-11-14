@@ -88,13 +88,6 @@ TOURNAMENT_CAN_START
 }
 ```
 
-
-
-### consumer - consumer
-- `TOURNAMENT_CAN_START` - message can start game
-- `TOURNAMENT_CAN_NOT_START` - message can not start game
-
-
 ### client - consumer
 - `START_GAME` - - lobby owner click start game
 ```json
