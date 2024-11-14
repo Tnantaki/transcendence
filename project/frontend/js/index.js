@@ -33,7 +33,6 @@ export async function checkNofiFriend() {
   }
 }
 
-
 // Friends accect & decline button
 async function responseFriendRequest(reqId, isAccept) {
   const status = isAccept ? 'ACCEPT' : 'REJECT'

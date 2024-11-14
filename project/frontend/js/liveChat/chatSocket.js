@@ -8,12 +8,15 @@ class ChatSocket {
     this.my_id = localStorage.getItem('my_id');
     this.chatBoxModal = document.getElementById('chatBoxModal')
     this.chatBox = new bootstrap.Modal(chatBoxModal);
+    this.notiMsgModal = document.getElementById('notiMsgModal')
+    this.notiMsg = new bootstrap.Modal(this.notiMsgModal);
     this.friendIdTarget = ''
     this.chatRoom = null
 
-    this.ws = new WebSocket(`${WS_CHAT_ROOM}?token=${this.token}&userId=${this.my_id}`)
-    this.setWebSocketEvent()
-    this.setUpChatBox()
+    this.ws = new WebSocket(`${WS_CHAT_ROOM}?token=${this.token}`) // connect socket
+    this.setWebSocketEvent() // setup event on socket
+    this.setUpChatBox() // set chat input on popup chat to focus when open chat
+    this.setUpNotiMsg() // set popup noti request notification message when popup
   }
 
   setWebSocketEvent = () => {
@@ -28,37 +31,42 @@ class ChatSocket {
     this.chatBoxModal.addEventListener('hidden.bs.modal', this.handleChatBoxCloseChat)
   }
 
+  setUpNotiMsg = () => {
+    this.notiMsgModal.addEventListener('shown.bs.modal', this.handleNotiMsg)
+  }
+
   webSocketEventOnOpen = () => {
-    console.log("ChatSocket Connected")
+    console.warn("ChatSocket Connected")
   };
 
   webSocketEventOnError = (event) => {
-    console.log("Error: ", event);
+    console.warn("Error: ", event);
   };
 
   webSocketEventOnClose = () => {
-    console.log("Disconnet from ChatSocket")
+    console.warn("Disconnet from ChatSocket")
   };
 
   // TODO: Waiting for backend change protocol
   webSocketEventOnMessage = (event) => {
     let data = JSON.parse(event.data);
+    console.log('got message from server', data)
     if (data.type === 'SERVER_MESSAGE') {
       switch (data.command) {
         case "LIST_MESSAGE_BOX":
-          this.listNoficationMessage(data)
+          this.displayMsgBox(data.data)
           break;
         case "LIST_USER_MESSAGE":
-          this.listReceivedMessage(data)
+          this.listReceivedMessage(data.data)
+          break;
+        case "NEW_MESSAGE":
+          console.log('receive new message')
+          this.receivedMessage(data.data)
           break;
         // case "PONT_INVITE":
         //   if (data.sender !== this.my_profile.id)
         //     this.displayPongInvite()
         //   break;
-        // case "CHAT_START":
-        //   this.createTitleBarName()
-        //   this.setEnterKey()
-          break;
         default:
           break;
       }
@@ -67,7 +75,6 @@ class ChatSocket {
 
   requestChatList = () => {
     const msgObj = {
-      userId: this.my_id,
       type: "CLIENT_MESSAGE",
       command: "REQUEST_CHAT_LIST",
       data: {}
@@ -77,13 +84,12 @@ class ChatSocket {
 
   openChat = async (friendId) => {
     // Popup Chat box
-    this.chatRoom = await ChatRoom.create(friendId, this.chatBoxModal, this.sendMessage)
+    this.chatRoom = await ChatRoom.create(friendId, this.chatBoxModal, this.sendMessage, this.sendInvitePong, this.answerInvitePong)
     this.chatBox.show()
 
     this.friendIdTarget = friendId // set friendIdTarget
 
     const msgObj = {
-      userId: this.my_id,
       type: "CLIENT_MESSAGE",
       command: "OPEN_CHAT",
       data: {
@@ -98,9 +104,9 @@ class ChatSocket {
     this.chatRoom = null
   }
 
-  invitePongGame = (friendId) => {
+  sendInvitePong = (friendId) => {
+    console.log('send invite')
     const msgObj = {
-      userId: this.my_id,
       type: "CLIENT_MESSAGE",
       command: "INVITE_PLAY_VERSUS",
       data: {
@@ -110,9 +116,8 @@ class ChatSocket {
     this.ws.send(JSON.stringify(msgObj));
   }
 
-  answerInvitePongGame = (answer) => {
+  answerInvitePong = (answer) => {
     const msgObj = {
-      userId: this.my_id,
       type: "CLIENT_MESSAGE",
       command: "ANSWER_INVITE",
       data: { answer }
@@ -122,29 +127,62 @@ class ChatSocket {
 
   sendMessage = (msg) => {
     const msgObj = {
-      userId: this.my_id,
       type: "CLIENT_MESSAGE",
       command: "SENT_MESSAGE",
       data: {
-        user_id: this.friendIdTarget,
+        recipient: this.friendIdTarget,
         message: msg
       }
     }
     this.ws.send(JSON.stringify(msgObj));
-
-    this.chatRoom.displayMsgSent(msg) // TODO: should be receive from server
   };
 
-  listNoficationMessage = (data) => {
-    localStorage.setItem('Messages', data.length)
-    if (data.length > 0)
-      checkNofiMsg()
-    console.log('Not do yet')
+  receivedMessage = (data) => {
+    if (this.chatRoom) {
+      if (data.sender === this.my_id) {
+        this.chatRoom.displayMsgSent(data.message)
+      } else {
+        this.chatRoom.displayMsgReceive(data.message)
+      }
+    } else {
+      this.requestChatList()
+    }
   }
 
   listReceivedMessage = (data) => {
     data.forEach(item => {
-      this.chatRoom.displayMsgReceive(item.message)
+      if (item.sender.id === this.my_id) {
+        this.chatRoom.displayMsgSent(item.message)
+      } else {
+        this.chatRoom.displayMsgReceive(item.message)
+      }
+    })
+  }
+
+  displayMsgBox(msgBox) {
+    console.log('msgBox', msgBox)
+    const notiMsgList = document.getElementById("notiMsgList");
+    // to reset noti message
+    notiMsgList.innerHTML = ''
+
+    msgBox.forEach(msg => {
+      const item = document.createElement("li");
+      item.classList.add("noti-list-item", "w-100");
+      item.innerHTML = `
+          <div class="d-flex align-items-center">
+            <div class="noti-item-picture">
+              <img alt="profile-picture" src="api/${msg.user[0].profile}">
+            </div>
+            <div class="d-flex flex-column">
+              <p class="font-bs fs-lg" style="color: #A2B1B5;">${msg.user[0].username}</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end me-3 align-items-center">
+            <img id="notiMsgBtn" class="icon-menu ic-lg btn-hover"
+              src="../static/svg/chat.svg" alt="chat button" onclick="openChat('${msg.user[0].id}')" data-bs-dismiss="modal">
+          </div>
+        `
+      notiMsgList.appendChild(item);
     })
   }
 
@@ -156,10 +194,14 @@ class ChatSocket {
     this.closeChat()
   }
 
+  handleNotiMsg = () => {
+    this.requestChatList()
+  }
 
   clear = () => {
     this.chatBoxModal.removeEventListener('shown.bs.modal', this.handleChatBoxFocusInput)
     this.chatBoxModal.removeEventListener('hidden.bs.modal', this.handleChatBoxCloseChat)
+    this.notiMsgModal.removeEventListener('shown.bs.modal', this.handleNotiMsg)
     this.ws.close()
     this.ws = null
     console.log('Disconnect Socket')
