@@ -4,6 +4,7 @@ import { loadPage } from "../router.js";
 import { checkGameMode } from "./lobby-menu.js";
 import { dictionary } from "./shared-resources.js";
 import { createWaitingRoom, waitPlayers } from "./WaitingRoom.js";
+import { connectTourSocket } from "./tourSocket.js";
 
 let canvas;
 let ctx;
@@ -64,10 +65,14 @@ export async function handleRoomBtn(xPos, roomBtns, event, mode) {
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
 
 			// for load game online page
+			console.log('mode: ', mode)
 			if (mode == "online")
 				loadPage("/online?room_id=" + roomBtns[i].id);
-			else if (mode == "tournament")
+			else if (mode == "tournament") {
+				// tourSocket
 				createWaitingRoom(roomBtns[i]);
+				connectTourSocket(roomBtns[i], initPlayers)
+			}
 			break;
 		}
 	}
@@ -211,7 +216,7 @@ export async function drawRoomDisplay(mode) {
 	ctx.textAlign = "center";
 
 	if (mode == "waitingRoom") {
-		await initPlayers(waitPlayers);
+		// await initPlayers(waitPlayers); // init in socket
 	} else {
 		const rooms = await getAllRooms(checkGameMode());
 		if (rooms)
