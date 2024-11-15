@@ -33,6 +33,7 @@ function fillRoomName(room, xPos, yPos) {
 	if (checkGameMode() == "online")
 		ctx.fillText(room.number_of_player + "/2", boardObj.width - 10, yPos);
 	else
+		// console.log("member: ", room.number_of_player);
 		ctx.fillText(room.number_of_player + "/4", boardObj.width - 10, yPos);
 }
 
@@ -139,7 +140,7 @@ async function initRooms(rooms, mode) {
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}
-		// console.log(rooms);
+		console.log(rooms);
 	}
 
 	const scrollbarHeight = boardObj.height + boardObj.padding * 2 - 2 * scrollbarPadding;
