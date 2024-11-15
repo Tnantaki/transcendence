@@ -30,7 +30,7 @@ export const API_GET_TOUR = BACKEND_URL + "/i/game/tournament/";
 export const WS_TOUR_ROOM = WS_URL + "/room/tour";
 // export const WS_CHAT_ROOM = WS_URL + "/room/chat";
 // export const WS_CHAT_NOTI = "ws://localhost:3000";
-export const WS_CHAT_ROOM = "ws://localhost:3000/chat";
+export const WS_CHAT_ROOM = WS_URL + "/ws/chat/";
 
 // MOCKUP API
 export const MOCKUP_PROFILE = "./js/mock/mockProfile.json";

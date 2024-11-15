@@ -127,7 +127,7 @@ async function getProfile() {
   }
 }
 
-// --------------- Cancel ---------------
+// --------------- Cancel 2FA ---------------
 // profileForm.addEventListener("submit", async (event) => {
 //   event.preventDefault();
 //   console.log("send 2fa to backend")

@@ -36,9 +36,9 @@
 .noti-item-picture img {
   border: var(--bs-md) solid var(--clr-border);
   border-radius: 50%;
-  width: min(90px, max(calc(90px * 0.15) + calc(90vw * 0.038), calc(90px * 0.15) + calc(90vh * 0.038)));
+  width: min(75px, max(calc(75px * 0.15) + calc(75vw * 0.038), calc(75px * 0.15) + calc(75vh * 0.038)));
   aspect-ratio: 1 / 1;
-  margin: var(--mg-md);
+  margin: 0 var(--mg-md);
 }
 
 /* Friend Modal */
