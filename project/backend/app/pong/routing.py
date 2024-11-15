@@ -51,11 +51,23 @@ def post_create_room(request, payload: RoomPostIn):
     room = Room.objects.create(name=payload.name)
     return 201, room
 
+class MatchHistoryOut(ModelSchema):
+    
+    class Meta:
+        model = MatchHistory
+        fields = [
+            'player_1',
+            'player_1_score',
+            'player_2',
+            'player_2_score',
+            'created',
+        ]
+
 
 @pong_router.get(
     "/me/match-history/",
     response={
-        200: list[dict],
+        200: list[MatchHistoryOut],
     },
     auth=BearerTokenAuth()
 )
