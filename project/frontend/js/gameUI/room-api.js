@@ -1,5 +1,5 @@
 import * as Constant from "../constants.js";
-import { fetchAPI } from "../userManage/api.js";
+import { fetchAPI } from "../services/api.js";
 import { checkGameMode, updateLobby } from "./lobby-menu.js";
 import { loadPage } from "../router.js";
 

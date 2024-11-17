@@ -1,5 +1,5 @@
 import * as constant from '../constants.js'
-import { fetchData } from "../userManage/api.js";
+import { fetchData } from "./api.js";
 
 function getMatchHistory() {
   const url = constant.API_GET_MATCH_HISTORY

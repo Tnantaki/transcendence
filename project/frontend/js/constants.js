@@ -30,13 +30,6 @@ export const API_GET_TOUR = BACKEND_URL + "/i/game/tournament/";
 export const WS_TOUR_ROOM = WS_URL + "/ws/tournament/";
 export const WS_CHAT_ROOM = WS_URL + "/ws/chat/";
 
-// MOCKUP API
-export const MOCKUP_PROFILE = "./js/mock/mockProfile.json";
-export const MOCKUP_FRIENDLIST = "./js/mock/mockFriendList.json";
-
-// export const API_GET_USER_PROFILE = "../js/mock/mockProfiles.json";
-
-
 export const CONTAINER = {
   tourSocket: null
 }
