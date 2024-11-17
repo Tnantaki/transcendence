@@ -85,7 +85,7 @@ export async function fetchData(method, url, option) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    if (method === 'DELETE') return
+    if (method === 'DELETE') return null
     return await response.json();
   } catch (error) {
     console.error(error.message);
