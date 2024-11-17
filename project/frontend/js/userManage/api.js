@@ -90,4 +90,5 @@ export async function fetchData(method, url, option) {
   } catch (error) {
     console.error(error.message);
   }
+  return null
 }

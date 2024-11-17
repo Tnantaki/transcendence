@@ -17,6 +17,8 @@ function listHistory(matches) {
 		const player_1 = await getProfile(match.player_1)
 		const player_2 = await getProfile(match.player_2)
 
+		if (!player_1 || !player_2) return
+
     const item = document.createElement("li");
     item.classList.add("row", "table-list-item");
     item.innerHTML = `
