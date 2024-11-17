@@ -1,4 +1,4 @@
-import { getAllRooms, getRoomlength} from "./room-api.js";
+import { getAllRooms, getRoomlength, cachedRooms} from "./room-api.js";
 import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
 import { checkGameMode } from "./lobby-menu.js";
@@ -57,7 +57,7 @@ function getBtnHeight(roomName) {
 	return finalHeight;
 }
 
-export async function handleRoomBtn(xPos, roomBtns, event, mode) {
+export async function handleRoomBtn(xPos, roomBtns, event) {
 	const rect = canvas.getBoundingClientRect();
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
@@ -70,15 +70,21 @@ export async function handleRoomBtn(xPos, roomBtns, event, mode) {
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
 
 			// for load game online page
-			console.log('mode: ', mode)
-			if (mode == "online")
+			if (checkGameMode() == "online")
 				loadPage("/online?room_id=" + roomBtns[i].id);
-			else if (mode == "tournament") {
-				// tourSocket
+			else if (checkGameMode() == "tournament") {
+					// tourSocket
 				manageEvt(1, evtBtns.createBtn);
 				manageEvt(1, evtBtns.backBtn);
 				createWaitingRoom(roomBtns[i]);
 				connectTourSocket(roomBtns[i], initPlayers, clearPlayer)
+			}
+
+			// remove room btns
+			if (roomBtns.length > 0) {
+				roomBtns.length = 0;
+				cachedRooms.length = 0;
+				manageEvt(1, handleRoomBtn)
 			}
 			break;
 		}
@@ -96,7 +102,7 @@ const scrollbarThumbMinHeight = 20;
 
 export const   playerBtns = [];
 async function initPlayers(players) {
-	console.log("initPlayers");
+	// console.log("initPlayers");
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (players.length - visibleLines) * lineHeight);
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
@@ -118,10 +124,9 @@ async function initPlayers(players) {
 }
 
 // Room buttons
-let hasEvent = false;
 export const   roomBtns = [];
 async function initRooms(rooms, mode) {
-	// console.log("initRooms");
+	let hasEvent = false;
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (rooms.length - visibleLines) * lineHeight);
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
@@ -147,7 +152,7 @@ async function initRooms(rooms, mode) {
 			}
 		}
 		if (!hasEvent) {
-			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event, mode);
+			const roomBtn = (event) => handleRoomBtn(xPos, roomBtns, event);
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}

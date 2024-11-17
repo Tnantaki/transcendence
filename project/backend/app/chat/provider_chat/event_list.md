@@ -25,10 +25,10 @@
 - `OPEN_CHAT` - ใช้สำหรับเปิดหน้าต่างแชทกับผู้ใช้ที่ระบุ
 ```json
 {
-    "type": "CLIENT_MESSAGE",      // ประเภทของข้อความ (ส่งจาก client)
-    "command": "OPEN_CHAT",        // คำสั่งที่ต้องการทำ
+    "type": "CLIENT_MESSAGE",
+    "command": "OPEN_CHAT",
     "data": {
-        "user_id": "_ErGHoeSEtpgs6VzIGAomq2v"  // ID ของผู้ใช้ที่ต้องการเปิดแชท
+        "user_id": "_ErGHoeSEtpgs6VzIGAomq2v"
     }
 }
 ```

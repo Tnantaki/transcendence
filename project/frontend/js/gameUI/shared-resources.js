@@ -2,18 +2,14 @@ import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
-import { loadPage } from "../router.js";
 import { disconnetTourSocket, startTour } from "./tourSocket.js";
 
 let canvas;
 let ctx;
-let curLanguage;
 function setCanvas() {
 	canvas = document.getElementById("gameArea");
 	if (canvas)
 		ctx = canvas.getContext("2d");
-
-	curLanguage = localStorage.getItem('currentLanguage') || 'en';
 }
 
 // preload the img

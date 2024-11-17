@@ -12,8 +12,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         await connect.connect(self)
-        
-        await self.accept()
 
     async def disconnect(self, close_code):
         ...
@@ -36,6 +34,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # print(m)ฃ
         event['type'] = "SERVER_MESSAGE"
         await self.send(text_data=json.dumps(event))
+    
+    async def new_message(self, event):
+        """
+        """
+        await self.send(text_data=json.dumps({
+            'type': "SERVER_MESSAGE",
+            'command': 'HAVE_UNREAD_MESSAGE',
+            'data': {}
+        }))
 
 
 from functools import wraps
@@ -64,8 +71,6 @@ async def user_message_handler(obj, message):
             await list_chat_room(obj, m)
         case 'OPEN_CHAT':
             await open_chat(obj, m)
-        case 'LIST_USER_MESSAGE':
-            ...
         case 'INVITE_PLAY_VERSUS':
             ...
         case 'ANSWER_INVITE':
@@ -84,6 +89,17 @@ async def send_message_to_user(obj, message):
         other,
         {
             "type": "user.newmessage",
+            "commnad": "NEW_MESSAGE",
+            "data": {
+                "sender": client,
+                "message": text
+            }
+        }
+    )
+    new_message = await get_channel_layer().group_send(
+        other,
+        {
+            "type": "new.message",
             "commnad": "NEW_MESSAGE",
             "data": {
                 "sender": client,
@@ -181,7 +197,6 @@ def get_message(client, other):
         'is_read': i.is_read,
     } for i in message
     ]
-
 
     
 
