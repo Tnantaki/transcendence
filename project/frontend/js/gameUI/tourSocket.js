@@ -2,11 +2,13 @@ import { WS_TOUR_ROOM } from "../constants.js";
 import { CONTAINER } from "../constants.js";
 
 class TourSocket {
-  constructor(room, initPlayers) {
+  constructor(room, initPlayers, clearPlayer) {
     this.token = localStorage.getItem('token');
     this.my_id = localStorage.getItem('my_id');
     this.room = room
     this.initPlayers = initPlayers
+    this.clearPlayer = clearPlayer
+    this.users = []
 
     this.ws = new WebSocket(`${WS_TOUR_ROOM}?token=${this.token}&room_id=${room.id}`) // connect socket
     this.setWebSocketEvent() // setup event on socket
@@ -49,8 +51,21 @@ class TourSocket {
     }
   };
 
+  startGame = () => {
+    console.log('start tour click')
+
+    const msgObj = {
+      type: "CLIENT_MESSAGE",
+      command: "START_GAME",
+      data: {}
+    }
+    this.ws.send(JSON.stringify(msgObj));
+  }
+
   updateRoom = (data) => {
     const nameList = data.user.map(u => u.username)
+    console.log(nameList)
+    this.clearPlayer()
     this.initPlayers(nameList)
   }
 
@@ -60,8 +75,9 @@ class TourSocket {
   }
 }
 
-export function connectTourSocket(room, initPlayers) {
-  CONTAINER.tourSocket = new TourSocket(room, initPlayers)
+export function connectTourSocket(room, initPlayers, clearPlayer) {
+  CONTAINER.tourSocket = new TourSocket(room, initPlayers, clearPlayer)
+  return CONTAINER.tourSocket
 }
 
 export function disconnetTourSocket() {
@@ -69,4 +85,8 @@ export function disconnetTourSocket() {
     CONTAINER.tourSocket.clear()
     CONTAINER.tourSocket = null
   }
+}
+
+export function startTour() {
+  CONTAINER.tourSocket.startGame()
 }

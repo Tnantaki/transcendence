@@ -2,9 +2,14 @@ import { getAllRooms, getRoomlength} from "./room-api.js";
 import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
 import { checkGameMode } from "./lobby-menu.js";
-import { dictionary } from "./shared-resources.js";
+import { dictionary, evtBtns } from "./shared-resources.js";
 import { createWaitingRoom, waitPlayers } from "./WaitingRoom.js";
 import { connectTourSocket } from "./tourSocket.js";
+
+function clearPlayer() {
+	console.log('clear player')
+	// playerBtns = []
+}
 
 let canvas;
 let ctx;
@@ -70,8 +75,10 @@ export async function handleRoomBtn(xPos, roomBtns, event, mode) {
 				loadPage("/online?room_id=" + roomBtns[i].id);
 			else if (mode == "tournament") {
 				// tourSocket
+				manageEvt(1, evtBtns.createBtn);
+				manageEvt(1, evtBtns.backBtn);
 				createWaitingRoom(roomBtns[i]);
-				connectTourSocket(roomBtns[i], initPlayers)
+				connectTourSocket(roomBtns[i], initPlayers, clearPlayer)
 			}
 			break;
 		}
@@ -86,7 +93,6 @@ const visibleLines = 9;
 const scrollbarWidth = 10;
 const scrollbarPadding = 2;
 const scrollbarThumbMinHeight = 20;
-
 
 export const   playerBtns = [];
 async function initPlayers(players) {
