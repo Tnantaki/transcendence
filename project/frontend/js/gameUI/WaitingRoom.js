@@ -2,6 +2,7 @@ import { getPongImg } from "./shared-resources.js";
 import { btns, evtBtns } from "./shared-resources.js";
 import { drawRoomDisplay } from "./lobby-board.js";
 import * as Utils from "./utils.js";
+import { updateLobby } from "./lobby-menu.js";
 
 // ########################################################
 // #                       EXECUTION 					  #
@@ -31,4 +32,11 @@ export function createWaitingRoom(room) {
 	}).catch(error => {
 		console.error("Error cannot create a waiting room: " + error);
 	})
+}
+
+export function updateWaitingRoom(mode) {
+	// console.log("updated lobby");
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	// console.log("mode: ", mode);
+	createWaitingRoom(mode);
 }
