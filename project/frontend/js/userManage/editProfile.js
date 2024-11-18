@@ -1,14 +1,10 @@
 import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
-import { fetchAPI } from "./api.js";
+import { fetchAPI } from "../services/api.js";
 import { createProfilePicture, getMyProfile } from "../services/profileService.js";
 
 const profileForm = document.getElementById("profileForm");
 const profilePicture = document.getElementById("profile-picture");
-// const email2FA = document.getElementById("2fa-email");
-// const inputCode = document.querySelectorAll(".input-box");
-// const sendForm = document.getElementById("edit-continue");
-// const resendCode = document.getElementById("edit-resend-code");
 
 getProfile();
 countCharacter();
@@ -118,7 +114,6 @@ async function getProfile() {
     profileForm.querySelector("#displayName").value = profileValue["display_name"];
   if (profileValue["email"]) {
     profileForm.querySelector("#email").value = profileValue["email"];
-    // email2FA.innerHTML = profileValue["email"];
   }
   if (profileValue["bio"]) {
     profileForm.querySelector("#bio").value = profileValue["bio"];
@@ -126,44 +121,3 @@ async function getProfile() {
     charCount.textContent = `${profileValue["bio"].length}/200`
   }
 }
-
-// --------------- Cancel 2FA ---------------
-// profileForm.addEventListener("submit", async (event) => {
-//   event.preventDefault();
-//   console.log("send 2fa to backend")
-// });
-// resendCode.addEventListener("click", async (event) => {
-//   console.log("send 2fa to backend")
-// })
-// For 2FA Popup : jump focus input behavior
-// function add2FAInputFocus() {
-//   inputCode.forEach((input, index) => {
-//     input.addEventListener("input", () => {
-//       if (input.value.length === 1) {
-//         if (index < inputCode.length - 1) {
-//           inputCode[index + 1].focus();
-//         }
-//       }
-//     });
-//     input.addEventListener("keydown", (event) => {
-//       if (event.key === "Backspace" && input.value.length === 0)
-//         if (index > 0) {
-//           inputCode[index - 1].focus();
-//         }
-//     });
-//   });
-// }
-// document.getElementById('2FA').addEventListener('shown.bs.modal', function () {
-//   inputCode[0].focus()
-// });
-// sendForm.addEventListener("click", (event) => {
-//   let code = ""
-//   inputCode.forEach((input) => {
-//     code += input.value
-//   })
-//   console.log("sendProfile")
-//   console.log(code)
-//   sendEditProfileForm(event, code)
-// })
-
-// add2FAInputFocus();

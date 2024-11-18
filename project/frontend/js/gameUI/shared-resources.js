@@ -2,7 +2,7 @@ import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
-// import { loadPage } from "../router.js";
+import { disconnetTourSocket, startTour } from "./tourSocket.js";
 
 let canvas;
 let ctx;
@@ -89,6 +89,7 @@ function handleStartBtn(btnObj, event)
 		// for full players in room to loadpage
 		// loadPage("/online?room_id=" + roomBtns[i].id);
 		console.log("clicked start btn");
+		startTour() // start tournament
 	}	
 }
 
@@ -125,6 +126,7 @@ function handleBackBtn(btnObj, event)
 			canvas.hasScrollListeners = false;
 		}
 		createMenu();
+		disconnetTourSocket() // disconnect socket
 		// manageEvt(1, handleAddPlayerBtn);
 		// console.log("Back");
 	}

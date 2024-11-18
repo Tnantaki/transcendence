@@ -6,6 +6,7 @@ from pong.models import Tournament
 from rich import print, inspect
 from pong.shared_services.utils.group_message import server_send_message_to_group
 from pong.provider_tournament.tournament_engine import TournamentEngine
+from chat.models import Message
 
 @database_sync_to_async
 def find_user(obj):
@@ -66,11 +67,12 @@ async def create_or_channel_to_group(obj):
 
 
 async def message_user_join(obj):
-    await server_send_message_to_group(
+    res = await server_send_message_to_group(
         obj,
         command="BROADCAST_INFO",
         message_type='consumer.talk',
     )
+    print("Add Ress", res)
 
 async def s2s_message(obj, command):
     await server_send_message_to_group(
@@ -86,7 +88,24 @@ async def connect(obj):
     await find_user(obj)
     await create_or_channel_to_group(obj)
     obj.is_init = True
-    consumer_info(obj, True, True)
+    await obj.accept()
+    
+    noti = await check_unread_message(obj)
+    if noti:
+        await obj.new_message(None)
+    
+
+
+@database_sync_to_async
+def check_unread_message(obj):
+    m = Message.objects.filter(
+        recipient_id=obj.user_id,
+        is_read=False
+    )
+    print("m= ", m)
+    if m.count() > 0:
+        return True
+    return False
     
 
 def consumer_info(obj, is_print=False, is_inspect=False):

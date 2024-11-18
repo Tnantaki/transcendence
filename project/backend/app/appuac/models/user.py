@@ -13,6 +13,11 @@ from django.db.models import Q
 def gen_id():
     return generate(size=24)
 
+class UserDictType:
+    id: str
+    username: str
+    display_name: str
+    profile: str
 
 class User(AbstractUser):
     id = models.CharField(
@@ -72,6 +77,9 @@ class User(AbstractUser):
             'display_name':self.display_name,
             'profile': self.profile
         }
+    
+    def get_dict_type(self):
+        return UserDictType
 
 
 class FriendRequest(BaseAutoDate, BaseID):

@@ -1,9 +1,6 @@
 import { getMyProfile } from "../services/profileService.js";
 import { getFriends } from "../services/friendService.js";
 
-const RED_CLR = '#B63A3A'
-const GREEN_CLR = '#62E54C'
-
 async function getProfile() {
   const profile = document.getElementById("my-profile");
   const profileValue = await getMyProfile()
@@ -19,6 +16,8 @@ async function getProfile() {
 }
 
 async function getFriendList() {
+  const RED_CLR = '#B63A3A'
+  const GREEN_CLR = '#62E54C'
   const friendList = document.getElementById("friendList");
   const friendListValue = await getFriends()
 

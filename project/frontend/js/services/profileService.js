@@ -1,5 +1,5 @@
 import * as constant from '../constants.js'
-import { fetchData, fetchUploadFile } from "../userManage/api.js";
+import { fetchData, fetchUploadFile } from "./api.js";
 
 function getProfile(id) {
   const url = constant.API_PROFILE_BY_ID + id + "/"
