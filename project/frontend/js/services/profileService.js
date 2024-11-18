@@ -31,8 +31,16 @@ async function createProfilePicture(data) {
   }
 }
 
+function logout() {
+  const url = constant.API_LOGOUT
+  const option = { auth: true, body: undefined}
+
+  return fetchData('POST', url, option)
+}
+
 export {
   getProfile,
   getMyProfile,
-  createProfilePicture
+  createProfilePicture,
+  logout
 }

@@ -1,23 +1,19 @@
 import { getLeaderboard } from "../services/gameService.js";
 
-fetchLeaderboardData()
+renderLearderboard(document.getElementById('leaderboard'), document.getElementById('player-list'))
 
-async function fetchLeaderboardData() {
-  const learderboardValue = await getLeaderboard();
-  // const test = await response.json();
-  // const learderboardValue = test.map(item => item.user)
-  console.log(learderboardValue)
-  if (learderboardValue) {
-    listLeaderBoardProfile(learderboardValue)
-    listPlayers(learderboardValue)
-  }
+async function renderLearderboard(leaderboardTop3, leaderboardTable) {
+  const players = await getLeaderboard();
+  if (!players) return
+
+  console.log(players)
+  renderLeaderboardTop3(leaderboardTop3, players)
+  renderLeaderboardTable(leaderboardTable, players)
 }
 
-function listLeaderBoardProfile(players) {
-  const leaderboard = document.getElementById('leaderboard');
-
+function renderLeaderboardTop3(leaderboardDOM, players) {
   for (let i = 0; i < 3; i++) {
-    const player = leaderboard.querySelector('#number' + (i + 1))
+    const player = leaderboardDOM.querySelector('#number' + (i + 1))
     let picture = player.querySelector('#picture')
     let name = player.querySelector('#name')
 
@@ -28,8 +24,7 @@ function listLeaderBoardProfile(players) {
   }
 }
 
-async function listPlayers(players) {
-  const playerList = document.getElementById('player-list');
+async function renderLeaderboardTable(leaderboardTable, players) {
   let rank = 1
 
   players.forEach(p => {
@@ -59,6 +54,6 @@ async function listPlayers(players) {
       </div>
       <div class="player-item-background"></div>
     `
-    playerList.appendChild(item);
+    leaderboardTable.appendChild(item);
   })
 }

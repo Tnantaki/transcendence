@@ -204,7 +204,6 @@ class ChatSocket {
     this.notiMsgModal.removeEventListener('shown.bs.modal', this.handleNotiMsg)
     this.ws.close()
     this.ws = null
-    console.log('Disconnect Socket')
   }
 }
 

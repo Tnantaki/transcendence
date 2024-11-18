@@ -1,16 +1,11 @@
 import { getMatchHistory } from "../services/gameService.js";
 import { getProfile } from "../services/profileService.js";
 
-fetchHistoryData()
+renderMatchHistory(document.getElementById('match-history-table'))
 
-async function fetchHistoryData() {
+async function renderMatchHistory(matchHistoryTable) {
 	const matches = await getMatchHistory()
 	if (!matches) return
-	listHistory(matches)
-}
-
-function listHistory(matches) {
-	const matchHistoryTable = document.getElementById('match-history-table');
 
   matches.forEach(async match => {
 		const { date } = convertDate(match.created);
