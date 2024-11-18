@@ -39,9 +39,7 @@ function fillRoomName(room, xPos, yPos) {
 	if (checkGameMode() == "online")
 		ctx.fillText(room.number_of_player + "/2", boardObj.width - 10, yPos);
 	else
-		// console.log("member: ", room.number_of_player);
-		console.log(room);
-		ctx.fillText(room.number_of_player + "/4", boardObj.width - 10, yPos);
+		ctx.fillText(room.users.length + "/4", boardObj.width - 10, yPos);
 }
 
 function getBtnWidth(roomName) { 
