@@ -34,6 +34,7 @@ function fillRoomName(room, xPos, yPos) {
 		ctx.fillText(room.number_of_player + "/2", boardObj.width - 10, yPos);
 	else
 		// console.log("member: ", room.number_of_player);
+		console.log(room);
 		ctx.fillText(room.number_of_player + "/4", boardObj.width - 10, yPos);
 }
 
