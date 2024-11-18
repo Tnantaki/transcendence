@@ -539,4 +539,11 @@ function popupWinner(winnerName) {
 
   const winner = modalWinnerObj.querySelector('#winnerName');
   winner.innerHTML = winnerName
+
+  if (constants.CONTAINER.tourSocket) {
+    const backBtn = modalWinnerObj.querySelector('#modalBackBtn')
+    backBtn.addEventListener('click', () => {
+      console.log('Draw canvas room tournament again')
+    })
+  }
 }

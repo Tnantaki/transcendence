@@ -1,123 +1,56 @@
-import * as constant from "../constants.js";
-import { fetchAPI } from "../userManage/api.js";
+import { getMatchHistory } from "../services/gameService.js";
+import { getProfile } from "../services/profileService.js";
 
 fetchHistoryData()
 
 async function fetchHistoryData() {
-  try {
-		// const response = await fetchAPI("GET", constant.API_GET_MATCH_HISTORY, { auth: true, });
-		const response = await fetchAPI("GET", constant.API_FRIEND_LIST, { auth: true, });
-
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-		const matches = await response.json();
-    console.log(matches)
-    if (matches) {
-      listHistory(matches)
-    }
-  } catch (error) {
-		console.error(error.message);
-  }
+	const matches = await getMatchHistory()
+	if (!matches) return
+	listHistory(matches)
 }
 
-async function listHistory(matches) {
+function listHistory(matches) {
 	const matchHistoryTable = document.getElementById('match-history-table');
 
-  matches.forEach(match => {
+  matches.forEach(async match => {
+		const { date } = convertDate(match.created);
+		const player_1 = await getProfile(match.player_1)
+		const player_2 = await getProfile(match.player_2)
+
+		if (!player_1 || !player_2) return
+
     const item = document.createElement("li");
     item.classList.add("row", "table-list-item");
     item.innerHTML = `
 			<div id="my-profile" class="col-1 player-item-picture">
-				<img src="/api${match.profile}" alt="profile-picture">
+				<img src="/api${player_1.profile}" alt="profile-picture">
 			</div>
 			<div class="col-2 player-item-content friend-name" data-bs-toggle="modal" data-bs-target="#profileModal"
-				onclick="getProfileById('${match.id}')">${match.display_name}</div>
-			<div class="col player-item-content">0 : 0</div>
+				onclick="getProfileById('${player_1.id}')">${player_1.display_name}</div>
+			<div class="col player-item-content">${match.player_1_score} : ${match.player_2_score}</div>
 			<div id="friend-profile" class="col-1 player-item-picture">
-				<img src="/api${match.profile}" alt="profile-picture">
+				<img src="/api${player_2.profile}" alt="profile-picture">
 			</div>
 			<div class="col-2 player-item-content friend-name" data-bs-toggle="modal" data-bs-target="#profileModal"
-				onclick="getProfileById('${match.id}')">${match.display_name}</div>
-			<div class="col-3 player-item-content">11/07/2024</div>
+				onclick="getProfileById('${player_2.id}')">${player_2.display_name}</div>
+			<div class="col-3 player-item-content">${date}</div>
 			<div class="table-item-background"></div>
     `
     matchHistoryTable.appendChild(item);
   })
 }
 
+function convertDate(apiTime) {
+	const bangkokTime = new Date(apiTime).toLocaleString("en-GB", {
+		timeZone: "Asia/Bangkok",
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false, // Use 24-hour format
+	});
 
-// create table for match history
-// const numberOfMatches = 6;
-// for (let i = 0; i < numberOfMatches; i++) {
-// 	const matchRow = `
-// 		<div class="row align-items-center mb-5">
-// 			<div id="my-profile" class="col-1">
-// 				<img id=profileImage alt="profile-picture" class="player-img profile-img-overlay">
-// 			</div>
-// 			<div class="col-2">player_name</div>
-// 			<div class="col">0 : 0</div>
-// 			<div id="friend-profile" class="col-1">
-// 				<img id="friendProfileImage alt="profile-picture" class="player-img profile-img-overlay">
-// 			</div>
-// 			<div class="col-2">player2_name</div>
-// 			<div class="col-3">11/07/2024</div>
-// 			<div class="col">01:01</div>
-// 		</div>
-// 		`;
-// 	matchHistoryTable.innerHTML += matchRow;
-// }
-
-// for (let i = 0; i < numberOfMatches; i++) {
-// 	const matchRow = `
-// 		<div class="row align-items-center mb-5 ">
-// 			<div class="col-3"> <img id="profileImage" alt="profile-picture"> player_name${i + 1}</div>
-// 			<div class="col">0 : 0</div>
-// 			<div class="col-3">player2_name${i + 1}</div>
-// 			<div class="col-3">11/07/2024</div>
-// 			<div class="col">01:01</div>
-// 		</div>
-// 		`;
-// 	matchHistoryTable.innerHTML += matchRow;
-// }
-
-
-// window.getProfileById = getProfileById("asd");
-
-// Mos Test Modal profile
-// async function getFriendList() {
-//   try {
-//     const friendList = document.getElementById("friendList");
-//     const response = await fetchAPI("GET", constant.MOCKUP_FRIENDLIST, {
-//       auth: false,
-//     }); // TODO: auth must be true
-
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-//     const friendListValue = await response.json();
-
-//     friendListValue.forEach(friend => {
-//       const item = document.createElement("li");
-//       item.classList.add("friend-list-item");
-//       item.innerHTML = `
-//         <div class="d-flex justify-content-center friend-item-picture ">
-//           <img src="${friend.image}" alt="profile picture">
-//         </div>
-//         <div class="d-flex align-items-center friend-item-name">
-//           <div class="online-status ms-0"></div>
-//           <p class="font-bs-bold fs-xl friend-name" data-bs-toggle="modal" data-bs-target="#profileModal" 
-//             onclick="getProfileById(${friend.id})">
-//             ${friend.display_name}
-//           </p>
-//         </div>
-//         <div class="friend-item-background"></div>
-//       `
-//       friendList.appendChild(item);
-//     })
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// }
-
-// getFriendList();
+	const [date, time] = bangkokTime.split(", ")
+	return {date, time}
+}

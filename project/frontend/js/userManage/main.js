@@ -1,6 +1,6 @@
 import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
-import { fetchAPI } from "./api.js";
+import { fetchAPI } from "../services/api.js";
 import { getMyProfile } from "../services/profileService.js";
 import { disconnetWebSocket } from "../liveChat/chatSocket.js";
 

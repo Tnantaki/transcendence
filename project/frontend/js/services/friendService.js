@@ -1,5 +1,5 @@
 import * as constant from '../constants.js'
-import { fetchData } from "../userManage/api.js";
+import { fetchData } from "./api.js";
 
 function getFriends() {
   const url = constant.API_FRIEND_LIST
