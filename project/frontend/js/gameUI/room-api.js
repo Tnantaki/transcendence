@@ -47,7 +47,10 @@ function manageCreateRoomBtn(status, evt) {
 
 function postRoom(mode) {
 	const roomName = document.getElementById("room-name-input").value;
-	console.log("roomName: ", roomName);
+
+	if (roomName.length > 10)
+		return (alert("Room name must not exceed 10 characters!"));
+
 	if (roomName) {
 		if (mode == "online") {
 			console.log("isOnline");
