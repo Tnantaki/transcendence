@@ -1,5 +1,6 @@
 import { WS_TOUR_ROOM } from "../constants.js";
 import { CONTAINER } from "../constants.js";
+import { loadPage } from "../router.js";
 
 class TourSocket {
   constructor(room, initPlayers, clearPlayer) {
@@ -30,10 +31,9 @@ class TourSocket {
   };
 
   webSocketEventOnClose = () => {
-    console.warn("Disconnet from ChatSocket")
+    console.warn("Disconnet from TourSocket")
   };
 
-  // TODO: Waiting for backend change protocol
   webSocketEventOnMessage = (event) => {
     let data = JSON.parse(event.data);
     console.log('got message from server', data)
@@ -42,9 +42,9 @@ class TourSocket {
         case "TOURNAMENT_INFOMATION":
           this.updateRoom(data.data)
           break;
-        // case "LIST_USER_MESSAGE":
-        //   this.listReceivedMessage(data.data)
-        //   break;
+        case "ROUND_START":
+          this.roundStart(data.data)
+          break;
         default:
           break;
       }
@@ -52,8 +52,6 @@ class TourSocket {
   };
 
   startGame = () => {
-    console.log('start tour click')
-
     const msgObj = {
       type: "CLIENT_MESSAGE",
       command: "START_GAME",
@@ -67,6 +65,18 @@ class TourSocket {
     console.log(nameList)
     this.clearPlayer()
     this.initPlayers(nameList)
+  }
+
+  roundStart = (data) => {
+    let myRoomId = -1
+    data.forEach(room => {
+      if (this.my_id === room.player1.id || this.my_id === room.player2.id) {
+        myRoomId = room.room_id
+      }
+    })
+    if (myRoomId > 0) {
+      loadPage("/online?room_id=" + myRoomId);
+    }
   }
 
   clear = () => {
