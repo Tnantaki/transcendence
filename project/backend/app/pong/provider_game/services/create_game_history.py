@@ -10,11 +10,10 @@ from rich import inspect
 
 @database_sync_to_async
 def create_history(engine, winner):
-    ret = {
-        'game_type': "VERSUS",
-        'redirect': "lobby",
-        "tour_id": None,
-    }
+    room = Room.objects.filter(id=engine.room_id).first()
+    if not room:
+        return None
+    
     try:
         p1 = engine.player[0]
         p2 = engine.player[1]
@@ -26,12 +25,8 @@ def create_history(engine, winner):
             'winner': winner.obj,
             'status': "FINISH",
         }
-        room = Room.objects.get(id=engine.room_id)
         if room.game_type == 'TOURNAMENT':
             tour = Tournament.objects.get(id=room.tour_id)
-            ret['game_type'] = room.game_type
-            ret['redirect'] = 'tournament'
-            ret['tour_id'] = room.tour_id
             if tour.status == 'PLAYING-R1':
                 tour_round = tour.tourround_set.filter(tround=1).first()
                 dto['mtype'] = 'TR1'
@@ -47,7 +42,7 @@ def create_history(engine, winner):
         else:
             m = MatchHistory.objects.create(**dto)
             room.delete()
-        return ret
+        return m
     except Exception as e:
         print("Error ", str(e))
         raise

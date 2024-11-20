@@ -121,11 +121,13 @@ class TournamentEngine:
 
     async def get_tournament_info(self):
         user = await self.user_in_tour()
+        tour = await get_tournament(self.tour_id)
         return {
             'id': self.id,
             'user_count': len(user),
             'user': user,
             'can_start': len(user) >= 3,
+            'tour': tour.info,
         }
 
     async def start_tournament(self, user_id):
@@ -197,7 +199,6 @@ class TournamentEngine:
             }
             for u in winners
         ]
-        print(winners)
         return res
 
 
