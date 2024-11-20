@@ -4,8 +4,10 @@ import random
 from channels.layers import get_channel_layer
 from copy import deepcopy
 from pong.provider_game.player import Player
+from pong.models import Room
 from rich import inspect, print
 from pong.provider_game.services.create_game_history import create_history
+from channels.db import database_sync_to_async
 
 KEY_STATE = {"RELASE": 0, "PRESS": 1}
 KEY_VALUE = {
@@ -65,7 +67,7 @@ class GameEngine:
         instance.task = None
         return instance
 
-    def __init__(self, id, *arg, **kwarg):
+    def __init__(self, id, room_id, *arg, **kwarg):
         """
         """
         if hasattr(self, '_is_init'):
@@ -73,7 +75,7 @@ class GameEngine:
         self.ball_position = {'x': 512, 'y': 300}
         self.ball_velocity = {'x': 1, 'y': 1}
         self.player: list[Player] = []
-
+        self.room_id = room_id
         self.canvas_size = {
             'player1': {
                 'x': 800,
@@ -165,8 +167,7 @@ class GameEngine:
 
             self.reset()
             await self.delay_game()
-        
-
+    
             
     async def check_winner(self):
         if len(self.player) != 2:
@@ -176,13 +177,14 @@ class GameEngine:
             if p.get_score() >= self.score_to_win:
                 self.reset()
                 self._running = False
-                a = await create_history(self, p)
+                res = await create_history(self, p)
                 await self.channels.group_send(
                     self.id,
                     {
                         'type': 'game.finish',
                         'winner': {
-                            "name": p.get_name()
+                            "name": p.get_name(),
+                            # set game type ที่ comsumer
                         }
                     }
                 )
@@ -264,7 +266,6 @@ class GameEngine:
 
     async def check(self):
         # Debug purpose
-        print("Update Score")
         self.check_player_paddle()
         # self.player[0].increase_score()
         # self.player[1].increase_score()

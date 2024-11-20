@@ -87,8 +87,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         await connect(self)
 
-
-        if self.room.number_of_player == 2:
+        await asyncio.sleep(0.5)
+        # TO fast for DB so sad
+        if len(self.game_engine.player) == 2:
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -242,18 +243,20 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
 
     async def game_state(self, state):
-        await self.send(
-            text_data=json.dumps(
-                {
-                    "code": 2000,
-                    "command": "GAME_STATE",
-                    "sender": "SERVER",
-                    "data": state["game_state"],
-                }
-            )
-        )
+        # await self.send(
+        #     text_data=json.dumps(
+        #         {
+        #             "code": 2000,
+        #             "command": "GAME_STATE",
+        #             "sender": "SERVER",
+        #             "data": state["game_state"],
+        #         }
+        #     )
+        # )
+        ...
         
     async def game_finish(self, winner):
+        print("GameFinish")
         await self.send(
             text_data=json.dumps(
                 {
@@ -261,8 +264,8 @@ class GameConsumer(AsyncWebsocketConsumer):
                     "command": "GAME_FINISHED",
                     "sender": "SERVER",
                     "data": {
-                        "game_type": self.room.game_type,
-                        "tour_id": self.room.tour_id,
+                        "game_type":self.room.game_type if hasattr(self.room, 'game_type') else None,
+                        "tour_id": self.room.tour_id if hasattr(self.room, 'tour_id') else None,
                         **winner
                     }
                 }

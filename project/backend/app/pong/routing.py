@@ -11,9 +11,30 @@ from app.settings import DEBUG
 
 pong_router = Router()
 
-class UserSchema(Schema):
-    id: str
-    username: str
+class UserSchema(ModelSchema):
+    is_online: bool = Field(default=False)
+    display_name: str = Field(default="")
+    wins: int = Field(default=0)
+    losses: int = Field(default=0)
+    tour_won: int = Field(default=0)
+    tour_play: int = Field(default=0)
+
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "display_name",
+            "id",
+            "bio",
+            "profile",
+            "email",
+        ]
+    
+    @staticmethod
+    def resolve_display_name(obj):
+        if obj.display_name == "":
+            return obj.username
+        return obj.display_name
 
 class RoomName(Schema):
     id: int
@@ -78,30 +99,6 @@ def get_me_history(request):
     matches = MatchHistory.objects.filter(player_1 | player_2)
     return 200, matches
 
-class UserSchema(ModelSchema):
-    is_online: bool = Field(default=False)
-    display_name: str = Field(default="")
-    wins: int = Field(default=0)
-    losses: int = Field(default=0)
-    tour_won: int = Field(default=0)
-    tour_play: int = Field(default=0)
-
-    class Meta:
-        model = User
-        fields = [
-            "username",
-            "display_name",
-            "id",
-            "bio",
-            "profile",
-            "email",
-        ]
-    
-    @staticmethod
-    def resolve_display_name(obj):
-        if obj.display_name == "":
-            return obj.username
-        return obj.display_name
 
 class LeaderBoardSchema(Schema):
     id: int

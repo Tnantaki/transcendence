@@ -45,4 +45,4 @@ async def user_tournament_event_handler(obj, event):
     match message['command']:
         case 'START_GAME':
             # {"type": "CLIENT_MESSAGE","command": "START_GAME","data": {}}
-            await obj.tour_engine.start_tournament(obj.user_id)
+            res = await obj.tour_engine.start_tournament(obj.user_id)

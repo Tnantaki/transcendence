@@ -57,7 +57,7 @@ def check_room(obj):
 
 def init_game_engine(obj):
     obj.room_group_name = f"Game_Room_{obj.room_id}"
-    obj.game_engine = GameEngine(obj.room_group_name)
+    obj.game_engine = GameEngine(obj.room_group_name, obj.room_id)
 
 
 async def process_user_connect(obj):
@@ -72,6 +72,9 @@ async def process_user_connect(obj):
         **{"text_data": json.dumps({"code": 2000, "command": "CONNECTED", "data": {}})}
     )
 
+@DatabaseSyncToAsync
+def update_room(obj):
+    obj.room =Room.objects.get(id=obj.room_id)
 
 async def connect(obj):
     create_query_param(obj)
@@ -79,3 +82,4 @@ async def connect(obj):
     await check_room(obj)
     init_game_engine(obj)
     await process_user_connect(obj)
+    await update_room(obj)
