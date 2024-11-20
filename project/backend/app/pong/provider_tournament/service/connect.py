@@ -92,17 +92,11 @@ async def s2s_message(obj, command):
 
 async def tour_connect(obj):
 
-    print("Tour Connect 1")
     create_query_param(obj)
-    print("Tour Connect 2")
     await find_tour_and_user(obj)
-    print("Tour Connect 3")
     await tournament_init_engine(obj)
-    print("Tour Connect 4")
     await create_or_channel_to_group(obj)
-    print("Tour Connect 5")
     await message_user_join(obj)
-    print("Tour Connect 6")
     obj.is_init = True
     
 
