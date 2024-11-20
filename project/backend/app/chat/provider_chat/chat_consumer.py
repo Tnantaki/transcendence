@@ -76,7 +76,7 @@ async def user_message_handler(obj, message):
             await send_message_to_user(obj, m)
 
 
-@database_sync_to_async()
+@database_sync_to_async
 def create_room(**kwargs):
     return Room.objects.create(**kwargs)
 
@@ -93,8 +93,8 @@ async def answer_invite(obj, message):
         new_message = await get_channel_layer().group_send(
             other,
             {
-                "type": "new.message",
-                "commnad": "GAME_CREATED_ROOM",
+                "type": "user.newmessage",
+                "command": "GAME_CREATED_ROOM",
                 "data": {
                     'id': room.id
                 }
@@ -104,7 +104,7 @@ async def answer_invite(obj, message):
             client,
             {
                 "type": "user.newmessage",
-                "commnad": "GAME_CREATED_ROOM",
+                "command": "GAME_CREATED_ROOM",
                 "data": {
                     'id': room.id
                 }
@@ -118,7 +118,7 @@ async def invite_play_versus(obj, message):
     client = obj.user_id
     other = message['data']['recipient']
 
-    invite_message = f"{obj.user.username} อยากเล่นเกมกับคุณ กดยอมรับเพื่อเริ่มเกม"
+    invite_message = f"{obj.user.username} อยากเล่นเกมกับคุณ"
     room = await get_or_create_chat_room(obj, message)
     await create_message(
         message=invite_message,
@@ -130,7 +130,18 @@ async def invite_play_versus(obj, message):
         other,
         {
             "type": "user.newmessage",
-            "commnad": "GAME_INVITE",
+            "command": "GAME_INVITE",
+            "data": {
+                "sender": client,
+                "message": invite_message
+            }
+        }
+    )
+    r = await get_channel_layer().group_send(
+        client,
+        {
+            "type": "user.newmessage",
+            "command": "GAME_INVITE",
             "data": {
                 "sender": client,
                 "message": invite_message
@@ -150,7 +161,7 @@ async def send_message_to_user(obj, message):
         other,
         {
             "type": "user.newmessage",
-            "commnad": "NEW_MESSAGE",
+            "command": "NEW_MESSAGE",
             "data": {
                 "sender": client,
                 "message": text
@@ -161,7 +172,7 @@ async def send_message_to_user(obj, message):
         other,
         {
             "type": "new.message",
-            "commnad": "NEW_MESSAGE",
+            "command": "NEW_MESSAGE",
             "data": {
                 "sender": client,
                 "message": text
@@ -172,7 +183,7 @@ async def send_message_to_user(obj, message):
         client,
         {
             "type": "user.newmessage",
-            "commnad": "NEW_MESSAGE",
+            "command": "NEW_MESSAGE",
             "data": {
                 "sender": client,
                 "message": text

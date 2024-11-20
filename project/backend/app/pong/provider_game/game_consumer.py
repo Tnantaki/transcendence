@@ -242,19 +242,17 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
         )
 
-    # TODO open me Back
     async def game_state(self, state):
-        # await self.send(
-        #     text_data=json.dumps(
-        #         {
-        #             "code": 2000,
-        #             "command": "GAME_STATE",
-        #             "sender": "SERVER",
-        #             "data": state["game_state"],
-        #         }
-        #     )
-        # )
-        ...
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "code": 2000,
+                    "command": "GAME_STATE",
+                    "sender": "SERVER",
+                    "data": state["game_state"],
+                }
+            )
+        )
         
     async def game_finish(self, winner):
         await self.send(
