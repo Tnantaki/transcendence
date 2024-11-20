@@ -85,7 +85,7 @@ class GameEngine:
         self.channels = get_channel_layer()
         self.id = id
         self.score_to_win = 1
-        self._running = False
+        self._running = asyncio.Event()
 
         self.key_value = deepcopy(KEY_VALUE)
         self._is_init = True
@@ -115,21 +115,20 @@ class GameEngine:
         )
 
     def run(self, loop):
-        if not self._running:
-            self._running = True
+        if not self._running.is_set():
+            self._running.set()
             self.task = loop.create_task(self.start())
 
     async def start(self):
-        asyncio.sleep(0.5);
-        while self._running:
+        await asyncio.sleep(0.5);
+        while self._running.is_set():
             await self.cale_ball_position()
             await self.update_player_paddle()
             await self.check_ball_hit_paddle()
             await self.check_ball_score()
             await self.update_game_state()
             await self.check_winner()
-            asyncio.sleep(0.05)
-
+            
 
     async def check_ball_hit_paddle(self):
         left_paddle = self.player[0].paddle
@@ -167,6 +166,7 @@ class GameEngine:
 
             self.reset()
             await self.delay_game()
+        
     
             
     async def check_winner(self):
@@ -176,7 +176,7 @@ class GameEngine:
         for p in self.player:
             if p.get_score() >= self.score_to_win:
                 self.reset()
-                self._running = False
+                self._running.clear()
                 res = await create_history(self, p)
                 await self.channels.group_send(
                     self.id,
@@ -211,14 +211,14 @@ class GameEngine:
         )
 
     def stop(self):
-        self._running = False
+        self._running.clear()
         if self.task:
             self.task.cancel()
             self.task = None
 
     @property
     def running(self):
-        return self._running
+        return self._running.is_set()
 
 
     def add_user(self, id):

@@ -8,7 +8,7 @@ import requests
 HOST_URL = "http://localhost:8000"
 
 G_TASK = []
-
+TOUR_TASK =[]
 def fast_token():
     token = requests.get(
         HOST_URL + '/i/debug/fast-token'
@@ -55,8 +55,23 @@ class TestWebsocketClient:
                 match data['command']:
                     case 'ROUND_START':
                         print(
-                            f"==== ข้อความจากห้องทัวร์นาเมนต์ {self.u['username']}====")
+                            f"==== ข้อความจากห้องทัวร์นาเมนต์ {self.u['username']} {data['command']}====")
                         await self.goto_play_game(data['data'])
+                        # disconnect from tour
+                        await self.ws_tour.close()
+                    case 'TOURNAMENT_INFOMATION':
+                        info = data['data']
+                        users = info['user']
+                        
+                        owner = [u for u in users if u['is_owner'] == True]
+                        if len(owner) == 0:
+                            return 
+                        if owner[0]['id'] == self.u['id'] and len(users) == 4:
+                            await self.send_start_tournament()
+                        
+                    case _:
+                        # print(data['command'])
+                        pass
             except websockets.exceptions.ConnectionClosed:
                 print("การเชื่อมต่อกับห้องทัวร์นาเมนต์ถูกปิด")
                 break
@@ -67,18 +82,19 @@ class TestWebsocketClient:
             try:
                 message = await self.ws_game.recv()
                 data = json.loads(message)
-                print(data)
-                # match data['command']:
-                #     case 'GAME_STATE':
-                #         if not close_state:
-                #             print(data['command'])
-                #             close_state = True
-                #     case 'COUNTDOWN':
-                #         pass
-                #     case 'GAME_FINISHED':
-                #         print(data['command'])
-                #     case _:
-                #         print(data['command'])
+                match data['command']:
+                    case 'GAME_STATE':
+                        if not close_state:
+                            print(data['command'])
+                            close_state = True
+                    case 'COUNTDOWN':
+                        pass
+                    case 'GAME_FINISHED':
+                        await self.connect_tournament(data['data']['tour_id'])
+                        TOUR_TASK.append(asyncio.create_task(self.receive_tournament_messages()))
+                        await self.ws_game.close()
+                    case _:
+                        print(data['command'])
             except websockets.exceptions.ConnectionClosed:
                 print("การเชื่อมต่อกับห้องเกมถูกปิด")
                 break
@@ -87,7 +103,7 @@ class TestWebsocketClient:
         room_id = None
         for i in data:
             if i['player1']['id'] == self.u['id']:
-                print(i)
+                # print(i)
                 room_id = i['room_id']
             if i['player2']['id'] == self.u['id']:
                 room_id = i['room_id']
@@ -121,25 +137,24 @@ async def main():
         clients.append(client)
 
     # # สร้าง tasks สำหรับรับข้อความ
-    tour_tasks = [
-        asyncio.create_task(client.receive_tournament_messages())
-        for client in clients
-    ]
+    
+    for client in clients:
+        TOUR_TASK.append(asyncio.create_task(client.receive_tournament_messages()))
 
     # รอให้เชื่อมต่อเสร็จ
     await asyncio.sleep(2)
 
     # ส่งคำสั่งเริ่มเกมจาก owner (client แรก)
-    await clients[0].send_start_tournament()
+    # await clients[0].send_start_tournament()
 
-    await asyncio.sleep(6)
+    await asyncio.sleep(10)
 
     # # เมื่อได้รับข้อมูลห้องเกม ให้เชื่อมต่อกับห้องเกม
     # await asyncio.sleep(2)
 
     # # รอรับข้อความจนกว่าจะปิดการเชื่อมต่อ
     await asyncio.gather(*G_TASK)
-    # await asyncio.gather(*tour_tasks)
+    await asyncio.gather(*TOUR_TASK)
 
 if __name__ == "__main__":
     asyncio.run(main())

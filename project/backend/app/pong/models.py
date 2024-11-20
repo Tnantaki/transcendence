@@ -130,6 +130,14 @@ class Tournament(BaseAutoDate, BaseID):
         null=True,
         related_name="tournament_owner",
     )
+    
+    @property
+    def info(self):
+        return {
+            'id': self.id,
+            'size': self.size,
+            'status': self.status,
+        }
 
 class TourRound(BaseAutoDate, BaseID):
     """

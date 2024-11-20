@@ -189,9 +189,9 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
         )
         if t == 3 and not self.game_engine.running:
-                await self.game_engine.check()
-                loop = asyncio.get_event_loop()
-                self.game_engine.run(loop)
+            await self.game_engine.check()
+            loop = asyncio.get_event_loop()
+            self.game_engine.run(loop)
 
 
     async def client_message(self, event):
@@ -242,6 +242,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
         )
 
+    # TODO open me Back
     async def game_state(self, state):
         # await self.send(
         #     text_data=json.dumps(
@@ -256,7 +257,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         ...
         
     async def game_finish(self, winner):
-        print("GameFinish")
         await self.send(
             text_data=json.dumps(
                 {
