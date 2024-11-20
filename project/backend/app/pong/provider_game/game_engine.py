@@ -11,46 +11,14 @@ from channels.db import database_sync_to_async
 
 KEY_STATE = {"RELASE": 0, "PRESS": 1}
 KEY_VALUE = {
-    38: {
-        'code': 'UP',
-        'value': -1,
-        'STATE': KEY_STATE['RELASE']
-    },
-    40: {
-        'code': 'DOWN',
-        'value': 1,
-        'STATE': KEY_STATE['RELASE']
-    },
-    37: {
-        'code': 'LEFT',
-        'value': -1,
-        'STATE': KEY_STATE['RELASE']
-    },
-    39: {
-        'code': 'RIGHT',
-        'value': 1,
-        'STATE': KEY_STATE['RELASE']
-    },
-    87: {
-        'code': 'W',
-        'value': -1,
-        'STATE': KEY_STATE['RELASE']
-    },
-    65: {
-        'code': 'A',
-        'value': 1,
-        'STATE': KEY_STATE['RELASE']
-    },
-    83: {
-        'code': 'S',
-        'value': 1,
-        'STATE': KEY_STATE['RELASE']
-    },
-    68: {
-        'code': 'D',
-        'value': 1,
-        'STATE': KEY_STATE['RELASE']
-    },
+    38: {"code": "UP", "value": -1, "STATE": KEY_STATE["RELASE"]},
+    40: {"code": "DOWN", "value": 1, "STATE": KEY_STATE["RELASE"]},
+    37: {"code": "LEFT", "value": -1, "STATE": KEY_STATE["RELASE"]},
+    39: {"code": "RIGHT", "value": 1, "STATE": KEY_STATE["RELASE"]},
+    87: {"code": "W", "value": -1, "STATE": KEY_STATE["RELASE"]},
+    65: {"code": "A", "value": 1, "STATE": KEY_STATE["RELASE"]},
+    83: {"code": "S", "value": 1, "STATE": KEY_STATE["RELASE"]},
+    68: {"code": "D", "value": 1, "STATE": KEY_STATE["RELASE"]},
 }
 
 
@@ -68,50 +36,47 @@ class GameEngine:
         return instance
 
     def __init__(self, id, room_id, *arg, **kwarg):
-        """
-        """
-        if hasattr(self, '_is_init'):
+        """ """
+        if hasattr(self, "_is_init"):
             return None
-        self.ball_position = {'x': 512, 'y': 300}
-        self.ball_velocity = {'x': 1, 'y': 1}
+        self.ball_position = {"x": 512, "y": 300}
+        self.ball_velocity = {"x": 1, "y": 1}
         self.player: list[Player] = []
         self.room_id = room_id
         self.canvas_size = {
-            'player1': {
-                'x': 800,
-                'y': 800,
+            "player1": {
+                "x": 800,
+                "y": 800,
             }
         }
         self.channels = get_channel_layer()
         self.id = id
-        self.score_to_win = 1
+        self.score_to_win = 10
         self._running = asyncio.Event()
+        self.speed_size = 1
+        self.hit = 0
 
         self.key_value = deepcopy(KEY_VALUE)
         self._is_init = True
         self.game_type = "VERSUS"
-        
+
     def __str__(self):
-        return f'game_engine_for_group:{self.id}'
+        return f"game_engine_for_group:{self.id}"
 
     async def cale_ball_position(self):
-        self.ball_position['x'] += self.ball_velocity['x']
-        self.ball_position['y'] += self.ball_velocity['y']
-        if self.ball_position['y'] > 600 or self.ball_position['y'] < 0:
-            self.ball_velocity['y'] = -1 * self.ball_velocity['y']
+        self.ball_position["x"] += self.ball_velocity["x"]
+        self.ball_position["y"] += self.ball_velocity["y"]
+        if self.ball_position["y"] > 600 or self.ball_position["y"] < 0:
+            self.ball_velocity["y"] = -1 * self.ball_velocity["y"]
 
     async def update_game_state(self):
         game_state = {
-            'ball_position': self.ball_position,
-            'left_paddle': self.player[0].get_position(),
-            'right_paddle': self.player[1].get_position()
+            "ball_position": self.ball_position,
+            "left_paddle": self.player[0].get_position(),
+            "right_paddle": self.player[1].get_position(),
         }
         await self.channels.group_send(
-            self.id,
-            {
-                'type': 'game.state',
-                'game_state': game_state
-            }
+            self.id, {"type": "game.state", "game_state": game_state}
         )
 
     def run(self, loop):
@@ -120,7 +85,7 @@ class GameEngine:
             self.task = loop.create_task(self.start())
 
     async def start(self):
-        await asyncio.sleep(0.5);
+        await asyncio.sleep(0.5)
         while self._running.is_set():
             await self.cale_ball_position()
             await self.update_player_paddle()
@@ -128,27 +93,47 @@ class GameEngine:
             await self.check_ball_score()
             await self.update_game_state()
             await self.check_winner()
-            
 
     async def check_ball_hit_paddle(self):
         left_paddle = self.player[0].paddle
         right_paddle = self.player[1].paddle
-        # left_paddle.y = ยอดของ paddle น้อยสุด = 0
+
         # Check Left Paddle
-        if self.ball_position['x'] <= left_paddle.x + left_paddle.width and (\
-                self.ball_position['y'] <= left_paddle.y + left_paddle.height and \
-                    self.ball_position['y'] > left_paddle.y):
-            self.ball_velocity['x'] = -1 * self.ball_velocity['x']
+        if (
+            self.ball_position["x"] <= left_paddle.x + left_paddle.width
+            and self.ball_position["x"] >= left_paddle.x
+            and self.ball_position["y"] <= left_paddle.y + left_paddle.height
+            and self.ball_position["y"] >= left_paddle.y
+        ):
+            self.ball_velocity["x"] = abs(
+                self.ball_velocity["x"]
+            )  # ให้บอลเด้งไปทางขวาเสมอ
+            self.hit += 1
+            if self.hit % 8 == 0:
+                self.speed_size += 1
+                self.increse_velocity(self.speed_size)
+
         # Check Right Paddle
-        if self.ball_position['x'] >= right_paddle.x and \
-               (self.ball_position['y'] <= right_paddle.y + right_paddle.height and \
-                    self.ball_position['y'] >= right_paddle.y):
-            self.ball_velocity['x'] = -1 * self.ball_velocity['x']
+        if (
+            self.ball_position["x"] + 10 >= right_paddle.x
+            and self.ball_position["x"] <= right_paddle.x + right_paddle.width
+            and self.ball_position["y"] <= right_paddle.y + right_paddle.height
+            and self.ball_position["y"] >= right_paddle.y
+        ):
+            self.ball_velocity["x"] = -abs(
+                self.ball_velocity["x"]
+            )  # ให้บอลเด้งไปทางซ้ายเสมอ
+            self.hit += 1
+            if self.hit % 8 == 0:
+                self.speed_size += 1
+                self.increse_velocity(self.speed_size)
 
     async def check_ball_score(self):
-        if self.ball_position['x'] > 1030:
-            self.ball_position = {'x': 512, 'y': 300}
-            self.ball_velocity = {'x': 1, 'y': 1}
+        if self.ball_position["x"] > 1030:
+            self.ball_position = {"x": 512, "y": 300}
+            self.ball_velocity = self.random_ball_velocity()
+            self.hit = 0
+            self.speed_size = 1
             self.player[0].increase_score()
             self.player[0].set_block_inc(True)
             await self.broadcase_score()
@@ -156,9 +141,11 @@ class GameEngine:
             self.reset()
             await self.delay_game()
 
-        if self.ball_position['x'] < -5:
-            self.ball_position = {'x': 512, 'y': 300}
-            self.ball_velocity = {'x': 1, 'y': 1}
+        if self.ball_position["x"] < -5:
+            self.ball_position = {"x": 512, "y": 300}
+            self.ball_velocity = self.random_ball_velocity()
+            self.hit = 0
+            self.speed_size = 1
             self.player[1].increase_score()
             self.player[1].set_block_inc(True)
             await self.broadcase_score()
@@ -166,13 +153,19 @@ class GameEngine:
 
             self.reset()
             await self.delay_game()
-        
-    
-            
+
+    def increse_velocity(self, size):
+        x = self.ball_velocity["x"]
+        y = self.ball_velocity["y"]
+        norm = (x * x + y * y) ** 0.5
+        new_x = (x / norm) * size
+        new_y = (y / norm) * size
+        self.ball_velocity = {"x": new_x, "y": new_y}
+
     async def check_winner(self):
         if len(self.player) != 2:
             print("error Player != 2")
-            
+
         for p in self.player:
             if p.get_score() >= self.score_to_win:
                 self.reset()
@@ -181,33 +174,46 @@ class GameEngine:
                 await self.channels.group_send(
                     self.id,
                     {
-                        'type': 'game.finish',
-                        'winner': {
+                        "type": "game.finish",
+                        "winner": {
                             "name": p.get_name(),
                             # set game type ที่ comsumer
-                        }
-                    }
+                        },
+                    },
                 )
-    
 
     async def delay_game(self):
         await asyncio.sleep(0.3)
 
+    def random_ball_velocity(self):
+        # สุ่มความเร็วระหว่าง 3-5
+        speed_x = random.uniform(3, 5)
+        speed_y = random.uniform(3, 5)
+        self.norm = (speed_x * speed_x + speed_y * speed_y) ** 0.5
+        # สุ่มทิศทาง (ซ้าย/ขวา)
+        direction_x = random.choice([-1, 1])
+        direction_y = random.choice([-1, 1])
+
+        speed_x = speed_x / self.norm * self.speed_size
+        speed_y = speed_y / self.norm * self.speed_size
+
+        return {"x": speed_x * direction_x, "y": speed_y * direction_y}
+
     async def reset(self):
-        self.ball_position = {'x': 512, 'y': 300}
-        self.ball_velocity = {'x': 1, 'y': 1}
-        
+        self.ball_position = {"x": 512, "y": 300}
+        self.ball_velocity = self.random_ball_velocity()
+
     async def broadcase_score(self):
         await self.channels.group_send(
             self.id,
             {
-                'type': 'game.score',
-                'command': 'UPDATE_SCORE',
-                'data': {
-                    'left': self.player[0].get_score(),
-                    'right': self.player[1].get_score()
-                }
-            }
+                "type": "game.score",
+                "command": "UPDATE_SCORE",
+                "data": {
+                    "left": self.player[0].get_score(),
+                    "right": self.player[1].get_score(),
+                },
+            },
         )
 
     def stop(self):
@@ -219,7 +225,6 @@ class GameEngine:
     @property
     def running(self):
         return self._running.is_set()
-
 
     def add_user(self, id):
         player_instance = Player(id)
@@ -239,8 +244,8 @@ class GameEngine:
         player = self.get_player(id)
         if not player:
             return
-        if state == KEY_STATE['PRESS']:
-            player.paddle.set_dy(self.key_value[key]['value'])
+        if state == KEY_STATE["PRESS"]:
+            player.paddle.set_dy(self.key_value[key]["value"])
         else:
             player.paddle.set_dy(0)
 
@@ -254,7 +259,6 @@ class GameEngine:
             return
         player.set_player_side(player_side)
         player.set_obj(obj)
-        
 
         # Set Paddle
         if player.as_player == 1:
@@ -282,16 +286,18 @@ class GameEngine:
             player.update_paddle_position()
 
     def handle_message(self, message):
-        user = self.get_player(message['sender'])
-        data = message.get('data', None)
+        user = self.get_player(message["sender"])
+        data = message.get("data", None)
         if user is None:
             return
-        match message['command']:
-            case 'PRESS':
+        match message["command"]:
+            case "PRESS":
                 self.set_player_paddle_state(
-                    user.id, data['key_code'], KEY_STATE['PRESS'])
-            case 'RELEASE':
+                    user.id, data["key_code"], KEY_STATE["PRESS"]
+                )
+            case "RELEASE":
                 self.set_player_paddle_state(
-                    user.id, data['key_code'], KEY_STATE['RELASE'])
+                    user.id, data["key_code"], KEY_STATE["RELASE"]
+                )
             case _:
                 pass

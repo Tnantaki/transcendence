@@ -57,9 +57,9 @@ class RoomPostIn(Schema):
     }
 )
 def get_all_room(request):
-    qs = Room.objects.all()
+    qs = Room.objects.filter(hide=False)
 
-    return 200, Room.objects.all()
+    return 200, qs
 
 @pong_router.post(
     "/pong/room/",
