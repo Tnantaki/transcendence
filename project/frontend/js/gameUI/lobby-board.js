@@ -1,7 +1,7 @@
 import { getAllRooms, getRoomlength, cachedRooms} from "./room-api.js";
 import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
-import { checkGameMode } from "./lobby-menu.js";
+import { checkGameMode, setGameMode } from "./lobby-menu.js";
 import { dictionary, evtBtns } from "./shared-resources.js";
 import { joinWaitingRoom } from "./WaitingRoom.js";
 import { connectTourSocket } from "./tourSocket.js";
@@ -77,6 +77,7 @@ export async function handleRoomBtn(xPos, roomBtns, event) {
 				manageEvt(1, evtBtns.backBtn);
 				// createWaitingRoom(roomBtns[i]);
 				// tourSocket
+				setGameMode("WaitingRoom");
 				connectTourSocket(roomBtns[i], joinWaitingRoom)
 			}
 

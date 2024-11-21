@@ -19,6 +19,10 @@ export function checkGameMode() {
 	return gameMode;
 }
 
+export function setGameMode(mode) {
+	gameMode = mode;
+}
+
 async function execLobby(mode, img) {
 	initGameMode(mode);
 	if (mode == "online")
