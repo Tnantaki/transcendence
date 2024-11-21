@@ -39,5 +39,5 @@
 }
 
 .from-check {
-  margin-top: var(--mg-lg);
+  margin: var(--mg-lg) 0;
 }
