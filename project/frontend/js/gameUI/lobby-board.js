@@ -102,7 +102,7 @@ const scrollbarPadding = 2;
 const scrollbarThumbMinHeight = 20;
 
 export const   playerBtns = [];
-export async function initPlayers(players) {
+export async function initPlayers(players, ctx2) {
 	// console.log("initPlayers");
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (players.length - visibleLines) * lineHeight);
@@ -114,7 +114,7 @@ export async function initPlayers(players) {
 			if (playerIndex < players.length) {
 				const playerName = players[playerIndex];
 				const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space) * i;
-				ctx.fillText(playerName, xPos, yPos);
+				ctx2.fillText(playerName, xPos, yPos);
 				if (playerBtns.length < visibleLines)
 					playerBtns.push(playerName);
 				else
