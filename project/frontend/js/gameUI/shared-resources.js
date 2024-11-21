@@ -4,6 +4,7 @@ import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
 import { disconnetTourSocket, startTour } from "./tourSocket.js";
 import { fullWaitingRoom } from "./WaitingRoom.js";
+import { checkGameMode, createLobby } from "./lobby-menu.js";
 
 let canvas;
 let ctx;
@@ -131,8 +132,17 @@ function handleBackBtn(btnObj, event)
 			canvas.removeEventListener('mouseleave', scrollEvt.handleMouseUp);
 			canvas.hasScrollListeners = false;
 		}
-		createMenu();
-		disconnetTourSocket() // disconnect socket
+
+		console.log("heyyy");
+		if (checkGameMode() == "online") {
+			console.log("hello online mode");
+			createMenu();
+		}
+		else {
+			console.log("hello tour mode");
+			createLobby("tournament");
+			disconnetTourSocket() // disconnect socket  ????????
+		}
 		// manageEvt(1, handleAddPlayerBtn);
 		// console.log("Back");
 	}
