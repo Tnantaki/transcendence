@@ -78,7 +78,11 @@ export default class ChatRoom {
   }
 
   displayPongInvite = () => {
+    // Delete Old invite Box
+    this.removeInviteBox()
+
     const msgWarning = document.createElement('div')
+    msgWarning.setAttribute("id", "chat-invite-pont-msg")
     msgWarning.classList.add("chat-message", "justify-content-center")
     msgWarning.innerHTML = `
       <div class="d-flex flex-column align-items-center gap-2 border rounded p-2 bg-secondary">
@@ -101,13 +105,18 @@ export default class ChatRoom {
   }
 
   pongJoinInvite = () => {
-    // console.log('Join Pong invite')
-    this.answerInvitePong({answer: 'YES'})
+    this.removeInviteBox()
+    this.answerInvitePong('YES')
   }
 
   pongRejectInvite = () => {
-    // console.log('Join Reject invite')
-    this.answerInvitePong({answer: 'NO'})
+    this.removeInviteBox()
+    this.answerInvitePong('No')
+  }
+
+  removeInviteBox = () => {
+    const inviteBox = this.chatBody.querySelector('#chat-invite-pont-msg')
+    if (inviteBox) inviteBox.remove()
   }
 
   setEnterKey = () => {
