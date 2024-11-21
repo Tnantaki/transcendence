@@ -3,12 +3,11 @@ import { CONTAINER } from "../constants.js";
 import { loadPage } from "../router.js";
 
 class TourSocket {
-  constructor(room, initPlayers, clearPlayer) {
+  constructor(room, joinWaitingRoom) {
     this.token = localStorage.getItem('token');
     this.my_id = localStorage.getItem('my_id');
     this.room = room
-    this.initPlayers = initPlayers
-    this.clearPlayer = clearPlayer
+    this.joinWaitingRoom = joinWaitingRoom
     this.users = []
 
     this.ws = new WebSocket(`${WS_TOUR_ROOM}?token=${this.token}&room_id=${room.id}`) // connect socket
@@ -63,8 +62,7 @@ class TourSocket {
   updateRoom = (data) => {
     const nameList = data.user.map(u => u.username)
     console.log(nameList)
-    this.clearPlayer()
-    this.initPlayers(nameList)
+    this.joinWaitingRoom(this.room.name, nameList)
   }
 
   roundStart = (data) => {
@@ -85,8 +83,8 @@ class TourSocket {
   }
 }
 
-export function connectTourSocket(room, initPlayers, clearPlayer) {
-  CONTAINER.tourSocket = new TourSocket(room, initPlayers, clearPlayer)
+export function connectTourSocket(room, joinWaitingRoom) {
+  CONTAINER.tourSocket = new TourSocket(room, joinWaitingRoom)
   return CONTAINER.tourSocket
 }
 
