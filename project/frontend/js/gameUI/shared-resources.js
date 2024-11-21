@@ -133,17 +133,15 @@ function handleBackBtn(btnObj, event)
 			canvas.hasScrollListeners = false;
 		}
 
-		console.log("heyyy");
-		if (checkGameMode() == "online") {
-			console.log("hello online mode");
-			createMenu();
-		}
-		else {
-			console.log("hello tour mode");
+		if (checkGameMode() == "WaitingRoom") {
+			console.log("back to lobby");
 			createLobby("tournament");
 			disconnetTourSocket() // disconnect socket  ????????
+		} else {
+			console.log("back to menu");
+			createMenu();
 		}
-		// manageEvt(1, handleAddPlayerBtn);
+         		// manageEvt(1, handleAddPlayerBtn);
 		// console.log("Back");
 	}
 }
