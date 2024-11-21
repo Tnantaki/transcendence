@@ -3,6 +3,7 @@ import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
 import { disconnetTourSocket, startTour } from "./tourSocket.js";
+import { fullWaitingRoom } from "./WaitingRoom.js";
 
 let canvas;
 let ctx;
@@ -84,13 +85,18 @@ function handleStartBtn(btnObj, event)
 	const	btnWidth = btnObj.width;
 	const	btnHeight = btnObj.height;
 
-	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
+	if ((x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight))
 	{
+
+		console.log(fullWaitingRoom());
 		// for full players in room to loadpage
 		// loadPage("/online?room_id=" + roomBtns[i].id);
 		console.log("clicked start btn");
 		startTour() // start tournament
-	}	
+	}
+	else {
+		console.log("not full player :(");
+	}
 }
 
 function handleBackBtn(btnObj, event)
