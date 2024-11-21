@@ -1,27 +1,28 @@
 import { getMyProfile } from "../services/profileService.js";
 import { getFriends } from "../services/friendService.js";
 
-async function getProfile() {
-  const profile = document.getElementById("my-profile");
+renderProfile(document.getElementById("my-profile"));
+renderFriendList(document.getElementById("friendList"));
+
+async function renderProfile(profileDOM) {
   const profileValue = await getMyProfile()
 
-  profile.querySelector("#displayName").innerHTML = profileValue["display_name"] || "";
-  profile.querySelector("#bio").innerHTML = profileValue["bio"] || "";
-  profile.querySelector("#email").innerHTML = profileValue["email"] || "";
-  profile.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
-  profile.querySelector("#totalPlay").innerHTML = profileValue["wins"] + profileValue["losses"];
-  profile.querySelector("#tourWon").innerHTML = profileValue["tour_won"];
-  profile.querySelector("#tourPlay").innerHTML = profileValue["tour_play"];
-  profile.querySelector("#profileImage").src = "/api" + profileValue["profile"];
+  profileDOM.querySelector("#displayName").innerHTML = profileValue["display_name"] || "";
+  profileDOM.querySelector("#bio").innerHTML = profileValue["bio"] || "";
+  profileDOM.querySelector("#email").innerHTML = profileValue["email"] || "";
+  profileDOM.querySelector("#winLose").innerHTML = profileValue["wins"] + ":" + profileValue["losses"];
+  profileDOM.querySelector("#totalPlay").innerHTML = profileValue["wins"] + profileValue["losses"];
+  profileDOM.querySelector("#tourWon").innerHTML = profileValue["tour_won"];
+  profileDOM.querySelector("#tourPlay").innerHTML = profileValue["tour_play"];
+  profileDOM.querySelector("#profileImage").src = "/api" + profileValue["profile"];
 }
 
-async function getFriendList() {
+async function renderFriendList(friendsDOM) {
   const RED_CLR = '#B63A3A'
   const GREEN_CLR = '#62E54C'
-  const friendList = document.getElementById("friendList");
-  const friendListValue = await getFriends()
+  const friends = await getFriends()
 
-  friendListValue.forEach(friend => {
+  friends.forEach(friend => {
     const item = document.createElement("li");
     item.classList.add("friend-list-item");
     const clr = friend.is_online ? GREEN_CLR : RED_CLR
@@ -42,9 +43,6 @@ async function getFriendList() {
         </div>
         <div class="friend-item-background"></div>
       `
-    friendList.appendChild(item);
+    friendsDOM.appendChild(item);
   })
 }
-
-getProfile();
-getFriendList();

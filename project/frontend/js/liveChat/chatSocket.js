@@ -49,10 +49,9 @@ class ChatSocket {
     console.warn("Disconnet from ChatSocket")
   };
 
-  // TODO: Waiting for backend change protocol
   webSocketEventOnMessage = (event) => {
     let data = JSON.parse(event.data);
-    console.log('got message from server', data)
+    // console.log('got message from server', data)
     if (data.type === 'SERVER_MESSAGE') {
       switch (data.command) {
         case "LIST_MESSAGE_BOX":
@@ -62,15 +61,15 @@ class ChatSocket {
           this.listReceivedMessage(data.data)
           break;
         case "NEW_MESSAGE":
-          console.log('receive new message')
           this.receivedMessage(data.data)
           break;
         case "GAME_INVITE":
-          if (data.sender !== this.my_profile.id)
+          if (data.data.sender !== this.my_id) {
             this.chatRoom.displayPongInvite()
+          }
           break;
         case "GAME_CREATED_ROOM":
-          // TODO ปิด แชท box
+          this.closeChat()
           loadPage("/online?room_id=" + data.data.id);
           break
         default:
@@ -106,12 +105,15 @@ class ChatSocket {
   }
 
   closeChat = () => {
-    this.chatRoom.clear()
-    this.chatRoom = null
+    this.chatBox.hide()
+    // sometimes chatRoom is null when we hide chatBox Bootstap modal
+    if (this.chatRoom) {
+      this.chatRoom.clear()
+      this.chatRoom = null
+    }
   }
 
   sendInvitePong = (friendId) => {
-    console.log('send invite called')
     const msgObj = {
       type: "CLIENT_MESSAGE",
       command: "INVITE_PLAY_VERSUS",
@@ -126,7 +128,7 @@ class ChatSocket {
     const msgObj = {
       type: "CLIENT_MESSAGE",
       command: "ANSWER_INVITE",
-      data: { ...answer, recipient: this.friendIdTarget }
+      data: { answer, recipient: this.friendIdTarget }
     }
     this.ws.send(JSON.stringify(msgObj));
   }
@@ -166,7 +168,6 @@ class ChatSocket {
   }
 
   displayMsgBox(msgBox) {
-    console.log('msgBox', msgBox)
     const notiMsgList = document.getElementById("notiMsgList");
     // to reset noti message
     notiMsgList.innerHTML = ''
@@ -210,7 +211,6 @@ class ChatSocket {
     this.notiMsgModal.removeEventListener('shown.bs.modal', this.handleNotiMsg)
     this.ws.close()
     this.ws = null
-    console.log('Disconnect Socket')
   }
 }
 

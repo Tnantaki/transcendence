@@ -1,44 +1,31 @@
-import * as constant from "../constants.js";
 import { loadPage } from "../router.js";
-import { fetchAPI } from "../services/api.js";
-import { getMyProfile } from "../services/profileService.js";
+import { getMyProfile, logout } from "../services/profileService.js";
 import { disconnetWebSocket } from "../liveChat/chatSocket.js";
 
-async function getProfile() {
-  const profile = document.getElementById("blockProfile");
-  const profileValue = await getMyProfile()
-  if (!profileValue) return
+renderMainProfile(document.getElementById("blockProfile"))
+handlerLogout(document.getElementById("submitLogout"))
 
-  profile.querySelector("#profilePicture").src = "api/" + profileValue["profile"]
+async function renderMainProfile(profileDOM) {
+  const profile = await getMyProfile()
+  if (!profile) return
+
+  profileDOM.querySelector("#profilePicture").src = "api/" + profile["profile"]
     || "../static/svg/default-user-picture.svg";
-  profile.querySelector("#profileName").innerHTML = profileValue["display_name"] || "";
+  profileDOM.querySelector("#profileName").innerHTML = profile["display_name"] || "";
 }
 
-async function submitLogout() {
-  try {
-    const response = await fetchAPI("POST", constant.API_LOGOUT, { auth: true });
+function handlerLogout(btnLogout) {
+  btnLogout.addEventListener('click', async (event) => {
+    if (event.target && event.target.id === 'submitLogout') {
+      await logout()
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      bootstrap.Modal.getInstance(document.getElementById("logoutModal")).hide()
+
+      // Remove token and my_id in browser cache
+      localStorage.removeItem("token");
+      localStorage.removeItem("my_id");
+      disconnetWebSocket()
+      loadPage("/login");
     }
-    // Remove token and my_id in browser cache
-    localStorage.removeItem("token");
-    localStorage.removeItem("my_id");
-    disconnetWebSocket()
-  } catch (error) {
-    console.error(error);
-  }
-  loadPage("/login");
+  }, { once: true });
 }
-
-const btnLogout = document.getElementById("submitLogout");
-
-btnLogout.addEventListener('click', (event) => {
-  if (event.target && event.target.id === 'submitLogout') {
-    submitLogout();
-    const modal = bootstrap.Modal.getInstance(document.getElementById("logoutModal"));
-    modal.hide();
-  }
-}, { once: true });
-
-getProfile();
