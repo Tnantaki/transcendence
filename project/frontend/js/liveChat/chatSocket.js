@@ -1,5 +1,7 @@
 import { WS_CHAT_ROOM } from "../constants.js";
 import ChatRoom from "./chatRoom.js";
+import { loadPage } from "../router.js";
+
 let chatSocket = null
 
 class ChatSocket {
@@ -63,10 +65,14 @@ class ChatSocket {
           console.log('receive new message')
           this.receivedMessage(data.data)
           break;
-        // case "PONT_INVITE":
-        //   if (data.sender !== this.my_profile.id)
-        //     this.displayPongInvite()
-        //   break;
+        case "GAME_INVITE":
+          if (data.sender !== this.my_profile.id)
+            this.chatRoom.displayPongInvite()
+          break;
+        case "GAME_CREATED_ROOM":
+          // TODO ปิด แชท box
+          loadPage("/online?room_id=" + data.data.id);
+          break
         default:
           break;
       }
@@ -105,12 +111,12 @@ class ChatSocket {
   }
 
   sendInvitePong = (friendId) => {
-    console.log('send invite')
+    console.log('send invite called')
     const msgObj = {
       type: "CLIENT_MESSAGE",
       command: "INVITE_PLAY_VERSUS",
       data: {
-        user_id: friendId
+        recipient: friendId
       }
     }
     this.ws.send(JSON.stringify(msgObj));
@@ -120,7 +126,7 @@ class ChatSocket {
     const msgObj = {
       type: "CLIENT_MESSAGE",
       command: "ANSWER_INVITE",
-      data: { answer }
+      data: { ...answer, recipient: this.friendIdTarget }
     }
     this.ws.send(JSON.stringify(msgObj));
   }

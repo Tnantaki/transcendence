@@ -87,8 +87,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         await connect(self)
 
-
-        if self.room.number_of_player == 2:
+        await asyncio.sleep(0.5)
+        # TO fast for DB so sad
+        if len(self.game_engine.player) == 2:
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -188,9 +189,9 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
         )
         if t == 3 and not self.game_engine.running:
-                await self.game_engine.check()
-                loop = asyncio.get_event_loop()
-                self.game_engine.run(loop)
+            await self.game_engine.check()
+            loop = asyncio.get_event_loop()
+            self.game_engine.run(loop)
 
 
     async def client_message(self, event):
@@ -261,8 +262,8 @@ class GameConsumer(AsyncWebsocketConsumer):
                     "command": "GAME_FINISHED",
                     "sender": "SERVER",
                     "data": {
-                        "game_type": self.room.game_type,
-                        "tour_id": self.room.tour_id,
+                        "game_type":self.room.game_type if hasattr(self.room, 'game_type') else None,
+                        "tour_id": self.room.tour_id if hasattr(self.room, 'tour_id') else None,
                         **winner
                     }
                 }

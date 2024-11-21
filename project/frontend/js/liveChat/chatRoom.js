@@ -101,15 +101,13 @@ export default class ChatRoom {
   }
 
   pongJoinInvite = () => {
-    console.log('Join Pong invite')
-    // TODO: send message to server to join
-    // this.answerInvitePong({answer: 'yes'})
+    // console.log('Join Pong invite')
+    this.answerInvitePong({answer: 'YES'})
   }
 
   pongRejectInvite = () => {
-    console.log('Join Reject invite')
-    // TODO: send message to server to reject
-    // this.answerInvitePong({answer: 'no'})
+    // console.log('Join Reject invite')
+    this.answerInvitePong({answer: 'NO'})
   }
 
   setEnterKey = () => {

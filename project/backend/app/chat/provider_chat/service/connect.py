@@ -57,12 +57,10 @@ def create_query_param(obj):
 
 
 async def create_or_channel_to_group(obj):
-    
     await obj.channel_layer.group_add(
         obj.room_group_name,
         obj.channel_name
     )
-
     return obj
 
 
@@ -83,7 +81,6 @@ async def s2s_message(obj, command):
     )
 
 async def connect(obj):
-
     create_query_param(obj)
     await find_user(obj)
     await create_or_channel_to_group(obj)
@@ -102,7 +99,6 @@ def check_unread_message(obj):
         recipient_id=obj.user_id,
         is_read=False
     )
-    print("m= ", m)
     if m.count() > 0:
         return True
     return False

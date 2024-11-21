@@ -1,19 +1,19 @@
 from rich import print, inspect
 from channels.db import database_sync_to_async
-from pong.models import Tournament
+from pong.models import (Tournament, TourRound, MatchHistory, Room,)
 from django.contrib.auth import get_user_model
 import random
 from rich import print
-from pong.models import Room
 from pong.shared_services.database_syn_to_async.create import create
 from pong.shared_services.utils.group_message import server_send_message_to_group
 from channels.db import DatabaseSyncToAsync
 
 from channels.layers import get_channel_layer
 
+
 @database_sync_to_async
-def get_tournament(tour_id, engine):
-    tour = Tournament.objects.filter(id=tour_id)
+def get_tournament(tour_id):
+    tour = Tournament.objects.filter(id=tour_id).first()
     if tour is None:
         raise ValueError("Tour Not Found")
     return tour
@@ -75,7 +75,7 @@ class TournamentEngine:
         old, _ = self.get_intstance(id)
         if old:
             await old.close()
-        
+
         self.c_instance[id] = (inst, False)
         if self.owner_id is None:
             self.set_owner(id)
@@ -121,25 +121,29 @@ class TournamentEngine:
 
     async def get_tournament_info(self):
         user = await self.user_in_tour()
+        tour = await get_tournament(self.tour_id)
         return {
             'id': self.id,
             'user_count': len(user),
             'user': user,
             'can_start': len(user) >= 3,
+            'tour': tour.info,
         }
-            
-    
+
     async def start_tournament(self, user_id):
         if user_id != self.owner_id:
             return "Not Owner"
-        info = await self.get_tournament_info()
+
+
+        tour = await get_tournament(self.tour_id)
+        bracket = None
+        if tour.status == 'OPEN':
+            bracket = await self.create_r1()
+        if tour.status == 'PLAYING-R1':
+            bracket = await self.create_r2()
         
-        # if self.user_count < 3:
-            # return "Can't Start Tournament"
-        bracket = self.create_bracket(info['user'])
+        # create pre-match-history
         data = await create_game_for_tournament(self, bracket)
-
-
 
         # # create room for all matching
         layer = get_channel_layer()
@@ -152,13 +156,69 @@ class TournamentEngine:
                 "data": data
             }
         )
+
+    async def create_r1(self):
+        info = await self.get_tournament_info()
+        bracket = self.create_bracket(info['user'])
+        await self.db_create_r1(bracket)
+        
+        return bracket
+
+    @database_sync_to_async
+    def db_create_r1(self, bracket):
+        tour = Tournament.objects.get(id=self.tour_id)
+        tour.status = 'PLAYING-R1'
+        tour.save()
+        t_round = TourRound.objects.create(
+            tournament=tour,
+            tround=1,
+        )
+
+    async def create_r2(self):
+        # get result
+        result = await self.db_get_r1_result()
+        bracket = self.create_bracket(result)
+        await  self.db_create_r2(bracket)
+        return bracket
     
+    @database_sync_to_async
+    def db_get_r1_result(self):
+        r = TourRound.objects.filter(
+            tround=1,
+            tournament_id=self.tour_id,
+        ).first()
+        matches = r.matches.all()
+        winners = [m.winner for m in matches]
+        res = [
+            {
+                "id": u.id,
+                "username": u.username,
+                'is_owner': u.id == self.owner_id,
+                'display_name': u.display_name,
+                'profile': u.profile,
+            }
+            for u in winners
+        ]
+        return res
+
+
+    @database_sync_to_async
+    def db_create_r2(self, bracket):
+        tour = Tournament.objects.get(id=self.tour_id)
+        tour.status = 'PLAYING-R2'
+        tour.save()
+        t_round = TourRound.objects.create(
+            tournament=tour,
+            tround=2,
+        )
+            
+
     def create_bracket(self, user_list):
         """
         create bracket for tournament
         """
-        random.shuffle(user_list)
-        
+        # random.shuffle(user_list)
+
         # Create Match
         bracket = []
         while len(user_list) >= 2:
@@ -170,6 +230,7 @@ class TournamentEngine:
                 'status': 'WAITING',
                 'winner': None,
             })
+            
 
         if len(user_list) == 1:
             bracket.append({
@@ -179,11 +240,8 @@ class TournamentEngine:
                 'winner': user_list[0],
             })
 
-
         return bracket
-            
 
-    
 """
 Tournament Data
 {
@@ -214,18 +272,17 @@ Tournament Data
     ]
 }
 """
-        
-
 
 
 async def broadcast_info(obj, is_print=False):
-    message =  await obj.tour_engine.get_tournament_info()
+    message = await obj.tour_engine.get_tournament_info()
     if is_print:
         print(message)
     await obj.send_message(
         command='TOURNAMENT_INFOMATION',
         message=message
     )
+
 
 async def startRound(obj, data, is_print=False):
     message = data
@@ -235,6 +292,7 @@ async def startRound(obj, data, is_print=False):
         command='ROUND_START',
         message=message
     )
+
 
 @DatabaseSyncToAsync
 def create_game_for_tournament(obj, user_list):
@@ -248,6 +306,4 @@ def create_game_for_tournament(obj, user_list):
         )
         pair['room_id'] = room.id
         pair['tour_id'] = obj.tour_id
-    
     return user_list
-

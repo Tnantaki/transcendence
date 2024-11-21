@@ -64,6 +64,7 @@ class MatchHistory(BaseAutoDate, BaseID):
     :param player_2: player 2
     :param player_2_score: player 2 score
     :param winner: player who win this match
+    :param mtype: match type VERSUS, TR1, TR2 (tour round1 and 2)
     """
     player_1 = models.ForeignKey(
         AUTH_USER_MODEL,
@@ -85,6 +86,8 @@ class MatchHistory(BaseAutoDate, BaseID):
         null=True,
         related_name="mh_winner",
     )
+    status = models.CharField(default="FINISH", max_length=255)
+    mtype = models.CharField(default="VERSUS", max_length=255)
 
 
 class UserGameInfo(BaseAutoDate):
@@ -127,3 +130,22 @@ class Tournament(BaseAutoDate, BaseID):
         null=True,
         related_name="tournament_owner",
     )
+    
+    @property
+    def info(self):
+        return {
+            'id': self.id,
+            'size': self.size,
+            'status': self.status,
+        }
+
+class TourRound(BaseAutoDate, BaseID):
+    """
+    :param tournament: tournament
+    :param round: round number
+    :param matches: list of matches
+    """
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    tround = models.IntegerField(default=0)
+    matches = models.ManyToManyField(MatchHistory, related_name="tournament_round_match")
+    

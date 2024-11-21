@@ -42,7 +42,7 @@ def get_all_user(request):
 @debug_router.get(
     "/fast-token",
     response={
-        200:dict
+        200: list[dict]
     }
 )
 def fast_create_simple_token(request):
@@ -52,13 +52,19 @@ def fast_create_simple_token(request):
     # )
     # auth = AuthSession.objects.create(user=user) 
     
-    all_user = User.objects.all()
+    all_user = User.objects.all()[:4]
+    ret = []
     for u in all_user:
         auth = AuthSession.objects.create(user=u)
+        u.set_password('1234')
+        u.save()
+        ret.append({
+            'id': u.id,
+            'username': u.username,
+            'token': auth.id,
+        })
     
-    return 200, {
-        "token": auth.id
-    }
+    return 200, ret
     
 @debug_router.get(
     "/file-upload",

@@ -39,7 +39,7 @@ function fillRoomName(room, xPos, yPos) {
 	if (checkGameMode() == "online")
 		ctx.fillText(room.number_of_player + "/2", boardObj.width - 10, yPos);
 	else
-		ctx.fillText(room.number_of_player + "/4", boardObj.width - 10, yPos);
+		ctx.fillText(room.users.length + "/4", boardObj.width - 10, yPos);
 }
 
 function getBtnWidth(roomName) { 
@@ -69,14 +69,19 @@ export async function handleRoomBtn(xPos, roomBtns, event) {
 		if (x >= btnX && x <= btnX + roomBtns[i].width && 
 			y >= btnY - roomBtns[i].height / 2 && y <= (btnY + roomBtns[i].height / 2)) {
 
+			if (checkGameMode() == "online")
+				if (roomBtns[i].players > 1) return(alert("The room is occupied!"));
+			else
+				if (roomBtns[i].players > 3) return(alert("The room is occupied!"));
+
 			// for load game online page
 			if (checkGameMode() == "online")
 				loadPage("/online?room_id=" + roomBtns[i].id);
 			else if (checkGameMode() == "tournament") {
-					// tourSocket
 				manageEvt(1, evtBtns.createBtn);
 				manageEvt(1, evtBtns.backBtn);
 				createWaitingRoom(roomBtns[i]);
+				// tourSocket
 				connectTourSocket(roomBtns[i], initPlayers, clearPlayer)
 			}
 
@@ -144,6 +149,7 @@ async function initRooms(rooms, mode) {
 					"width": getBtnWidth(room.name),
 					"height": getBtnHeight(room.name),
 					"yPos": yPos,
+					"players": checkGameMode() == "online" ? room.number_of_player : room.users.length,
 				};
 				if (roomBtns.length < visibleLines)
 					roomBtns.push(tmpObj);
@@ -156,7 +162,7 @@ async function initRooms(rooms, mode) {
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}
-		// console.log(rooms);
+		console.log(rooms);
 	}
 
 	const scrollbarHeight = boardObj.height + boardObj.padding * 2 - 2 * scrollbarPadding;

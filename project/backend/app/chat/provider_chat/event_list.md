@@ -48,3 +48,51 @@
 - ทุก event จะต้องมี field `type` เป็น "CLIENT_MESSAGE" เพื่อระบุว่าเป็นข้อความที่ส่งจาก client
 - `command` จะระบุประเภทของคำสั่งที่ต้องการทำ
 - `data` จะเก็บข้อมูลที่จำเป็นสำหรับแต่ละคำสั่ง
+
+
+- `INVITE_PLAY_VERSUS` - ชวนเล่นเกมส์
+```json
+{
+    "type": "CLIENT_MESSAGE",
+    "command": "INVITE_PLAY_VERSUS",
+    "data": {
+        "recipient": "_ErGHoeSEtpgs6VzIGAomq2v",
+    }
+}
+```
+
+- `GAME_INVITE` - ข้อความชวนเล่น
+```json
+{
+    "type": "CLIENT_MESSAGE",
+    "command": "GAME_INVITE",
+    "data": {
+        "sender": "_ErGHoeSEtpgs6VzIGAomq2v",
+        "message": "Hello"
+    }
+}
+```
+
+- `GAME_CREATED_ROOM` - room ที่ให้เข้าเล่น
+```json
+{
+    "type": "SERVER_MESSAGE",
+    "command": "GAME_CREATED_ROOM",
+    "data": {
+        'id': 213
+    }
+}
+```
+
+
+- `ANSWER_INVITE` - ตอบรับคำชวน
+```json
+{
+    "type": "CLIENT_MESSAGE",
+    "command": "ANSWER_INVITE",
+    "data": {
+        "recipient": "_ErGHoeSEtpgs6VzIGAomq2v", 
+        "answer": "YES" | "No",
+    }
+}
+```
