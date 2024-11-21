@@ -221,10 +221,12 @@ if (mode === '/game/versus') {
 gameOffline.startGame();
 
 // Exit button
-const homeBtn = document.getElementById('game-home-btn')
-
-homeBtn.addEventListener('click', () => {
-	if (gameOffline) gameOffline.clear()
-  gameOffline = null
-	console.log('clear game')
-})
+handlerExitBtn(document.getElementById('game-home-btn'))
+function handlerExitBtn(homeBtn) {
+  console.log('be call')
+  if (!homeBtn) return
+  homeBtn.addEventListener('click', () => {
+    if (gameOffline) gameOffline.clear()
+    gameOffline = null
+  })
+}
