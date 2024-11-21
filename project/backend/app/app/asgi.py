@@ -29,7 +29,10 @@ from channels.auth import AuthMiddlewareStack
 
 from appuac.management.commands.remove_tournaments import Command as remove_pending_tour
 # TODO DELETE ME
-remove_pending_tour().handle()
+try:
+    remove_pending_tour().handle()
+except Exception as e:
+    print(e)
 
 
 application = ProtocolTypeRouter(
