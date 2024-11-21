@@ -7,8 +7,6 @@ import { boardObj, initPlayers } from "./lobby-board.js";
 // #                       EXECUTION 					  #
 // ########################################################
 
-const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
 
 
 // let canvas;
@@ -62,7 +60,7 @@ class WaitingRoom {
 
 		console.log("hello");
 		console.log(this.playersName.length);
-		await initPlayers(this.playersName);
+		await initPlayers(this.playersName, this.ctx);
 
 	}
 
@@ -91,9 +89,10 @@ class WaitingRoom {
 
 	updateWaitingRoom(playersName) {
 		console.log("updated waitingRoom");
+		console.log(playersName)
 		this.playersName = playersName;
 		this.updateOwner();
-		this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		this.createWaitingRoom();
 	}
 
@@ -105,10 +104,11 @@ class WaitingRoom {
 
 let waitingRoom = null;
 
-
 export function joinWaitingRoom(roomName, playersName) {
-	if (!waitingRoom)
-		waitingRoom = new WaitingRoom(canvas, ctx, roomName, playersName[0]);
+	const canvas = document.getElementById("gameArea");
+	const ctx = canvas.getContext("2d");
+
+	waitingRoom = new WaitingRoom(canvas, ctx, roomName, playersName[0]);
 	waitingRoom.updateWaitingRoom(playersName);
 }
 

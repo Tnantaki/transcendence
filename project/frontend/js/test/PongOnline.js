@@ -1,4 +1,5 @@
 import * as constants from "../constants.js";
+import { loadPage } from "../router.js";
 
 // import { PongGame } from "./pongOnlineScript.js";
 var PLAYER = {
@@ -534,16 +535,21 @@ requestAnimationFrame(Game.loop);
 // Display Popup Finish Game
 const modalWinnerObj = document.getElementById('winnerModal')
 const modalWinner = new bootstrap.Modal(modalWinnerObj);
+const backBtn = modalWinnerObj.querySelector('#modalBackBtn')
 function popupWinner(winnerName) {
   modalWinner.show();
 
   const winner = modalWinnerObj.querySelector('#winnerName');
   winner.innerHTML = winnerName
 
-  if (constants.CONTAINER.tourSocket) {
-    const backBtn = modalWinnerObj.querySelector('#modalBackBtn')
-    backBtn.addEventListener('click', () => {
-      console.log('Draw canvas room tournament again')
-    })
-  }
+  backBtn.addEventListener('click', () => {
+    loadPage('/game')
+    const tour = constants.CONTAINER.tourSocket
+    if (tour) {
+      // delay for drawing main page game first
+      setTimeout(() => {
+        tour.joinWaitingRoom(tour.room.name, ['one', 'two']) // TODO: get name list from backend
+      }, 100);
+    }
+  })
 }
