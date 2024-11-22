@@ -1,7 +1,7 @@
 import { getPongImg } from "./shared-resources.js";
 import { btns, evtBtns } from "./shared-resources.js";
 import * as Utils from "./utils.js";
-import { boardObj, initPlayers } from "./lobby-board.js";
+import { scrollEvt, boardObj, initPlayers } from "./lobby-board.js";
 import { dictionary } from "./shared-resources.js";
 // ########################################################
 // #                       EXECUTION 					  #
@@ -60,10 +60,19 @@ class WaitingRoom {
 		this.ctx.textBaseline = "middle";
 		this.ctx.textAlign = "center";
 
-		console.log("hello");
+		// console.log("hello");
 		console.log(this.playersName.length);
 		await initPlayers(this.playersName, this.ctx);
 
+		// remove scroll event listeners
+		if (this.canvas.hasScrollListeners) {
+			this.canvas.removeEventListener('wheel', scrollEvt.handleWheel);
+			this.canvas.removeEventListener('mousedown', scrollEvt.handleMouseDown);
+			this.canvas.removeEventListener('mousemove', scrollEvt.handleMouseMove);
+			this.canvas.removeEventListener('mouseup', scrollEvt.handleMouseUp);
+			this.canvas.removeEventListener('mouseleave', scrollEvt.handleMouseUp);
+			this.canvas.hasScrollListeners = false;
+		}
 	}
 
 	async execWaitingRoom(img) {

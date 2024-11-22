@@ -103,16 +103,7 @@ function handleStartBtn(btnObj, event)
 	const	btnHeight = btnObj.height;
 
 	if ((x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight) && fullWaitingRoom)
-	{
-
-		// for full players in room to loadpage
-		// loadPage("/online?room_id=" + roomBtns[i].id);
-		console.log("clicked start btn");
 		startTour() // start tournament
-	}
-	else {
-		console.log("not full player :(");
-	}
 }
 
 function handleBackBtn(btnObj, event)
