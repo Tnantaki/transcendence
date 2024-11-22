@@ -1,7 +1,11 @@
 import * as Constant from "../constants.js";
 import { fetchAPI } from "../services/api.js";
-import { checkGameMode, updateLobby } from "./lobby-menu.js";
+import { checkGameMode, setGameMode, updateLobby } from "./lobby-menu.js";
 import { loadPage } from "../router.js";
+import { manageEvt } from "./utils.js";
+import { joinWaitingRoom } from "./WaitingRoom.js";
+import { connectTourSocket } from "./tourSocket.js";
+import { evtBtns } from "./shared-resources.js";
 
 export let cachedRooms = [];
 
@@ -57,10 +61,10 @@ function postRoom(mode) {
 			createRoomAPI(roomName)
 				.then(res => {
 					cachedRooms.length = 0;
-					updateLobby("online"); //! no need to update, just go the game. The update will take place after the player leave the match
+					// updateLobby("online"); //! no need to update, just go the game. The update will take place after the player leave the match
 					manageCreateRoomBtn(1, createEvt);
 					closeModal();
-					// loadPage("/online?room_id=" + res.id);
+					loadPage("/online?room_id=" + res.id);
 				})
 				.catch(error => {
 					console.error("Error creating room: ", error);
@@ -71,9 +75,13 @@ function postRoom(mode) {
 			createTourRoomAPI(roomName)
 				.then(res => {
 					cachedRooms.length = 0;
-					updateLobby("tournament"); //! no need to update, just go the game. The update will take place after the player leave the match
 					manageCreateRoomBtn(1, createEvt);
 					closeModal();
+					manageEvt(1, evtBtns.createBtn);
+					manageEvt(1, evtBtns.backBtn);
+					setGameMode("WaitingRoom");
+					connectTourSocket(res, joinWaitingRoom)
+					// updateLobby("tournament"); //! no need to update, just go the game. The update will take place after the player leave the match
 				})
 				.catch(error => {
 					console.error("Error creating tournament: ", error);

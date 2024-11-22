@@ -2,7 +2,7 @@ import { getPongImg } from "./shared-resources.js";
 import { btns, evtBtns } from "./shared-resources.js";
 import * as Utils from "./utils.js";
 import { boardObj, initPlayers } from "./lobby-board.js";
-
+import { dictionary } from "./shared-resources.js";
 // ########################################################
 // #                       EXECUTION 					  #
 // ########################################################
@@ -22,9 +22,10 @@ import { boardObj, initPlayers } from "./lobby-board.js";
 // }
 
 class WaitingRoom {
-  constructor(canvas, ctx, roomName, owner) {
+  constructor(canvas, ctx, curLanguage, roomName, owner) {
 	this.canvas = canvas
 	this.ctx = ctx
+	this.curLanguage = curLanguage
     this.roomName = roomName
 	this.owner = owner
 	this.playersName = []
@@ -50,7 +51,8 @@ class WaitingRoom {
 		this.ctx.fillStyle = "white";
 		this.ctx.textBaseline = "top";
 		this.ctx.textAlign = "center";
-		this.ctx.fillText("Players" , boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
+		this.ctx.fillText(dictionary[this.curLanguage].player, boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
+		// this.ctx.fillText("Players" , boardObj.startX + boardObj.padding * 3, boardObj.headerPos);
 
 		// Draw room on the board
 		this.ctx.font = "25px Irish Grover";
@@ -100,6 +102,10 @@ class WaitingRoom {
 		return this.playersName.length;
 	}
 
+	getOwner() {
+		return this.owner;
+	}
+
 }
 
 let waitingRoom = null;
@@ -107,9 +113,17 @@ let waitingRoom = null;
 export function joinWaitingRoom(roomName, playersName) {
 	const canvas = document.getElementById("gameArea");
 	const ctx = canvas.getContext("2d");
+	const curLanguage = localStorage.getItem('currentLanguage') || 'en';
 
-	waitingRoom = new WaitingRoom(canvas, ctx, roomName, playersName[0]);
+	waitingRoom = new WaitingRoom(canvas, ctx, curLanguage, roomName, playersName[0]);
 	waitingRoom.updateWaitingRoom(playersName);
+}
+
+export function isOwner(name) {
+	console.log("who: ", waitingRoom.getOwner());
+	if (waitingRoom.getOwner() == name)
+		return true;
+	return false;
 }
 
 export function fullWaitingRoom() {

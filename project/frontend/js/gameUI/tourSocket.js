@@ -84,6 +84,7 @@ class TourSocket {
 }
 
 export function connectTourSocket(room, joinWaitingRoom) {
+  console.log("connect to tour socket");
   CONTAINER.tourSocket = new TourSocket(room, joinWaitingRoom)
   return CONTAINER.tourSocket
 }

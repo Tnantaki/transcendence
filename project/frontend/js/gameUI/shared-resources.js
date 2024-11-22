@@ -2,7 +2,7 @@ import { getImgPosition, manageEvt } from "./utils.js";
 import { createMenu } from "./main-menu.js";
 import { scrollEvt, roomBtns, handleRoomBtn} from "./lobby-board.js";
 import {cachedRooms, createRoom} from "./room-api.js";
-import { disconnetTourSocket, startTour } from "./tourSocket.js";
+import { disconnetTourSocket, startTour, connectTourSocket } from "./tourSocket.js";
 import { fullWaitingRoom } from "./WaitingRoom.js";
 import { checkGameMode, createLobby } from "./lobby-menu.js";
 
@@ -12,6 +12,22 @@ function setCanvas() {
 	canvas = document.getElementById("gameArea");
 	if (canvas)
 		ctx = canvas.getContext("2d");
+}
+
+let crownImg = null;
+export function getCrownImg() {
+	if (!crownImg) {
+		crownImg = new Image();
+		crownImg.src = "js/gameUI/images/crown.png";
+	}
+	return new Promise ((resolve, reject) => {
+		if (crownImg.complete)
+			resolve(crownImg);
+		else {
+			crownImg.onload = () => resolve(crownImg);
+			crownImg.onerror = () => reject;
+		}
+	})
 }
 
 // preload the img
@@ -68,7 +84,7 @@ function handleCreateBtn(btnObj, event)
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
 		// console.log("clicked create btn");
-		createRoom();
+			createRoom();
 	}	
 }
 
@@ -86,10 +102,9 @@ function handleStartBtn(btnObj, event)
 	const	btnWidth = btnObj.width;
 	const	btnHeight = btnObj.height;
 
-	if ((x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight))
+	if ((x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight) && fullWaitingRoom)
 	{
 
-		console.log(fullWaitingRoom());
 		// for full players in room to loadpage
 		// loadPage("/online?room_id=" + roomBtns[i].id);
 		console.log("clicked start btn");
@@ -179,7 +194,8 @@ export const dictionary = {
 		status: "État",
 		createRoom: "Créer une Salle",
 		start: "Démarrer",
-		back: "Retour"
+		back: "Retour",
+		player: "Concurrent" // add for tournament
 	  },
 	  th: {
 		singlePlayer: "ผู้เล่นเดี่ยว",
@@ -192,6 +208,7 @@ export const dictionary = {
 		status: "สถานะ",
 		createRoom: "สร้างห้อง",
 		start: "เริ่มเกม",
-		back: "ย้อนกลับ"
+		back: "ย้อนกลับ",
+		player: "ผู้เล่น" // add for tournament
 	  }
 }

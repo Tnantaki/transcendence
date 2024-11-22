@@ -3,8 +3,9 @@ import { manageEvt } from "./utils.js";
 import { loadPage } from "../router.js";
 import { checkGameMode, setGameMode } from "./lobby-menu.js";
 import { dictionary, evtBtns } from "./shared-resources.js";
-import { joinWaitingRoom } from "./WaitingRoom.js";
+import { joinWaitingRoom, isOwner } from "./WaitingRoom.js";
 import { connectTourSocket } from "./tourSocket.js";
+import { getCrownImg } from "./shared-resources.js";
 
 let canvas;
 let ctx;
@@ -28,6 +29,32 @@ export const	boardObj = {
 	headerPos: 77, textPadding: 40, space: 10,
 }
 
+
+let imageX = 0;
+let imageY = 0;
+function fillPlayerName(name, xPos, yPos, ctx2, i) {
+	console.log("in function pname");
+	if (i > 0)
+		yPos += 40;
+	else
+		yPos += 20;
+	ctx2.fillText(name, xPos, yPos);
+	if (isOwner(name)) {
+		console.log("I'm owner :)");
+	const textHeight = ctx2.measureText(name).width;
+
+	const imgRatio = 35;
+	// imageX = xPos - (imgRatio / 2);
+	imageX = xPos + textHeight - 40;
+	// imageY = yPos + textHeight + (100 / 2);
+	imageY = yPos - (imgRatio / 1.7);
+	
+		console.log(imgRatio);
+		getCrownImg().then(img => {ctx2.drawImage(img, imageX, imageY, imgRatio, imgRatio);});
+		console.log("where are you crown !!");
+		// ctx.closePath();	
+	}
+}
 
 function fillRoomName(room, xPos, yPos) {
 	ctx.fillText(room.name, xPos, yPos);
@@ -113,8 +140,9 @@ export async function initPlayers(players, ctx2) {
 			const playerIndex = startIndex + i;
 			if (playerIndex < players.length) {
 				const playerName = players[playerIndex];
-				const yPos = boardObj.startY + lineHeight + (boardObj.padding + boardObj.space) * i;
-				ctx2.fillText(playerName, xPos, yPos);
+				const yPos = (boardObj.startY + lineHeight + (boardObj.padding + boardObj.space) * i);
+				fillPlayerName(playerName, xPos, yPos, ctx2, i);
+				// ctx2.fillText(playerName, xPos, yPos);
 				if (playerBtns.length < visibleLines)
 					playerBtns.push(playerName);
 				else
