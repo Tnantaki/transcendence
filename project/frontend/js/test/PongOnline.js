@@ -1,4 +1,5 @@
 import * as constants from "../constants.js";
+import { connectTourSocket, disconnetTourSocket } from "../gameUI/tourSocket.js";
 import { loadPage } from "../router.js";
 
 // import { PongGame } from "./pongOnlineScript.js";
@@ -548,7 +549,14 @@ function popupWinner(winnerName) {
     if (tour) {
       // delay for drawing main page game first
       setTimeout(() => {
-        tour.joinWaitingRoom(tour.room.name, ['one', 'two']) // TODO: get name list from backend
+        // tour.joinWaitingRoom(tour.room.name, ['one', 'two']) // Old way
+
+        const oldRoom = tour.room
+        const joinWaitingRoom = tour.joinWaitingRoom
+
+        // disconnect and reconnect to the room again
+        disconnetTourSocket()
+        connectTourSocket(oldRoom, joinWaitingRoom)
       }, 100);
     }
   })
