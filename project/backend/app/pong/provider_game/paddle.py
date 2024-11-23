@@ -31,11 +31,3 @@ class Paddle:
             'y': self.y,
         }
     
-    def hit_area(self):
-        return {
-            'min_x': self.x,
-            'max_x': self.x + self.width,
-            'min_y': self.y,
-            'max_y': self.y + self.height
-        }
-
