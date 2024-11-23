@@ -179,46 +179,61 @@ var PLAYER = {
   
     // set Paddle Event
     setLeftPaddleKeyEvent = () => {
-      document.addEventListener("keydown", (event) => {
-        if (event.keyCode === KEY.W) {
-          event.preventDefault();
-          this.sendKeyEvent("PRESS", KEY.W);
-        } else if (event.keyCode === KEY.S) {
-          event.preventDefault();
-          this.sendKeyEvent("PRESS", KEY.S);
-        }
-      });
-      document.addEventListener("keyup", (event) => {
-        event.preventDefault();
-        if (event.keyCode === KEY.W) {
-          event.preventDefault();
-          this.sendKeyEvent("RELEASE", KEY.W);
-        } else if (event.keyCode === KEY.S) {
-          event.preventDefault();
-          this.sendKeyEvent("RELEASE", KEY.S);
-        }
-      });
+      document.addEventListener("keydown", this.keyPressedWS);
+      document.addEventListener("keyup", this.keyReleasedWS);
     };
   
     setRightPaddleKeyEvent = () => {
-      document.addEventListener("keydown", (event) => {
-        if (event.keyCode === KEY.UP) {
-          event.preventDefault();
-          this.sendKeyEvent("PRESS", KEY.UP);
-        } else if (event.keyCode === KEY.DOWN) {
-          event.preventDefault();
-          this.sendKeyEvent("PRESS", KEY.DOWN);
-        }
-      });
-      document.addEventListener("keyup", (event) => {
-        if (event.keyCode === KEY.UP) {
-          event.preventDefault();
-          this.sendKeyEvent("RELEASE", KEY.UP);
-        } else if (event.keyCode === KEY.DOWN) {
-          event.preventDefault();
-          this.sendKeyEvent("RELEASE", KEY.DOWN);
-        }
-      });
+      document.addEventListener("keydown", this.keyPressedUpDown);
+      document.addEventListener("keyup", this.keyReleasedUpDown);
+    };
+
+    clearEvent = () => {
+      document.removeEventListener("keydown", this.keyPressedWS);
+      document.removeEventListener("keyup", this.keyReleasedWS);
+      document.removeEventListener("keydown", this.keyPressedUpDown);
+      document.removeEventListener("keyup", this.keyReleasedUpDown);
+    }
+
+    keyPressedWS = (event) => {
+      if (event.keyCode === KEY.W) {
+        event.preventDefault();
+        this.sendKeyEvent("PRESS", KEY.W);
+      } else if (event.keyCode === KEY.S) {
+        event.preventDefault();
+        this.sendKeyEvent("PRESS", KEY.S);
+      }
+    }
+
+    keyReleasedWS = (event) => {
+      event.preventDefault();
+      if (event.keyCode === KEY.W) {
+        event.preventDefault();
+        this.sendKeyEvent("RELEASE", KEY.W);
+      } else if (event.keyCode === KEY.S) {
+        event.preventDefault();
+        this.sendKeyEvent("RELEASE", KEY.S);
+      }
+    }
+
+    keyPressedUpDown = (event) => {
+      if (event.keyCode === KEY.UP) {
+        event.preventDefault();
+        this.sendKeyEvent("PRESS", KEY.UP);
+      } else if (event.keyCode === KEY.DOWN) {
+        event.preventDefault();
+        this.sendKeyEvent("PRESS", KEY.DOWN);
+      }
+    };
+
+    keyReleasedUpDown = (event) => {
+      if (event.keyCode === KEY.UP) {
+        event.preventDefault();
+        this.sendKeyEvent("RELEASE", KEY.UP);
+      } else if (event.keyCode === KEY.DOWN) {
+        event.preventDefault();
+        this.sendKeyEvent("RELEASE", KEY.DOWN);
+      }
     };
   
     sendKeyEvent = (key, key_code) => {
@@ -544,6 +559,8 @@ function popupWinner(winnerName) {
   winner.innerHTML = winnerName
 
   backBtn.addEventListener('click', () => {
+    Game.clearEvent()
+
     loadPage('/game')
     const tour = constants.CONTAINER.tourSocket
     if (tour) {
