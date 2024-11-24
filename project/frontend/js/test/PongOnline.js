@@ -103,7 +103,7 @@ var PLAYER = {
       let paddle_speed = 5;
   
       this.leftPaddle = {
-        x: paddle_width,
+        x: 10,
         y: this.canvas.height / 2 - paddle_height / 2,
         height: paddle_height,
         width: paddle_width,
@@ -112,7 +112,7 @@ var PLAYER = {
         speedy: 0,
       };
       this.rightPaddle = {
-        x: this.canvas.width - paddle_width * 2,
+        x: 1004,
         y: this.canvas.height / 2 - paddle_height / 2,
         height: paddle_height,
         width: paddle_width,
@@ -143,7 +143,6 @@ var PLAYER = {
       );
       this.ctx.fill();
       this.ctx.closePath();
-  
       this.ctx.beginPath();
       this.ctx.fillStyle = this.rightPaddle.color;
       this.ctx.fillRect(
@@ -154,6 +153,7 @@ var PLAYER = {
       );
       this.ctx.fill();
       this.ctx.closePath();
+      console.log("L", this.leftPaddle.y, this.leftPaddle.x, "R", this.rightPaddle.y, this.rightPaddle.x);
     };
   
     
