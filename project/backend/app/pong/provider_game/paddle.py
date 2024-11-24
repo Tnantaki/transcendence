@@ -7,6 +7,9 @@ class Paddle:
         self.dy = 0
         self.width = 24
         self.height = 100
+    
+    def __str__(self):
+        return f"x = {self.x}  y={self.y}"
 
     def update_position(self, x_min, x_max, y_min, y_max):
         """
@@ -30,4 +33,17 @@ class Paddle:
             'x': self.x,
             'y': self.y,
         }
+    
+    def get_segment(self, rev=-1):
+        """
+        [
+            
+        ]
+        """
+        return [
+            (self.x, self.y),
+            (self.x + rev * self.width, self.y),
+            (self.x , self.y + rev * self.height),
+            (self.x + rev * self.width, self.y + rev * self.height),
+        ]
     
