@@ -5,7 +5,6 @@ from channels.layers import get_channel_layer
 from copy import deepcopy
 from pong.provider_game.player import Player
 from pong.models import Room
-from rich import inspect, print
 from pong.provider_game.services.create_game_history import create_history
 from channels.db import database_sync_to_async
 import math
@@ -44,15 +43,16 @@ class GameEngine:
             return None
         self.MAX_VELOCITY_SIZE = 40
         self.START_POSTSITION = {"x": 512, "y": 300}
-        self.INIT_BALL_DIRECTION = {"x": 1, "y": 0}
-        self.INIT_BALL_SPEED = 10
-        self.BALL_SPEED_INCS = 1
+        # self.INIT_BALL_DIRECTION = {"x": 1, "y": 0}
+        self.INIT_BALL_DIRECTION = self.create_direction_vector(1, 1)
+        self.INIT_BALL_SPEED = 5
+        self.BALL_SPEED_INCS = 5
         self.TIME_PER_FRAME = 0.016  # 1 sec / 60 FRAME
         self.PADDLE_SIZE = 10  # px
         self.CANVA_WIDTH = 1024  # px
         self.CANVA_HEIGHT = 600  # px
-        self.LEFT_PADDLE_START_POSITION = {"x": 24, "y": 250}
-        self.RIGHT_PADDLE_START_POSITION = {"x": 1000, "y": 250}
+        self.LEFT_PADDLE_START_POSITION = {"x": 10, "y": 250}
+        self.RIGHT_PADDLE_START_POSITION = {"x": 1004, "y": 250}
         self.BALL_RADIUS = 10
         # CANVA boundary
         self.TOP_BOUNDARY = self.CANVA_HEIGHT
@@ -69,7 +69,7 @@ class GameEngine:
 
         self.channels = get_channel_layer()
         self.id = id
-        self.score_to_win = 1
+        self.SCORE_TO_WIN = 10
         self._running = asyncio.Event()
         self.speed_size = self.INIT_BALL_SPEED
         self.hit = 0
@@ -87,8 +87,8 @@ class GameEngine:
         # self.LOG.append(msg)
         # if len(self.LOG) > 30:
         #     self.LOG.pop(0)
-        # print(msg)
-        ...
+        print(msg)
+        # .../
 
     def save_log(self):
         self.MAINTAIN_LOG[len(self.MAINTAIN_LOG)] = deepcopy(self.LOG)
@@ -103,57 +103,49 @@ class GameEngine:
         left_paddle = self.player[0].paddle
         right_paddle = self.player[1].paddle
 
-        ball_prev_x = self.ball_position["x"]
-        ball_prev_y = self.ball_position["y"]
-        ball_next_x = self.ball_position["x"] + self.ball_velocity["x"]
-        ball_next_y = self.ball_position["y"] + self.ball_velocity["y"]
+        # คำนวณตำแหน่งถัดไปของลูกบอล
+        next_x = self.ball_position["x"] + self.ball_velocity["x"]
+        next_y = self.ball_position["y"] + self.ball_velocity["y"]
 
-
-        # Check ball pass paddle or not
+        # ตรวจสอบการชนกับ paddle ซ้าย
         if (
-            ball_prev_x <= right_paddle.x <= ball_next_x
-            or ball_next_x <= left_paddle.x <= ball_prev_x
+            self.ball_position["x"] - self.BALL_RADIUS
+            <= left_paddle.x + left_paddle.width
+            and self.ball_position["x"] + self.BALL_RADIUS >= left_paddle.x
+            and next_y + self.BALL_RADIUS >= left_paddle.y
+            and next_y - self.BALL_RADIUS <= left_paddle.y + left_paddle.height
+            and self.ball_velocity["x"] < 0
         ):
-            try:
-                ball_m = (ball_next_x - ball_prev_x) / (ball_next_y - ball_prev_y)
-            except ZeroDivisionError:
-                ball_m = 0
-            ball_const = ball_m * ball_next_x - ball_next_y
 
-            # ball at y = m * X + b
-            # if x = 24 lenght y_min < |Y| < y_max
-            # if ball_prev_x < |x_focus|  < ball_next_x
-            ball_will_hit_l_at_y = abs(ball_m * left_paddle.x + ball_const)
-            ball_will_hit_r_at_y = abs(ball_m * right_paddle.x + ball_const)
-            self.ball_position["x"] = ball_next_x
-            if (
-                left_paddle.y
-                < ball_will_hit_l_at_y
-                < left_paddle.y + left_paddle.height
-                and self.ball_velocity["x"] < 0
-            ):
-                # HIT Paddle
-                self.ball_position["x"] = left_paddle.x + left_paddle.width + self.BALL_RADIUS / 2
-                self.ball_velocity["x"] = abs(self.ball_velocity["x"])
-            elif (
-                right_paddle.y
-                < ball_will_hit_r_at_y
-                < right_paddle.y + right_paddle.height
-                and self.ball_velocity["x"] > 0
-            ):
-                # HIT Paddle
-                self.ball_position["x"] = right_paddle.x - self.BALL_RADIUS / 2
-                self.ball_velocity["x"] = -abs(self.ball_velocity["x"])
+            # สะท้อนลูกบอล
+            self.ball_velocity["x"] = abs(self.ball_velocity["x"])
+            next_x = left_paddle.x + left_paddle.width + self.BALL_RADIUS
 
-        # IF NOT HIIT
-        else:
-            self.ball_position["x"] = ball_next_x
-            if self.ball_position["y"] >= 600 or self.ball_position["y"] <= 0:
-                self.ball_velocity["y"] = -1 * self.ball_velocity["y"]
+        # ตรวจสอบการชนกับ paddle ขวา
+        elif (
+            self.ball_position["x"] + self.BALL_RADIUS >= right_paddle.x
+            and self.ball_position["x"] - self.BALL_RADIUS
+            <= right_paddle.x + right_paddle.width
+            and next_y + self.BALL_RADIUS >= right_paddle.y
+            and next_y - self.BALL_RADIUS <= right_paddle.y + right_paddle.height
+            and self.ball_velocity["x"] > 0
+        ):
 
-        self.ball_position["y"] = ball_next_y
+            # สะท้อนลูกบอล
+            self.ball_velocity["x"] = -abs(self.ball_velocity["x"])
+            next_x = right_paddle.x - self.BALL_RADIUS
 
-        
+        # อัพเดทตำแหน่งลูกบอล
+        self.ball_position["x"] = next_x
+
+        # ตรวจสอบการชนกับขอบบนล่าง
+        if (
+            next_y + self.BALL_RADIUS >= self.CANVA_HEIGHT
+            or next_y - self.BALL_RADIUS <= 0
+        ):
+            self.ball_velocity["y"] = -self.ball_velocity["y"]
+
+        self.ball_position["y"] = next_y
 
     async def update_game_state(self):
         game_state = {
@@ -178,17 +170,19 @@ class GameEngine:
             await self.check_ball_score()
             await self.update_game_state()
             await self.check_winner()
+            self.push_log(
+                f"L {self.player[0].paddle.get_position()} R {self.player[1].paddle.get_position()}"
+            )
             await asyncio.sleep(self.TIME_PER_FRAME)
 
     async def check_ball_score(self):
         if self.ball_position["x"] > 1025:
             prepost = self.ball_position
             prevelo = self.ball_velocity
-            self.reset()
-            self.hit = 0
-            self.speed_size = 1
+            await self.reset()
             self.player[0].increase_score()
             self.player[0].set_block_inc(True)
+
             await self.broadcase_score(prepost, prevelo)
             self.player[0].set_block_inc(False)
             self.reset()
@@ -197,11 +191,11 @@ class GameEngine:
         if self.ball_position["x"] < 0:
             prepost = self.ball_position
             prevelo = self.ball_velocity
-            self.reset()
-            self.hit = 0
-            self.speed_size = 1
+            await self.reset()
+            self.speed_size += self.BALL_SPEED_INCS
             self.player[1].increase_score()
             self.player[1].set_block_inc(True)
+
             await self.broadcase_score(prepost, prevelo)
             self.player[1].set_block_inc(False)
             self.reset()
@@ -215,14 +209,18 @@ class GameEngine:
         new_y = (y / norm) * size
         self.ball_velocity = {"x": new_x, "y": new_y}
 
+    def create_direction_vector(self, x, y):
+        return {"x": x / math.sqrt(x * x + y * y), "y": y / math.sqrt(x * x + y * y)}
+
     async def check_winner(self):
         if len(self.player) != 2:
             print("error Player != 2")
 
         for p in self.player:
-            if p.get_score() >= self.score_to_win:
+            if p.get_score() >= self.SCORE_TO_WIN:
                 self.reset()
                 self._running.clear()
+
                 res = await create_history(self, p)
                 await self.channels.group_send(
                     self.id,
@@ -240,9 +238,9 @@ class GameEngine:
 
     def random_ball_velocity(self):
         # สุ่มความเร็วระหว่าง 3-5
-        speed_x = random.uniform(3, 5)
-        speed_y = random.uniform(3, 5)
-        self.norm = (speed_x * speed_x + speed_y * speed_y) ** 0.5
+        speed_x = random.uniform(1, 10)
+        speed_y = random.uniform(1, 10)
+        self.norm = math.sqrt(speed_x * speed_x + speed_y * speed_y)
         # สุ่มทิศทาง (ซ้าย/ขวา)
         direction_x = random.choice([-1, 1])
         direction_y = random.choice([-1, 1])
@@ -254,10 +252,13 @@ class GameEngine:
 
     async def reset(self):
         self.ball_position = {"x": 512, "y": 300}
-        # self.ball_velocity = self.random_ball_velocity()
-        self.ball_velocity = {"x": 1, "y": 0}
+        self.ball_velocity = self.random_ball_velocity()
+        # self.ball_velocity = {"x": 1, "y": 0}
 
     async def broadcase_score(self, pos, velo):
+        left_paddle = self.player[0].paddle
+        right_paddle = self.player[1].paddle
+
         await self.channels.group_send(
             self.id,
             {
@@ -268,6 +269,8 @@ class GameEngine:
                     "right": self.player[1].get_score(),
                     "ball_position": pos,
                     "ball_velocity": velo,
+                    "left_paddle": left_paddle.get_position(),
+                    "right_paddle": right_paddle.get_position(),
                 },
             },
         )
