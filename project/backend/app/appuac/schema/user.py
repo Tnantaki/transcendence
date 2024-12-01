@@ -43,6 +43,7 @@ class UserAddIsFriend(UserSchema):
     is_friend: str
 
 class UserPatchIn(ModelSchema):
+    password: str | None
     
     class Meta:
         model = User
@@ -51,6 +52,7 @@ class UserPatchIn(ModelSchema):
             "bio",
             "email",
         ]
+        fields_optional = "__all__"
 
 
 class UserPathParam(Schema):
