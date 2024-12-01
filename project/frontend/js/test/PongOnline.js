@@ -470,7 +470,9 @@ var PLAYER = {
   
     webSocketEventOnClose = (event) => {
       this.display_state = "DISCONNECT";
-      this.showGoBack();
+      // this.showGoBack();
+      this.clearEvent()
+      loadPage('/game')
     };
   
     webSocketEventOnMessage = (event) => {
