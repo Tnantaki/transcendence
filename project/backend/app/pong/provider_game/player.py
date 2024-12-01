@@ -1,7 +1,11 @@
 from pong.provider_game.paddle import Paddle
 from channels.db import database_sync_to_async
 from appuac.models.user import User
+
 class Player:
+    LEFT_SIDE = 1
+    RIGHT_SIDE = 0
+
     def __init__(self, id):
         self.paddle = None
         self.id = id

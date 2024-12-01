@@ -57,7 +57,7 @@ def check_room(obj):
 
 def init_game_engine(obj):
     obj.room_group_name = f"Game_Room_{obj.room_id}"
-    obj.game_engine = GameEngine(obj.room_group_name, obj.room_id)
+    obj.game_engine = GameEngine(obj.room_group_name, obj.room_id, obj.room.game_type)
 
 
 async def process_user_connect(obj):
