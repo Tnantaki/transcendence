@@ -51,6 +51,7 @@ class TourSocket {
   };
 
   startGame = () => {
+    console.log('tour game started') // debug
     const msgObj = {
       type: "CLIENT_MESSAGE",
       command: "START_GAME",
