@@ -1,4 +1,4 @@
-const GAME_POINT = 2
+const GAME_POINT = 5
 
 export class Score {
   static isGameOver = false
