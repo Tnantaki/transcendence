@@ -125,7 +125,6 @@ class ChatSocket {
   }
 
   answerInvitePong = (answer) => {
-    console.log('I will play') // ! DEBUG
     const msgObj = {
       type: "CLIENT_MESSAGE",
       command: "ANSWER_INVITE",
