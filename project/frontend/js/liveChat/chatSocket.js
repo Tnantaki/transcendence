@@ -64,7 +64,7 @@ class ChatSocket {
           this.receivedMessage(data.data)
           break;
         case "GAME_INVITE":
-          if (data.data.sender !== this.my_id) {
+          if (data.data.sender !== this.my_id && this.chatRoom) {
             this.chatRoom.displayPongInvite()
           }
           break;

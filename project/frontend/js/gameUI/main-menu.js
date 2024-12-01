@@ -87,8 +87,7 @@ function handleMenu(event)
 		{
 			Utils.manageEvt(1, handleMenu);
 			if (btn == "singlePlayer")
-				console.log("single player");
-				// loadPage('/game-single')
+				loadPage('/game-single')
 			else if (btn == "versus")
 				loadPage('/game-versus')
 			else if (btn == "online")
