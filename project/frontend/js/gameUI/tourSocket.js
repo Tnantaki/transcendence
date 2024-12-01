@@ -35,7 +35,7 @@ class TourSocket {
 
   webSocketEventOnMessage = (event) => {
     let data = JSON.parse(event.data);
-    console.log('got message from server', data)
+    // console.log('got message from server', data) // debug
     if (data.type === 'SERVER_MESSAGE') {
       switch (data.command) {
         case "TOURNAMENT_INFOMATION":
@@ -51,7 +51,6 @@ class TourSocket {
   };
 
   startGame = () => {
-    console.log('tour game started') // debug
     const msgObj = {
       type: "CLIENT_MESSAGE",
       command: "START_GAME",
@@ -61,8 +60,7 @@ class TourSocket {
   }
 
   updateRoom = (data) => {
-    const nameList = data.user.map(u => u.username)
-    console.log(nameList)
+    const nameList = data.user.map(u => u.display_name)
     this.joinWaitingRoom(this.room.name, nameList)
   }
 
