@@ -67,5 +67,6 @@
   "2fa_authen_body2": " กรุณาใส่รหัสที่นี่",
   "add_friend": "เพิ่มเพื่อน +",
   "direct_messages": "ข้อความส่วนตัว",
-  "error_password_invalid": "รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร"
+  "error_password_invalid": "รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร",
+  "winner_tour": "ผู้ชนะการแข่งขัน"
 }

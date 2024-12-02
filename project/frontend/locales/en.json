@@ -67,5 +67,6 @@
   "2fa_authen_body2": " Please enter it here.",
   "add_friend": "Add friend +",
   "direct_messages": "Direct Messages",
-  "error_password_invalid": "Password must have at least 4 character."
+  "error_password_invalid": "Password must have at least 4 character.",
+  "winner_tour": "The Winner of Tournament"
 }
