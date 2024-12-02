@@ -37,7 +37,7 @@ class GameEngine:
         instance.task = None
         return instance
 
-    def __init__(self, id, room_id, *arg, **kwarg):
+    def __init__(self, id, room_id, gtype="VERSUS",*arg, **kwarg):
         """ """
         if hasattr(self, "_is_init"):
             return None
@@ -76,9 +76,8 @@ class GameEngine:
 
         self.key_value = deepcopy(KEY_VALUE)
         self._is_init = True
-        self.game_type = "VERSUS"
+        self.game_type = gtype
         self.LOG = []
-        self.MAINTAIN_LOG = {}
 
     def __str__(self):
         return f"game_engine_for_group:{self.id}"
@@ -89,10 +88,6 @@ class GameEngine:
         #     self.LOG.pop(0)
         print(msg)
         # .../
-
-    def save_log(self):
-        self.MAINTAIN_LOG[len(self.MAINTAIN_LOG)] = deepcopy(self.LOG)
-        self.LOG = []
 
     def get_speed_vector(self, direction, size):
         norm = math.sqrt(direction["x"] ** 2 + direction["y"] ** 2) / size
@@ -170,9 +165,9 @@ class GameEngine:
             await self.check_ball_score()
             await self.update_game_state()
             await self.check_winner()
-            self.push_log(
-                f"L {self.player[0].paddle.get_position()} R {self.player[1].paddle.get_position()}"
-            )
+            # self.push_log(
+            #     f"L {self.player[0].paddle.get_position()} R {self.player[1].paddle.get_position()}"
+            # )
             await asyncio.sleep(self.TIME_PER_FRAME)
 
     async def check_ball_score(self):
@@ -220,7 +215,8 @@ class GameEngine:
             if p.get_score() >= self.SCORE_TO_WIN:
                 self.reset()
                 self._running.clear()
-
+                if self.game_type == "TOURNAMENT":
+                    ...
                 res = await create_history(self, p)
                 await self.channels.group_send(
                     self.id,
@@ -238,8 +234,8 @@ class GameEngine:
 
     def random_ball_velocity(self):
         # สุ่มความเร็วระหว่าง 3-5
-        speed_x = random.uniform(1, 10)
-        speed_y = random.uniform(1, 10)
+        speed_x = random.uniform(5, 10)
+        speed_y = random.uniform(1, 6)
         self.norm = math.sqrt(speed_x * speed_x + speed_y * speed_y)
         # สุ่มทิศทาง (ซ้าย/ขวา)
         direction_x = random.choice([-1, 1])
@@ -320,7 +316,7 @@ class GameEngine:
         player.set_obj(obj)
 
         # Set Paddle
-        if player.as_player == 1:
+        if player.as_player == player.LEFT_SIDE:
             player.create_paddle(**self.LEFT_PADDLE_START_POSITION)
         else:
             player.create_paddle(**self.RIGHT_PADDLE_START_POSITION)
@@ -330,8 +326,6 @@ class GameEngine:
         prevelo = self.ball_velocity
         # Debug purpose
         self.check_player_paddle()
-        # self.player[0].increase_score()
-        # self.player[1].increase_score()
         await self.update_player_paddle()
         await self.broadcase_score(prepost, prevelo)
 
