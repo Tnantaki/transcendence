@@ -208,4 +208,30 @@
     </div>
   </div>
 
+	<!-- popup for creating a room -->
+	<div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalLabel" data-bs-backdrop="static">
+		<div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered container-fluid">
+			<div class="modal-content w-100">
+				<div class="modal-header d-flex justify-content-center">
+					<h5 class="modal-title fs-1 font-irish" id="createRoomModalLabel"
+						data-i18n="create_room">CREATE ROOM</h5>
+				</div>
+				<div class="modal-body d-flex w-100">
+					<div class="mb-3 d-flex flex-column align-items-center w-100">
+						<label for="room-name-input" class="form-label font-irish fs-3"
+							data-i18n="room_name">Room Name</label>
+						<input class="form-control fs-5 w-100" id="room-name-input" type="text"
+							placeholder="Enter your room name" name="room-name" required>
+					</div>
+				</div>
+				<div class="modal-footer d-flex justify-content-around">
+				<button type="submit" class="btn btn-primary font-bs-bold col-4 mb-0" id="createRoomBtn"
+						data-i18n="confirm">Confirm</button>
+					<button type="button" class="btn btn-danger font-bs-bold col-4 mb-0"
+						data-i18n="close" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+
 </html>

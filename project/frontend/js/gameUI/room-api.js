@@ -17,9 +17,10 @@ function initRoomModal() {
 function eraseInput() {
 	if (!roomModal)
 		initRoomModal();
-	roomModal.addEventListener('hidden.bs.modal', function () {
-		document.getElementById('room-name-input').value = ' ';
-	})
+		
+	let input = document.getElementById('room-name-input');
+	if (input)
+		input.value = '';
 }
 
 let modal;
