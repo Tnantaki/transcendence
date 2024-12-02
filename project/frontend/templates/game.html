@@ -12,39 +12,13 @@
 		<div id="btn-player2" class="btn-block"></div>
 	</div>
 
-	<!-- popup for creating a room -->
-	<div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalLabel" aria-hidden="true" data-bs-backdrop="static">
-		<div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered container-fluid">
-			<div class="modal-content w-100">
-				<div class="modal-header d-flex justify-content-center">
-					<h5 class="modal-title fs-1 font-irish" id="createRoomModalLabel"
-						data-i18n="create_room">CREATE ROOM</h5>
-				</div>
-				<div class="modal-body d-flex w-100">
-					<div class="mb-3 d-flex flex-column align-items-center w-100">
-						<label for="room-name-input" class="form-label font-irish fs-3"
-							data-i18n="room_name">Room Name</label>
-						<input class="form-control fs-5 w-100" id="room-name-input" type="text"
-							placeholder="Enter your room name" name="room-name" required>
-					</div>
-				</div>
-				<div class="modal-footer d-flex justify-content-around">
-				<button type="submit" class="btn btn-primary font-bs-bold col-4 mb-0" id="createRoomBtn"
-						data-i18n="confirm">Confirm</button>
-					<button type="button" class="btn btn-danger font-bs-bold col-4 mb-0"
-						data-i18n="close" data-bs-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>	
-
 	<!-- Modal Winner Contact -->
 	<div class="modal fade" id="winnerOfflineModal" tabindex="-1" data-bs-backdrop="static">
 		<div class="modal-dialog my-0 d-flex justify-content-center modal-dialog-centered">
 			<div class="modal-content popup-content">
 				<div class="modal-body">
 					<div class="popup-frame">
-						<h1 class="font-bs fs-xxl m-2" style="color: #fff;" data-i18n="winner">the winner</h1>
+						<h1 class="font-bs text-center fs-xxl m-2" style="color: #fff;" data-i18n="winner">the winner</h1>
 						<div class="d-flex justify-content-center popup-body m-3">
 							<p id="winnerName" class="font-bs-bold h-md" style="color: #629DD2;"></p>
 						</div>
@@ -71,7 +45,7 @@
             <div class="popup-header-icon">
               <img src="../static/svg/alert.svg" alt="alert picture">
             </div>
-            <h2 class="font-bs-bold fs-xl" style="color: #B63A3A;" data-i18n="confirm_exit">CONFIRM EXIT</h2>
+            <h2 class="font-bs-bold text-center fs-xl" style="color: #B63A3A;" data-i18n="confirm_exit">CONFIRM EXIT</h2>
             <div class="d-flex justify-content-center popup-body">
               <p class="font-bs fs-lg" style="color: #ffffff;" data-i18n="confirm_exit_content">
                 Are you sure you want to exit from game ?

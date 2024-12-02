@@ -31,8 +31,6 @@ modalExitGameObj.querySelector('#submitExit').onclick = () => {
   if (gameOffline) {
     gameOffline.clear()
   } 
-  // removeEventListener('keydown', handleExit)
-  console.log('clear game')
   loadPage('/')
 }
 
@@ -61,7 +59,6 @@ export class GameOffline {
   }
 
   setup() {
-    console.log(this.rightScore.score)
     if (this.mode === 2) {
       this.leftPaddle = new Paddle(26, this.canvas, this.ctx, 2);
       this.createTouchKey('player1')
@@ -211,8 +208,7 @@ export class GameOffline {
 
 let mode = window.location.pathname
 
-console.log('mode: ', mode)
-if (mode === '/game/versus') {
+if (mode === '/game-versus') {
   gameOffline = new GameOffline(canvas, ctx, 2);
 } else {
   gameOffline = new GameOffline(canvas, ctx, 1);
@@ -223,7 +219,6 @@ gameOffline.startGame();
 // Exit button
 handlerExitBtn(document.getElementById('game-home-btn'))
 function handlerExitBtn(homeBtn) {
-  console.log('be call')
   if (!homeBtn) return
   homeBtn.addEventListener('click', () => {
     if (gameOffline) gameOffline.clear()

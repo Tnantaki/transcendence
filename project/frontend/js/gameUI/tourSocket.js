@@ -9,6 +9,7 @@ class TourSocket {
     this.room = room
     this.joinWaitingRoom = joinWaitingRoom
     this.users = []
+    this.modalWinnerTour = new bootstrap.Modal(document.getElementById('winnerTourModal'));
 
     this.ws = new WebSocket(`${WS_TOUR_ROOM}?token=${this.token}&room_id=${room.id}`) // connect socket
     this.setWebSocketEvent() // setup event on socket
@@ -44,6 +45,9 @@ class TourSocket {
         case "ROUND_START":
           this.roundStart(data.data)
           break;
+        case "INFORM_WINNER": // ! match api protocol backend
+          this.displayWinnerTour("I'm the winner")
+          break;
         default:
           break;
       }
@@ -74,6 +78,12 @@ class TourSocket {
     if (myRoomId > 0) {
       loadPage("/online?room_id=" + myRoomId);
     }
+  }
+
+  displayWinnerTour = (name) => {
+    const nameObj = document.getElementById("winnerTourName")
+    nameObj.innerHTML = name
+    modalWinnerTour.show();
   }
 
   clear = () => {

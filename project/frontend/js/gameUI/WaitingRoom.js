@@ -7,8 +7,6 @@ import { dictionary } from "./shared-resources.js";
 // #                       EXECUTION 					  #
 // ########################################################
 
-
-
 // let canvas;
 // let ctx;
 // let curLanguage;
