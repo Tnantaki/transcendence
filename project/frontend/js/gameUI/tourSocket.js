@@ -45,6 +45,9 @@ class TourSocket {
         case "ROUND_START":
           this.roundStart(data.data)
           break;
+        case "INFORM_WINNER": // ! match api protocol backend
+          this.displayWinnerTour("I'm the winner")
+          break;
         default:
           break;
       }
@@ -77,7 +80,9 @@ class TourSocket {
     }
   }
 
-  displayWinnerTour = () => {
+  displayWinnerTour = (name) => {
+    const nameObj = document.getElementById("winnerTourName")
+    nameObj.innerHTML = name
     modalWinnerTour.show();
   }
 
