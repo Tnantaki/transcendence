@@ -7,7 +7,7 @@ from appuac.models.base import (
 )
 from datetime import timedelta
 from django.utils import timezone
-from pong.models import MatchHistory
+from pong.models import MatchHistory, Tournament
 from django.db.models import Q
 
 def gen_id():
@@ -55,11 +55,12 @@ class User(AbstractUser):
     
     @property
     def tour_won(self):
-        return 0
+        tourwon = Tournament.objects.filter(winner=self).count()
+        return tourwon
     
     @property
     def tour_play(self):
-        return 0
+        return self.tournament_user.all().count()
 
     class Meta:
         db_table = "auth_user"

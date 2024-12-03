@@ -101,7 +101,7 @@ def get_me_history(request):
 
 
 class LeaderBoardSchema(Schema):
-    id: int
+    id: str
     user: UserSchema
     win: int
     lose: int
@@ -138,7 +138,17 @@ def test_get_leaderboard(request):
     },
 )
 def get_leaderboard(request):
-    leaderboad = UserGameInfo.objects.all().order_by("-win", "lose", "-total_score")
+    all_user = get_user_model().objects.all()
+    leaderboad = []
+    for u in all_user:
+        leaderboad.append({
+            "id": u.id,
+            "user": u,
+            "win": u.wins,
+            "lose": u.losses,
+            "total_score": u.wins * 3
+        })
+    leaderboad = sorted(leaderboad, key=lambda x: x["win"], reverse=True)
     return 200, leaderboad
 
 
