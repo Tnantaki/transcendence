@@ -43,7 +43,7 @@ class UserAddIsFriend(UserSchema):
     is_friend: str
 
 class UserPatchIn(ModelSchema):
-    password: str | None
+    password: str | None = None
     
     class Meta:
         model = User
@@ -53,6 +53,16 @@ class UserPatchIn(ModelSchema):
             "email",
         ]
         fields_optional = "__all__"
+    
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, v):
+        if v is None:
+            return None
+        if v is not None and len(v) < 8:
+            raise HttpError(400, "Password must be at least 8 characters")
+        return v
+
 
 
 class UserPathParam(Schema):
