@@ -6,7 +6,6 @@ async function renderLearderboard(leaderboardTop3, leaderboardTable) {
   const players = await getLeaderboard();
   if (!players) return
 
-  console.log(players)
   renderLeaderboardTop3(leaderboardTop3, players)
   renderLeaderboardTable(leaderboardTable, players)
 }
@@ -18,8 +17,8 @@ function renderLeaderboardTop3(leaderboardDOM, players) {
     let name = player.querySelector('#name')
 
     if (i < players.length) {
-      picture.src = "/api" + players[i].profile
-      name.innerHTML = players[i].display_name
+      picture.src = "/api" + players[i].user.profile
+      name.innerHTML = players[i].user.display_name
     }
   }
 }
@@ -36,21 +35,21 @@ async function renderLeaderboardTable(leaderboardTable, players) {
       </div>
       <div class="col player-item-content justify-content-start">
         <div class="col-4 ms-3 player-item-picture">
-          <img src="/api${p.profile}" alt="profile-picture">
+          <img src="/api${p.user.profile}" alt="profile-picture">
         </div>
         <p class="friend-name" data-bs-toggle="modal"
           data-bs-target="#profileModal" onclick="getProfileById('${p.id}')">
-          ${p.display_name}
+          ${p.user.display_name}
         </p>
       </div>
       <div class="col-2 player-item-content">
-        <p>${p.wins}</p>
+        <p>${p.win}</p>
       </div>
       <div class="col-2 player-item-content">
-        <p>${p.losses}</p>
+        <p>${p.lose}</p>
       </div>
       <div class="col-2 player-item-content">
-        <p>${p.score}</p>
+        <p>${p.total_score}</p>
       </div>
       <div class="player-item-background"></div>
     `
