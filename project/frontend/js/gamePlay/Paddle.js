@@ -59,7 +59,6 @@ export class Paddle {
   };
 
   keyPressed = (event) => {
-    // console.log("keyPressed");
     if (event.key === this.keyUp) {
       this.isUp = true;
     } else if (event.key === this.keyDown) {
@@ -68,7 +67,6 @@ export class Paddle {
   };
 
   keyReleased = (event) => {
-    // console.log("keyReleased");
     if (event.key === this.keyUp) {
       this.isUp = false;
     } else if (event.key === this.keyDown) {

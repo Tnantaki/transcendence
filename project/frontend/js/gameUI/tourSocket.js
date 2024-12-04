@@ -23,20 +23,19 @@ class TourSocket {
   }
 
   webSocketEventOnOpen = () => {
-    console.warn("Tour Socket Connected")
+    // console.log("Connected TourSocket")
   };
 
   webSocketEventOnError = (event) => {
-    console.warn("Error: ", event);
+    console.log("Error: ", event);
   };
 
   webSocketEventOnClose = () => {
-    console.warn("Disconnet from TourSocket")
+    // console.log("Disconnet TourSocket")
   };
 
   webSocketEventOnMessage = (event) => {
     let data = JSON.parse(event.data);
-    // console.log('got message from server', data) // debug
     if (data.type === 'SERVER_MESSAGE') {
       switch (data.command) {
         case "TOURNAMENT_INFOMATION":
@@ -45,9 +44,9 @@ class TourSocket {
         case "ROUND_START":
           this.roundStart(data.data)
           break;
-        case "INFORM_WINNER": // ! match api protocol backend
-          this.displayWinnerTour("I'm the winner")
-          break;
+        // case "INFORM_WINNER": // cancel
+        //   this.displayWinnerTour("I'm the winner")
+        //   break;
         default:
           break;
       }
@@ -64,7 +63,7 @@ class TourSocket {
   }
 
   updateRoom = (data) => {
-    const nameList = data.user.map(u => u.display_name)
+    const nameList = data.user.map(u => u.display_name ? u.display_name : u.username)
     this.joinWaitingRoom(this.room.name, nameList)
   }
 
@@ -93,7 +92,6 @@ class TourSocket {
 }
 
 export function connectTourSocket(room, joinWaitingRoom) {
-  console.log("connect to tour socket");
   CONTAINER.tourSocket = new TourSocket(room, joinWaitingRoom)
   return CONTAINER.tourSocket
 }

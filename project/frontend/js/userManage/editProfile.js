@@ -70,10 +70,7 @@ async function sendEditProfileForm(event) {
     bio: formData.get("bio"),
   };
 
-  if (!validateInput(input)) {
-    console.error("Invalid input!");
-    return ;
-  }
+  if (!validateInput(input)) return;
 
   const body = removeEmptyFields({
     display_name: input.displayName,
@@ -96,12 +93,11 @@ async function sendEditProfileForm(event) {
       }
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const data = await response.json();
+    await response.json();
 
-    console.log(data);
     loadPage("/profile");
   } catch (error) {
-    console.error(error.message);
+    console.log(error.message);
   }
 };
 

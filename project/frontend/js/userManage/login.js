@@ -37,7 +37,6 @@ loginForm.addEventListener("submit", async (event) => {
 
     loadPage("/");
   } catch (error) {
-    console.error(error.message);
     if (error.message === "Failed to fetch")
       displayErr("#login-error", "error_server");
 

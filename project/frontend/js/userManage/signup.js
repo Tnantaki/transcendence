@@ -35,7 +35,6 @@ signupForm.addEventListener("submit", async (event) => {
   };
 
   if (!validateInput(input)) {
-    console.error("Invalid input!");
     return ;
   }
 
@@ -60,12 +59,10 @@ signupForm.addEventListener("submit", async (event) => {
     }
     await response.json();
 
-    console.log("Signup Success");
     popupSuccess();
   } catch (error) {
     if (error.message === "Failed to fetch")
       displayErr("#password2-error", "error_server");
-    console.error(error.message);
   }
 });
 

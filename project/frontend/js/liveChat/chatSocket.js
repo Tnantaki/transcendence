@@ -38,20 +38,19 @@ class ChatSocket {
   }
 
   webSocketEventOnOpen = () => {
-    console.warn("ChatSocket Connected")
+    // console.log("Connected ChatSocket")
   };
 
   webSocketEventOnError = (event) => {
-    console.warn("Error: ", event);
+    console.log("Error: ", event);
   };
 
   webSocketEventOnClose = () => {
-    console.warn("Disconnet from ChatSocket")
+    // console.log("Disconnected  ChatSocket")
   };
 
   webSocketEventOnMessage = (event) => {
     let data = JSON.parse(event.data);
-    // console.log('got message from server', data)
     if (data.type === 'SERVER_MESSAGE') {
       switch (data.command) {
         case "LIST_MESSAGE_BOX":
