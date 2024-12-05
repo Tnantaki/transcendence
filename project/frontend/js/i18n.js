@@ -1,6 +1,6 @@
-import enLanguage from '../locales/en.json' with {type: "json"};
-import thLanguage from '../locales/th.json' with {type: "json"};
-import frLanguage from '../locales/fr.json' with {type: "json"};
+import enLanguage from '../locales/en.js'
+import thLanguage from '../locales/th.js'
+import frLanguage from '../locales/fr.js'
 
 export function setSelectLanguage() {
   const savedLanguage = localStorage.getItem('currentLanguage') ?? 'en';
@@ -39,3 +39,12 @@ export function translatePage(language) {
   });
   localStorage.setItem('currentLanguage', language);
 }
+
+export function getTranslateLanguage(language, key) {
+  if (language === 'th')
+    return thLanguage[key]
+  else if (language === 'fr')
+    return frLanguage[key]
+  else
+    return enLanguage[key]
+} 
