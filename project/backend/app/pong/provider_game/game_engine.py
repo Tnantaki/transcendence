@@ -47,7 +47,7 @@ class GameEngine:
         # self.INIT_BALL_DIRECTION = {"x": 1, "y": 0}
         self.INIT_BALL_DIRECTION = self.create_direction_vector(1, 1)
         self.INIT_BALL_SPEED = 5
-        self.BALL_SPEED_INCS = 5
+        self.BALL_SPEED_INCS = 1
         self.TIME_PER_FRAME = 0.016  # 1 sec / 60 FRAME
         self.PADDLE_SIZE = 10  # px
         self.CANVA_WIDTH = 1024  # px
@@ -70,7 +70,7 @@ class GameEngine:
 
         self.channels = get_channel_layer()
         self.id = id
-        self.SCORE_TO_WIN = 10
+        self.SCORE_TO_WIN = 1
         self._running = asyncio.Event()
         self.speed_size = self.INIT_BALL_SPEED
         self.hit = 0

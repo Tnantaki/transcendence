@@ -118,6 +118,7 @@ class Tournament(BaseAutoDate, BaseID):
     users = models.ManyToManyField(AUTH_USER_MODEL, related_name="tournament_user")
     size = models.IntegerField(default=4)
     status = models.CharField(default="OPEN", max_length=255)
+    user_joined = models.ManyToManyField(AUTH_USER_MODEL, related_name="tournament_user_joined")
     winner = models.ForeignKey(
         AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

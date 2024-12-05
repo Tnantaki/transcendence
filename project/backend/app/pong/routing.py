@@ -11,6 +11,7 @@ from app.settings import DEBUG
 
 pong_router = Router()
 
+
 class UserSchema(ModelSchema):
     is_online: bool = Field(default=False)
     display_name: str = Field(default="")
@@ -29,12 +30,13 @@ class UserSchema(ModelSchema):
             "profile",
             "email",
         ]
-    
+
     @staticmethod
     def resolve_display_name(obj):
         if obj.display_name == "":
             return obj.username
         return obj.display_name
+
 
 class RoomName(Schema):
     id: int
@@ -42,13 +44,15 @@ class RoomName(Schema):
     number_of_player: int
     users: list[UserSchema]
     game_type: str
-    
+
     @staticmethod
     def resolve_users(obj):
         return obj.users.all()
 
+
 class RoomPostIn(Schema):
     name: str
+
 
 @pong_router.get(
     "/pong/room/",
@@ -61,6 +65,7 @@ def get_all_room(request):
 
     return 200, qs
 
+
 @pong_router.post(
     "/pong/room/",
     response={
@@ -72,8 +77,9 @@ def post_create_room(request, payload: RoomPostIn):
     room = Room.objects.create(name=payload.name)
     return 201, room
 
+
 class MatchHistoryOut(ModelSchema):
-    
+
     class Meta:
         model = MatchHistory
         fields = [
@@ -106,7 +112,8 @@ class LeaderBoardSchema(Schema):
     win: int
     lose: int
     total_score: int
-    
+
+
 @pong_router.get(
     "/debug/gen-a-leaderboard/",
     response={
@@ -127,7 +134,7 @@ def test_get_leaderboard(request):
     info.lose += random.randint(0, 10)
     info.total_score += random.randint(0, 100)
     info.save()
-    
+
     return 200, {"test": "SUCCESS"}
 
 
@@ -165,6 +172,7 @@ class TournamentOut(Schema):
 class TournamentBaseIn(Schema):
     name: str | None = None
 
+
 @pong_router.post(
     '/tournament/create/',
     response={
@@ -185,6 +193,7 @@ def post_create_tournament(request, payload: TournamentBaseIn):
     )
     return 201, tournament
 
+
 @pong_router.get(
     '/tournament/',
     response={
@@ -196,5 +205,7 @@ def get_tornament(request):
     """
     Get all tournament
     """
-    res = Tournament.objects.all().prefetch_related("users", "owner")
+    res = Tournament.objects.filter(
+        status="OPEN",
+    ).prefetch_related("users", "owner")
     return 200, res

@@ -35,6 +35,7 @@ def create_history(engine, winner):
                 dto['mtype'] = 'TR2'
                 tour.winner = winner.obj
                 tour.status = 'FINISH'
+                tour.user_joined.add(*tour.users.all())
                 tour.save()
             m = MatchHistory.objects.create(**dto)
             tour_round.matches.add(m)

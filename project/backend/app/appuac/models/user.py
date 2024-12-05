@@ -60,7 +60,7 @@ class User(AbstractUser):
     
     @property
     def tour_play(self):
-        return self.tournament_user.all().count()
+        return self.tournament_user_joined.all().count()
 
     class Meta:
         db_table = "auth_user"
