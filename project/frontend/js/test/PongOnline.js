@@ -484,6 +484,7 @@ var PLAYER = {
             this.display_state = "COUNTDOWN";
             if (this.count_down_helper == "0") {
               this.display_state = "GAME";
+              // this.gameloop()
             }
             break;
           case "ASSIGN_PLAYER":

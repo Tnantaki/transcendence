@@ -70,7 +70,7 @@
 .edit-btn {
   padding: var(--pd-md);
   font-size: var(--fs-xl);
-  width: min(200px, max(calc(200px * 0.15) + calc(200vw * 0.038), calc(200px * 0.15) + calc(200vh * 0.038)));
+  min-width: min(200px, max(calc(200px * 0.15) + calc(200vw * 0.038), calc(200px * 0.15) + calc(200vh * 0.038)));
   margin: var(--mg-xl) 0 0 0;
 }
 

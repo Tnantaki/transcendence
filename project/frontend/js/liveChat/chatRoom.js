@@ -1,4 +1,5 @@
 import { getMyProfile, getProfile } from "../services/profileService.js";
+import { getTranslateLanguage } from "../i18n.js";
 
 export default class ChatRoom {
   constructor(my_profile, friend_profile, chatBoxModal, sendMessage, sendInvitePong, answerInvitePong) {
@@ -16,6 +17,7 @@ export default class ChatRoom {
     this.setInvitePongIcon()
     this.createTitleBarName()
     this.setEnterKey()
+    this.validatePermissionChat()
   }
 
   static async create(friend_id, chatBoxModal, sendMessage, sendInvitePong, answerInvitePong) {
@@ -131,6 +133,19 @@ export default class ChatRoom {
       setTimeout(() => {
         this.chatBody.scrollTop = this.chatBody.scrollHeight
       }, 100);
+    }
+  }
+
+  validatePermissionChat = () => {
+    // Not allow input if not friend
+    if (this.friend_profile.is_friend !== 'ACCEPT') {
+      const language = localStorage.getItem('currentLanguage') || 'en'
+      const message = getTranslateLanguage(language, 'chat_permiss')
+      this.chatInput.placeholder = message
+      this.chatInput.disabled = true
+    } else {
+      this.chatInput.placeholder = ''
+      this.chatInput.disabled = false
     }
   }
 
