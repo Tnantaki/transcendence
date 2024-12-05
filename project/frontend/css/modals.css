@@ -184,3 +184,26 @@ p {
   font-weight: 500;
 	color: var(--clr-red);
 }
+
+
+/* Info Player Tournament Modal */
+.pingpong-racket-vs {
+  width: min(100px, max(calc(100px * 0.10) + calc(100vw * 0.035), calc(100px * 0.10) + calc(100vh * 0.035)));
+}
+.grid-info-player {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+.grid-info-player > div:first-child {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+}
+.grid-info-player > div:nth-child(2) {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+.grid-info-player > div:last-child {
+  grid-column: 2 / 4;
+  grid-row: 3 / 4;
+}

@@ -10,6 +10,7 @@ class TourSocket {
     this.joinWaitingRoom = joinWaitingRoom
     this.users = []
     this.modalWinnerTour = new bootstrap.Modal(document.getElementById('winnerTourModal'));
+    this.modalInfoTour = new bootstrap.Modal(document.getElementById('infoTour'));
 
     this.ws = new WebSocket(`${WS_TOUR_ROOM}?token=${this.token}&room_id=${room.id}`) // connect socket
     this.setWebSocketEvent() // setup event on socket
@@ -69,13 +70,19 @@ class TourSocket {
 
   roundStart = (data) => {
     let myRoomId = -1
+    let myRoom = null
     data.forEach(room => {
       if (this.my_id === room.player1.id || this.my_id === room.player2.id) {
         myRoomId = room.room_id
+        myRoom = room
       }
     })
     if (myRoomId > 0) {
-      loadPage("/online?room_id=" + myRoomId);
+      this.infoPlayers(myRoom)
+      setTimeout(() => {
+        this.modalInfoTour.hide();
+        loadPage("/online?room_id=" + myRoomId);
+      }, 1500)
     }
   }
 
@@ -83,6 +90,17 @@ class TourSocket {
     const nameObj = document.getElementById("winnerTourName")
     nameObj.innerHTML = name
     modalWinnerTour.show();
+  }
+
+  infoPlayers = ({player1, player2}) => {
+    const infoTourObj = document.getElementById('infoTour')
+    const p1 = infoTourObj.querySelector('#player1')
+    const p2 = infoTourObj.querySelector('#player2')
+
+    p1.innerHTML = player1.display_name ? player1.display_name : player1.username
+    p2.innerHTML = player2.display_name ? player2.display_name : player2.username
+
+    this.modalInfoTour.show();
   }
 
   clear = () => {
