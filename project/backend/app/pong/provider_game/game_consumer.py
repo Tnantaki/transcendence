@@ -89,7 +89,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         await asyncio.sleep(0.5)
         # TO fast for DB so sad
-        if len(self.game_engine.player) == 2:
+        if len(self.game_engine.player) == 2 and not self.game_engine.LOCK_COUNT:
+            self.game_engine.LOCK_COUNT = True
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {

@@ -41,6 +41,7 @@ class GameEngine:
         """ """
         if hasattr(self, "_is_init"):
             return None
+        self.LOCK_COUNT = False
         self.MAX_VELOCITY_SIZE = 40
         self.START_POSTSITION = {"x": 512, "y": 300}
         # self.INIT_BALL_DIRECTION = {"x": 1, "y": 0}
