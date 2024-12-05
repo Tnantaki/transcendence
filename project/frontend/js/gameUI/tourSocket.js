@@ -10,6 +10,7 @@ class TourSocket {
     this.joinWaitingRoom = joinWaitingRoom
     this.users = []
     this.modalWinnerTour = new bootstrap.Modal(document.getElementById('winnerTourModal'));
+    this.modalInfoTour = new bootstrap.Modal(document.getElementById('infoTour'));
 
     this.ws = new WebSocket(`${WS_TOUR_ROOM}?token=${this.token}&room_id=${room.id}`) // connect socket
     this.setWebSocketEvent() // setup event on socket
@@ -23,20 +24,19 @@ class TourSocket {
   }
 
   webSocketEventOnOpen = () => {
-    console.warn("Tour Socket Connected")
+    // console.log("Connected TourSocket")
   };
 
   webSocketEventOnError = (event) => {
-    console.warn("Error: ", event);
+    console.log("Error: ", event);
   };
 
   webSocketEventOnClose = () => {
-    console.warn("Disconnet from TourSocket")
+    // console.log("Disconnet TourSocket")
   };
 
   webSocketEventOnMessage = (event) => {
     let data = JSON.parse(event.data);
-    // console.log('got message from server', data) // debug
     if (data.type === 'SERVER_MESSAGE') {
       switch (data.command) {
         case "TOURNAMENT_INFOMATION":
@@ -45,9 +45,9 @@ class TourSocket {
         case "ROUND_START":
           this.roundStart(data.data)
           break;
-        case "INFORM_WINNER": // ! match api protocol backend
-          this.displayWinnerTour("I'm the winner")
-          break;
+        // case "INFORM_WINNER": // cancel
+        //   this.displayWinnerTour("I'm the winner")
+        //   break;
         default:
           break;
       }
@@ -64,19 +64,25 @@ class TourSocket {
   }
 
   updateRoom = (data) => {
-    const nameList = data.user.map(u => u.display_name)
+    const nameList = data.user.map(u => u.display_name ? u.display_name : u.username)
     this.joinWaitingRoom(this.room.name, nameList)
   }
 
   roundStart = (data) => {
     let myRoomId = -1
+    let myRoom = null
     data.forEach(room => {
       if (this.my_id === room.player1.id || this.my_id === room.player2.id) {
         myRoomId = room.room_id
+        myRoom = room
       }
     })
     if (myRoomId > 0) {
-      loadPage("/online?room_id=" + myRoomId);
+      this.infoPlayers(myRoom)
+      setTimeout(() => {
+        this.modalInfoTour.hide();
+        loadPage("/online?room_id=" + myRoomId);
+      }, 1500)
     }
   }
 
@@ -86,6 +92,17 @@ class TourSocket {
     modalWinnerTour.show();
   }
 
+  infoPlayers = ({player1, player2}) => {
+    const infoTourObj = document.getElementById('infoTour')
+    const p1 = infoTourObj.querySelector('#player1')
+    const p2 = infoTourObj.querySelector('#player2')
+
+    p1.innerHTML = player1.display_name ? player1.display_name : player1.username
+    p2.innerHTML = player2.display_name ? player2.display_name : player2.username
+
+    this.modalInfoTour.show();
+  }
+
   clear = () => {
     this.ws.close()
     this.ws = null
@@ -93,7 +110,6 @@ class TourSocket {
 }
 
 export function connectTourSocket(room, joinWaitingRoom) {
-  console.log("connect to tour socket");
   CONTAINER.tourSocket = new TourSocket(room, joinWaitingRoom)
   return CONTAINER.tourSocket
 }

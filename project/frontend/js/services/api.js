@@ -37,7 +37,6 @@ export async function fetchAPI(method, url, options = {}) {
     }
     return response;
   } catch (error) {
-    console.log("get response");
     throw error;
   }
 }
@@ -88,7 +87,7 @@ export async function fetchData(method, url, option) {
     if (method === 'DELETE' || response.status === 204) return null
     return await response.json();
   } catch (error) {
-    console.error(error.message);
+    console.log(error.message);
   }
   return null
 }

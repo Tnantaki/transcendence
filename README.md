@@ -24,3 +24,14 @@
 ## 📝How to build
 1. create file .env from .env.sample
 2. use make at /project/makefile run `docker compose up --build`
+
+---
+## ELK
+1. uncomment in
+    - docker-compose.yaml (include elk compose)
+    - docker-compose.yaml (backend service - depends_on: logstash)
+    - settings.py (LOGGING)
+2. access Kibana
+    - url: https://localhost:{kibana-port}
+    - user: elastic
+    - password: es1234
