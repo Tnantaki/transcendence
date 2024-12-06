@@ -58,8 +58,6 @@ class WaitingRoom {
 		this.ctx.textBaseline = "middle";
 		this.ctx.textAlign = "center";
 
-		// console.log("hello");
-		console.log(this.playersName.length);
 		await initPlayers(this.playersName, this.ctx);
 
 		// remove scroll event listeners
@@ -93,12 +91,9 @@ class WaitingRoom {
 	updateOwner() {
 		if (this.owner != this.playersName[0])
 			this.owner = this.playersName[0];
-		console.log("Owner: ", this.owner);
 	}
 
 	updateWaitingRoom(playersName) {
-		console.log("updated waitingRoom");
-		console.log(playersName)
 		this.playersName = playersName;
 		this.updateOwner();
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -127,14 +122,12 @@ export function joinWaitingRoom(roomName, playersName) {
 }
 
 export function isOwner(name) {
-	console.log("who: ", waitingRoom.getOwner());
 	if (waitingRoom.getOwner() == name)
 		return true;
 	return false;
 }
 
 export function fullWaitingRoom() {
-	console.log("check full plauer");
 	if (waitingRoom.getNumPlayers() == 4)
 		return true;
 	return false;

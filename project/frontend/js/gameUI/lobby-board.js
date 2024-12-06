@@ -33,14 +33,12 @@ export const	boardObj = {
 let imageX = 0;
 let imageY = 0;
 function fillPlayerName(name, xPos, yPos, ctx2, i) {
-	console.log("in function pname");
 	if (i > 0)
 		yPos += 40;
 	else
 		yPos += 20;
 	ctx2.fillText(name, xPos, yPos);
 	if (isOwner(name)) {
-		console.log("I'm owner :)");
 	const textHeight = ctx2.measureText(name).width;
 
 	const imgRatio = 35;
@@ -49,9 +47,7 @@ function fillPlayerName(name, xPos, yPos, ctx2, i) {
 	// imageY = yPos + textHeight + (100 / 2);
 	imageY = yPos - (imgRatio / 1.7);
 	
-		console.log(imgRatio);
 		getCrownImg().then(img => {ctx2.drawImage(img, imageX, imageY, imgRatio, imgRatio);});
-		console.log("where are you crown !!");
 		// ctx.closePath();	
 	}
 }
@@ -84,7 +80,6 @@ export async function handleRoomBtn(xPos, roomBtns, event) {
 	const x = event.clientX - rect.left;
 	const y = event.clientY - rect.top;
 
-	// console.log(roomBtns);
 	for (let i = 0; i < roomBtns.length ; i++) { 
 		const btnX = xPos - roomBtns[i].width / 2; // delete the left margin from the drawing function
 		const btnY = roomBtns[i].yPos + roomBtns[i].height / 2; // delete the top margin
@@ -130,7 +125,6 @@ const scrollbarThumbMinHeight = 20;
 
 export const   playerBtns = [];
 export async function initPlayers(players, ctx2) {
-	// console.log("initPlayers");
 	const xPos = boardObj.startX + boardObj.textPadding * 2.2;
 	const maxScroll = Math.max(0, (players.length - visibleLines) * lineHeight);
 	scrollY = Math.max(0, Math.min(scrollY, maxScroll));
@@ -186,7 +180,6 @@ async function initRooms(rooms) {
 			manageEvt(0, roomBtn);
 			hasEvent = true;
 		}
-		console.log(rooms);
 	}
 
 	const scrollbarHeight = boardObj.height + boardObj.padding * 2 - 2 * scrollbarPadding;

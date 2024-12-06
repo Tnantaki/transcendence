@@ -24,7 +24,6 @@ class TourSocket {
   }
 
   webSocketEventOnOpen = () => {
-    // console.log("Connected TourSocket")
   };
 
   webSocketEventOnError = (event) => {
@@ -32,7 +31,6 @@ class TourSocket {
   };
 
   webSocketEventOnClose = () => {
-    // console.log("Disconnet TourSocket")
   };
 
   webSocketEventOnMessage = (event) => {
@@ -40,6 +38,7 @@ class TourSocket {
     if (data.type === 'SERVER_MESSAGE') {
       switch (data.command) {
         case "TOURNAMENT_INFOMATION":
+          console.log(data)
           this.updateRoom(data.data)
           break;
         case "ROUND_START":

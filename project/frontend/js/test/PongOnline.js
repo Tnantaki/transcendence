@@ -153,7 +153,6 @@ var PLAYER = {
       );
       this.ctx.fill();
       this.ctx.closePath();
-      console.log("L", this.leftPaddle.y, this.leftPaddle.x, "R", this.rightPaddle.y, this.rightPaddle.x);
     };
   
     
@@ -505,7 +504,6 @@ var PLAYER = {
             this.rightPaddle.y = data.data.right_paddle.y;
             break;
           case "UPDATE_SCORE":
-            console.log("Update score", data.data);
             this.leftScore.score = data.data.left;
             this.rightScore.score = data.data.right;
             break;
@@ -525,7 +523,6 @@ var PLAYER = {
     };
   
     webSocketEventOnError = (event) => {
-      console.log("Error: ", event);
     };
   
     setWebSocketEvent = () => {

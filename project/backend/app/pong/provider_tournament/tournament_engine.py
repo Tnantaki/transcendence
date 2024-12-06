@@ -84,6 +84,12 @@ class TournamentEngine:
         self.c_instance.pop(id)
         if self.owner_id == id:
             self.owner_id = None
+            if len(self.c_instance) == 0:
+                return False
+            for i in self.c_instance:
+                self.set_owner(i)
+                break
+        return True
 
     def set_owner(self, id):
         self.owner_id = id

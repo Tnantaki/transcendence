@@ -15,7 +15,6 @@ function setCanvas() {
 	curLanguage = localStorage.getItem('currentLanguage') || 'en';
 }
 
-// console.log("canvas: ", canvas);
 
 // menu properties
 const menuPos = 100;
@@ -119,20 +118,3 @@ export function createMenu()
 	});
 }
 
-// createMenu();
-
-// console.log("main-menu file");
-// debugger for btn
-			// console.log(btn);
-			// console.log("x: " + x);
-			// console.log("startX: " + startX);
-			// console.log("startX + btnWidth: " + (btnWidth + startX));
-			// console.log(".");
-			// console.log("y: " + y);
-			// console.log("btnY: " + btnY);
-			// console.log("btnY + btnHeight: " + (btnHeight + btnY));
-
-// for load game online page
-  // loadPage("/online?room_id=" + <id>);
-
-//! to get the localStorage.currentLanguage

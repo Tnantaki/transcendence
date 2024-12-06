@@ -20,7 +20,6 @@ export class Ball {
             this.reset();
         }
 
-        console.log("x: ",this.x, "x_speed: ", this.xSpeed)
         this.x += this.xSpeed;
         this.y += this.ySpeed;
     }

@@ -302,7 +302,6 @@ export class PongGame {
     this.user_token = new URLSearchParams(window.location.search).get("token");
     this.room_id = new URLSearchParams(window.location.search).get("room_id");
     this.webSocketToken = this.user_token;
-    console.log("Token: ", this.user_token);
   };
 
   gameloop = async () => {
@@ -447,7 +446,6 @@ export class PongGame {
           this.rightPaddle.y = data.data.right_paddle.y;
           break;
         case "UPDATE_SCORE":
-          console.log("Update score", data.data);
           this.leftScore.score = data.data.left;
           this.rightScore.score = data.data.right;
         default:

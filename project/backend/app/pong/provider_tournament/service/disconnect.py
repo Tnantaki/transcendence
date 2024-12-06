@@ -1,5 +1,6 @@
 from channels.db import database_sync_to_async
 from pong.shared_services.utils.group_message import server_send_message_to_group
+from pong.provider_tournament.service.connect import message_user_join
 
 async def message_user_leave(obj):
     await server_send_message_to_group(
@@ -13,11 +14,21 @@ def user_leave_tour(obj):
     # Remove relationship from user and tour
     if not hasattr(obj, 'tour'):
         return 
+    obj.tour_engine.remove_instance(obj.user_id)
     obj.tour.users.remove(obj.user)
+    return obj
+
+async def set_new_owner(obj):
+    if not hasattr(obj, 'tour'):
+        return 
+    res = await obj.tour_engine.remove_instance(obj.user_id)
+    await message_user_join(obj,)
+    
     return obj
 
 
 async def tour_disconnect(obj):
+    await set_new_owner(obj)
     await user_leave_tour(obj)
     await message_user_leave(obj)
     

@@ -45,8 +45,6 @@ export function createLobby(mode) {
 }
 
 export function updateLobby(mode) {
-	// console.log("updated lobby");
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	// console.log("mode: ", mode);
 	createLobby(mode);
 }

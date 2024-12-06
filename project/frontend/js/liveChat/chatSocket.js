@@ -38,7 +38,6 @@ class ChatSocket {
   }
 
   webSocketEventOnOpen = () => {
-    // console.log("Connected ChatSocket")
   };
 
   webSocketEventOnError = (event) => {
@@ -46,7 +45,6 @@ class ChatSocket {
   };
 
   webSocketEventOnClose = () => {
-    // console.log("Disconnected  ChatSocket")
   };
 
   webSocketEventOnMessage = (event) => {

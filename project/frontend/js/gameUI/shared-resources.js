@@ -83,7 +83,6 @@ function handleCreateBtn(btnObj, event)
 
 	if (x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight)
 	{
-		// console.log("clicked create btn");
 			createRoom();
 	}	
 }
@@ -140,15 +139,12 @@ function handleBackBtn(btnObj, event)
 		}
 
 		if (checkGameMode() == "WaitingRoom") {
-			console.log("back to lobby");
 			createLobby("tournament");
 			disconnetTourSocket() // disconnect socket  ????????
 		} else {
-			console.log("back to menu");
 			createMenu();
 		}
          		// manageEvt(1, handleAddPlayerBtn);
-		// console.log("Back");
 	}
 }
 

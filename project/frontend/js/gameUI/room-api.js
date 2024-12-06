@@ -58,7 +58,6 @@ function postRoom(mode) {
 
 	if (roomName) {
 		if (mode == "online") {
-			console.log("isOnline");
 			createRoomAPI(roomName)
 				.then(res => {
 					cachedRooms.length = 0;
@@ -72,7 +71,6 @@ function postRoom(mode) {
 				})
 		}
 		else {
-			console.log("isTour");
 			createTourRoomAPI(roomName)
 				.then(res => {
 					cachedRooms.length = 0;
@@ -107,11 +105,9 @@ async function createRoomAPI(roomName) {
 
 		if (!response.ok) {
 			const errorBody = await response.text();
-			console.log("error body res: ", errorBody);
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		else {
-			console.log("suceess! ", response.status);
 			const res = await response.json();
 			return res;
 		}
@@ -129,9 +125,7 @@ export async function getRoomAPI() {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		else {
-			console.log("suceess! ", response.status);
 			const res = await response.json();
-			// console.log("here: ", res);
 			return res;
 		}
 	} catch (error) {
@@ -149,13 +143,10 @@ async function createTourRoomAPI(roomName) {
 
 		if (!response.ok) {
 			const errorBody = await response.text();
-			console.log("error body res: ", errorBody);
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		else {
-			console.log("suceess! ", response.status);
 			const res = await response.json();
-			// console.log("here: ", res);
 			return res;
 		}
 	} catch (error) {
@@ -172,9 +163,7 @@ export async function getTourRoomAPI() {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		else {
-			console.log("suceess! ", response.status);
 			const res = await response.json();
-			// console.log("here: ", res);
 			return res;
 		}
 	} catch (error) {
@@ -188,7 +177,6 @@ export async function getAllRooms(mode) {
 	if (cachedRooms.length > 0)
 		return cachedRooms;
 	
-	// console.log("mode in api: ", mode);
 	try {
 		const res = mode === "online" ? await getRoomAPI() : await getTourRoomAPI();
 		if (res && Array.isArray(res))

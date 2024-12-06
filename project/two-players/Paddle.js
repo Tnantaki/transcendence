@@ -33,7 +33,6 @@ export class Paddle {
     };
 
     keyReleased(event) {
-        console.log("keyReleased");
         if (event.keyCode == this.keyUp) {
             this.isUp = false;
         } else if (event.keyCode == this.keyDown) {
