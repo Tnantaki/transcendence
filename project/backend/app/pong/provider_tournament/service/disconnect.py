@@ -21,8 +21,9 @@ def user_leave_tour(obj):
 async def set_new_owner(obj):
     if not hasattr(obj, 'tour'):
         return 
-    res = await obj.tour_engine.remove_instance(obj.user_id)
-    await message_user_join(obj,)
+    has_new_owner = await obj.tour_engine.remove_instance(obj.user_id)
+    if has_new_owner:
+        await message_user_join(obj)
     
     return obj
 

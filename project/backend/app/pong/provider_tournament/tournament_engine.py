@@ -82,6 +82,9 @@ class TournamentEngine:
 
     async def remove_instance(self, id):
         self.c_instance.pop(id)
+        tour = await get_tournament(self.tour_id)
+        if tour.status == 'PLAYING-R1':
+            return False
         if self.owner_id == id:
             self.owner_id = None
             if len(self.c_instance) == 0:
