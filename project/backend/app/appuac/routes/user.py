@@ -88,12 +88,11 @@ def patch_user_by_id(request, payload: UserPatchIn):
     """
     user = request.auth.user
     d_payload = payload.dict(exclude_unset=True, exclude_none=True)
-    if hasattr(d_payload, "password"):
-        new_password = d_payload.pop('password')
-        user.set_password(new_password)
-
     for k, v in d_payload.items():
-        setattr(user, k, v)
+        if k == "password":
+            user.set_password(v)
+        else:
+            setattr(user, k, v)
     user.save()
 
     return 200, user
