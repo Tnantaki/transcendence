@@ -35,7 +35,7 @@ export default {
   decline: "ปฏิเสธ",
   accept: "ยอมรับ",
   error_login: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!",
-  error_username_invalid: "ชื่อผู้ใช้ต้องเป็นตัวอักษรหรือตัวเลข และต้องมีอย่างน้อย 4 ตัวอักษร",
+  error_username_invalid: "ชื่อผู้ใช้ต้องเป็นตัวอักษรหรือตัวเลข 4 - 10 ตัว",
   error_username_same: "ชื่อผู้ใช้นี้ถูกใช้ไปแล้ว!",
   error_confirm_password: "รหัสผ่านต้องตรงกัน!",
   error_display_name_same: "ชื่อนี้ถูกใช้ไปแล้ว!",

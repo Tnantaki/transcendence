@@ -6,7 +6,7 @@ const signupForm = document.getElementById("signupForm");
 
 function validateInput(input) {
   let returnValue = true;
-  const regex = /^[a-zA-Z0-9_]{4,20}$/;
+  const regex = /^[a-zA-Z0-9_]{4,10}$/;
 
   if (!regex.test(input.username)) {
     displayErr("#username-error", "error_username_invalid");

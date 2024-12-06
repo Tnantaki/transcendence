@@ -35,7 +35,7 @@ export default {
   decline: "Refuser",
   accept: "Accepter",
   error_login: "Identifiant ou mot de passe incorrect!",
-  error_username_invalid: "Le nom d'utilisateur doit être composé d'une lettre ou d'un chiffre, au moins 4 caractères",
+  error_username_invalid: "Le nom d'utilisateur doit être composé d'une lettre ou d'un chiffre, 4 - 10 caractères",
   error_username_same: "Ce nom d'utilisateur est déjà pris !",
   error_confirm_password: "Le mot de passe doit être le même !",
   error_display_name_same: "Ce pseudo est déjà pris !",

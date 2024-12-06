@@ -44,9 +44,6 @@ class TourSocket {
         case "ROUND_START":
           this.roundStart(data.data)
           break;
-        // case "INFORM_WINNER": // cancel
-        //   this.displayWinnerTour("I'm the winner")
-        //   break;
         default:
           break;
       }
@@ -60,10 +57,12 @@ class TourSocket {
       data: {}
     }
     this.ws.send(JSON.stringify(msgObj));
+    console.log('send start to backend')
   }
 
   updateRoom = (data) => {
-    const nameList = data.user.map(u => u.display_name ? u.display_name : u.username)
+    const users = data.user.sort((a, b) => b.is_owner - a.is_owner);
+    const nameList = users.map(u => u.display_name ? u.display_name : u.username)
     this.joinWaitingRoom(this.room.name, nameList)
   }
 
@@ -71,6 +70,8 @@ class TourSocket {
     let myRoomId = -1
     let myRoom = null
     data.forEach(room => {
+      if(!room.player1 || !room.player2) return
+
       if (this.my_id === room.player1.id || this.my_id === room.player2.id) {
         myRoomId = room.room_id
         myRoom = room

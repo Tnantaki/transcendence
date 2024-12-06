@@ -101,8 +101,9 @@ function handleStartBtn(btnObj, event)
 	const	btnWidth = btnObj.width;
 	const	btnHeight = btnObj.height;
 
-	if ((x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight) && fullWaitingRoom)
+	if ((x >= btnX && x <= btnX + btnWidth && y >= btnY && y <= btnY + btnHeight) && fullWaitingRoom) {
 		startTour() // start tournament
+	}
 }
 
 function handleBackBtn(btnObj, event)
