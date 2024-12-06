@@ -38,7 +38,6 @@ class TourSocket {
     if (data.type === 'SERVER_MESSAGE') {
       switch (data.command) {
         case "TOURNAMENT_INFOMATION":
-          console.log(data)
           this.updateRoom(data.data)
           break;
         case "ROUND_START":
@@ -57,7 +56,6 @@ class TourSocket {
       data: {}
     }
     this.ws.send(JSON.stringify(msgObj));
-    console.log('send start to backend')
   }
 
   updateRoom = (data) => {

@@ -45,7 +45,7 @@ function validateInput(input) {
   const regex = /^[a-zA-Z0-9_]{4,10}$/;
 
   if (!regex.test(input.displayName)) {
-    displayErr("#displayName-error", "error_username_invalid");
+    displayErr("#displayName-error");
     returnValue = false;
   }
 
@@ -124,10 +124,9 @@ async function getProfile() {
   }
 }
 
-function displayErr(errId, error) {
+function displayErr(errId) {
   const errBlock = document.querySelector(errId);
-  errBlock.previousElementSibling.style.marginBottom = "2px";
+  errBlock.previousElementSibling.style.marginBottom = "2%";
 
-  const errMsg = errBlock.querySelector(`[data-i18n="${error}"]`);
-  errMsg.style.display = "block";
+  errBlock.style.display = "block";
 }
