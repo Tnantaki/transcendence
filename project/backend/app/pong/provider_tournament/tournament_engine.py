@@ -135,7 +135,7 @@ class TournamentEngine:
             'id': self.id,
             'user_count': len(user),
             'user': user,
-            'can_start': len(user) >= 3,
+            'can_start': len(user) == 4,
             'tour': tour.info,
         }
 
