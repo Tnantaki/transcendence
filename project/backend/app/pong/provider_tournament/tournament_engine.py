@@ -140,6 +140,9 @@ class TournamentEngine:
         }
 
     async def start_tournament(self, user_id):
+        user = await self.user_in_tour()
+        if len(user) != 4:
+            return "ALLOW ONly four"
         if user_id != self.owner_id:
             return "Not Owner"
 
