@@ -42,6 +42,12 @@ function uploadProfilePicture() {
 
 function validateInput(input) {
   let returnValue = true;
+  const regex = /^[a-zA-Z0-9_]{4,10}$/;
+
+  if (!regex.test(input.displayName)) {
+    displayErr("#displayName-error", "error_username_invalid");
+    returnValue = false;
+  }
 
   if (input.password !== input.password2) {
     const errMsg = profileForm.querySelector("#password2-error");
@@ -116,4 +122,12 @@ async function getProfile() {
     const charCount = document.querySelector(".char-count");
     charCount.textContent = `${profileValue["bio"].length}/200`
   }
+}
+
+function displayErr(errId, error) {
+  const errBlock = document.querySelector(errId);
+  errBlock.previousElementSibling.style.marginBottom = "2px";
+
+  const errMsg = errBlock.querySelector(`[data-i18n="${error}"]`);
+  errMsg.style.display = "block";
 }

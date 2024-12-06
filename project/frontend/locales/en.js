@@ -35,7 +35,7 @@ export default {
   decline: "Decline",
   accept: "Accept",
   error_login: "Incorrect username or password!",
-  error_username_invalid: "Username must be alphabet or number, At least 4 character",
+  error_username_invalid: "Username must be alphabet or number, 4 - 10 characters",
   error_username_same: "This username already taken!",
   error_confirm_password: "Password must be the same!",
   error_display_name_same: "This name already taken!",
