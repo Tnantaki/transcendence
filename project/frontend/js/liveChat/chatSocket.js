@@ -218,6 +218,10 @@ export function connectWebSocket() {
 }
 
 export function disconnetWebSocket() {
+  if (!chatSocket)
+  {
+    return ;
+  }
   chatSocket.clear()
   chatSocket = null
 }

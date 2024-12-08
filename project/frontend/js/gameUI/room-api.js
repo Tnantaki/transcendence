@@ -172,11 +172,14 @@ export async function getTourRoomAPI() {
 	}
 }
 
+
+
 // ! all the rooms created still in the database (40+ of them)
 export async function getAllRooms(mode) {
+
 	if (cachedRooms.length > 0)
 		return cachedRooms;
-	
+
 	try {
 		const res = mode === "online" ? await getRoomAPI() : await getTourRoomAPI();
 		if (res && Array.isArray(res))

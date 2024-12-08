@@ -245,19 +245,23 @@ export async function drawRoomDisplay() {
 	ctx.textAlign = "center";
 
 	const rooms = await getAllRooms(checkGameMode());
-	if (rooms)
+	if (rooms.length > 0) {
+		
 		rooms.sort((a,b) => a.id - b.id);
-	await initRooms(rooms);
 
-	// Add event listeners for scrolling (only if they haven't been added before)
-	if (!canvas.hasScrollListeners) {
-		canvas.addEventListener('wheel', handleWheel);
-		canvas.addEventListener('mousedown', handleMouseDown);
-		canvas.addEventListener('mousemove', handleMouseMove);
-		canvas.addEventListener('mouseup', handleMouseUp);
-		canvas.addEventListener('mouseleave', handleMouseUp);
-		canvas.hasScrollListeners = true;
+		await initRooms(rooms);
+
+		// Add event listeners for scrolling (only if they haven't been added before)
+		if (!canvas.hasScrollListeners) {
+			canvas.addEventListener('wheel', handleWheel);
+			canvas.addEventListener('mousedown', handleMouseDown);
+			canvas.addEventListener('mousemove', handleMouseMove);
+			canvas.addEventListener('mouseup', handleMouseUp);
+			canvas.addEventListener('mouseleave', handleMouseUp);
+			canvas.hasScrollListeners = true;
+		}
 	}
+
 }
 
 function handleWheel(event) {
