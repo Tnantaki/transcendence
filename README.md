@@ -1,6 +1,6 @@
-# The Project is in progress...
+<h1 align="center">Transcendence</h1>
 
-# transcendence
+## 📖 Description
 > This project aims to develop a single page application with the following features:
 > - Account Management System: Users can create, manage, and update their accounts.
 > - Friend List: Users can add and manage friends within the application.
