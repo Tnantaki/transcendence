@@ -11,7 +11,7 @@
 | ![.](images/account_login.png) <br> <center>**Login Page**</center> | ![.](images/account_signup.png) <br> <center>**Signup Page**</center> |
 | :-: | :-: |
 | ![.](images/account_main.png) <br> <center>**Main Page**</center> | ![.](images/account_profile.png) <br> <center>**Profile Page**</center> |
-| ![.](images/account_edit_profile.png) <br> <center>**Edit Profile Page**</center> | |
+| ![.](images/account_edit_profile.png) <br> <center>**Edit Profile Page**</center> | ![.](images/pong_game.png) <br> <center>**Pong game Page**</center>|
 
 ---
 ## 🛠️Built with
@@ -21,9 +21,10 @@
 * NGINX: HTTP server for serving web pages.
 
 ---
-## 📝How to build
-1. create file .env from .env.sample
+## 📝How to Run Server
+1. config environment variable at project/backend/.env (or leave it as a default)
 2. use make at /project/makefile run `docker compose up --build`
+3. access website via `https://localhost:4443`
 
 ---
 ## ELK

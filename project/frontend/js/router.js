@@ -47,8 +47,6 @@ const urlRoute = {
   "/game": {
     urlPath: template_dir + "game.html",
     script: js_game_dir + "init-menu.js",
-    // script: [js_game_dir + "main-menu.js"], 
-    // js_game_dir +  "init-menu.js"],
     title: "Game" + " - " + title_extension,
   },
   "/game-single": {
@@ -62,9 +60,8 @@ const urlRoute = {
     title: "Versus" + " - " + title_extension,
   },
   "/online": {
-    urlPath: template_dir + "test/index.html",
-    script: js_dir + "test/PongOnline.js",
-    // js_dir + "test/pongOnlineScript.js" ,
+    urlPath: template_dir + "gameOnline.html",
+    script: js_dir + "gameOnline/PongOnline.js",
     title: "Tests" + " - " + title_extension,
   }
 };
